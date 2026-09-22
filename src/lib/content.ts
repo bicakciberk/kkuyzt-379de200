@@ -7,8 +7,8 @@ export const events = [
  {title:"YZT Tanışma Buluşması", date:"4 Ekim 2025", tag:"Topluluk", desc:"Yeni üyelerimizle tanıştık, dönemin yol haritasını birlikte şekillendirdik.", status:"Geçmiş"},
 ];
 export const teams = [
- {group:"Yönetim Kurulu", members:[["Ece Yıldız","Topluluk Başkanı","Bilgisayar Mühendisliği"],["Bora Akın","Başkan Yardımcısı","Endüstri Mühendisliği"],["Selin Öztürk","Genel Sekreter","Yönetim Bilişim Sistemleri"]]},
- {group:"Teknik Ekip", members:[["Arda Çelik","Teknik Ekip Lideri","Bilgisayar Mühendisliği"],["Duru Kaya","Atölye Koordinatörü","Elektrik-Elektronik Müh."],["Kerem Şen","İçerik Geliştirici","Bilgisayar Mühendisliği"]]},
- {group:"Etkinlikler", members:[["İrem Aydın","Etkinlikler Lideri","İşletme"],["Mert Can","Organizasyon Sorumlusu","Endüstri Mühendisliği"],["Zeynep Koç","Operasyon Sorumlusu","Sosyoloji"]]},
- {group:"Dış İlişkiler & Sosyal Medya", members:[["Elif Demir","Dış İlişkiler Lideri","Uluslararası İlişkiler"],["Deniz Yalçın","Sosyal Medya Lideri","Gazetecilik"],["Can Eren","Tasarım Sorumlusu","Görsel İletişim Tasarımı"]]},
+ {group:"Dış İlişkiler", members:[["Ceren Öz","Topluluk Başkanı & Dış İlişkiler Departman Başkanı","Endüstri Mühendisliği"],["Berk Bıçakcı","Üye","Endüstri Mühendisliği"],["Utku Ilgaz","Üye","Endüstri Mühendisliği"]]},
+ {group:"Organizasyon", members:[["Bartu Bayram","Departman Başkanı","Endüstri Mühendisliği"],["Yahya Ay","Üye","Endüstri Mühendisliği"],["Naz Mermeroğlu","Üye","Endüstri Mühendisliği"],["Yağmur","Üye","Endüstri Mühendisliği"]]},
+ {group:"Sosyal Medya", members:[["Eray Taşpunar","Departman Başkanı","Endüstri Mühendisliği"],["Efe Burulday","Üye","Endüstri Mühendisliği"]]},
+ {group:"Tanıtım", members:[["Şadan Aydoğan","Departman Başkanı","Endüstri Mühendisliği"]]},
 ];
