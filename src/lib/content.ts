@@ -6,9 +6,10 @@ export const events = [
  {title:"Prompt Tasarımı Laboratuvarı", date:"12 Mart 2026", tag:"Atölye", desc:"İyi soru sormanın sistematiğini birlikte denediğimiz uygulamalı bir buluşma.", status:"Geçmiş"},
  {title:"YZT Tanışma Buluşması", date:"4 Ekim 2025", tag:"Topluluk", desc:"Yeni üyelerimizle tanıştık, dönemin yol haritasını birlikte şekillendirdik.", status:"Geçmiş"},
 ];
+export const leader = {name:"Ceren Öz", role:"Topluluk Başkanı", dept:"Endüstri Mühendisliği"} as const;
 export const teams = [
- {group:"Dış İlişkiler", members:[["Ceren Öz","Topluluk Başkanı & Dış İlişkiler Departman Başkanı","Endüstri Mühendisliği"],["Berk Bıçakcı","Üye","Endüstri Mühendisliği"],["Utku Ilgaz","Üye","Endüstri Mühendisliği"]]},
  {group:"Organizasyon", members:[["Bartu Bayram","Departman Başkanı","Endüstri Mühendisliği"],["Yahya Ay","Üye","Endüstri Mühendisliği"],["Naz Mermeroğlu","Üye","Endüstri Mühendisliği"],["Yağmur","Üye","Endüstri Mühendisliği"]]},
  {group:"Sosyal Medya", members:[["Eray Taşpunar","Departman Başkanı","Endüstri Mühendisliği"],["Efe Burulday","Üye","Endüstri Mühendisliği"]]},
+ {group:"Dış İlişkiler", members:[["Ceren Öz","Dış İlişkiler Departman Başkanı","Endüstri Mühendisliği"],["Berk Bıçakcı","Üye","Endüstri Mühendisliği"],["Utku Ilgaz","Üye","Endüstri Mühendisliği"]]},
  {group:"Tanıtım", members:[["Şadan Aydoğan","Departman Başkanı","Endüstri Mühendisliği"]]},
 ];
