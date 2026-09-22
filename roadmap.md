@@ -6,3 +6,5 @@
 - [x] Build Üyelik and İletişim forms with validation states
 - [x] Add branded 404 and unique page metadata
 - [x] Verify desktop/mobile layouts and all interactions
+
+- [ ] Takım sayfasındaki Ceren açıklamasını kaldır; Ceren, Bartu, Şadan ve Eray fotoğraflarını doğru kişilere ekle.
