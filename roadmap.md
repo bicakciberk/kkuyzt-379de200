@@ -8,3 +8,4 @@
 - [x] Verify desktop/mobile layouts and all interactions
 
 - [x] Takım sayfasındaki Ceren açıklamasını kaldır; Ceren, Bartu, Şadan ve Eray fotoğraflarını doğru kişilere ekle.
+- [x] Site genelinde editoryal kartlar, bölüm ritmi, vurgu renkleri, kolaj sayaç ve çizgi ikon dilini yaygınlaştır.
