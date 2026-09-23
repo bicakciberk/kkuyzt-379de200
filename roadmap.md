@@ -9,3 +9,4 @@
 
 - [x] Takım sayfasındaki Ceren açıklamasını kaldır; Ceren, Bartu, Şadan ve Eray fotoğraflarını doğru kişilere ekle.
 - [x] Site genelinde editoryal kartlar, bölüm ritmi, vurgu renkleri, kolaj sayaç ve çizgi ikon dilini yaygınlaştır.
+- [x] Sayfa numaralarını, placeholder varyasyonlarını, portre çerçevelerini ve etkinlik göstergelerini tutarlılaştır.
