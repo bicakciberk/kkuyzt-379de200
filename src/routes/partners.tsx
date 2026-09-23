@@ -13,12 +13,12 @@ const partners:[string,string,string,LucideIcon][]=[
   ["Kare Kırtasiye","Kırtasiye ürünlerinde %10 indirim","Kırtasiye",Pencil],
 ];
 const accents=[
-  {badge:"bg-primary text-primary-foreground",line:"bg-primary",icon:"text-primary",position:"top-6 right-6 rotate-3"},
-  {badge:"bg-wine text-wine-foreground",line:"bg-wine",icon:"text-wine",position:"top-6 left-6 -rotate-2"},
-  {badge:"bg-navy text-background",line:"bg-navy",icon:"text-navy",position:"top-6 right-6 rotate-2"},
-  {badge:"bg-wine text-wine-foreground",line:"bg-primary",icon:"text-primary",position:"top-8 right-8 -rotate-3"},
-  {badge:"bg-primary text-primary-foreground",line:"bg-navy",icon:"text-navy",position:"top-6 left-6 rotate-3"},
-  {badge:"bg-navy text-background",line:"bg-wine",icon:"text-wine",position:"top-6 left-1/2 -translate-x-1/2 -rotate-2"},
+  {badge:"bg-brand-light text-background",line:"bg-brand-light",icon:"text-brand-light",position:"top-6 right-6 rotate-3"},
+  {badge:"bg-brand-mid text-background",line:"bg-brand-mid",icon:"text-brand-mid",position:"top-6 left-6 -rotate-2"},
+  {badge:"bg-brand-dark text-background",line:"bg-brand-dark",icon:"text-brand-dark",position:"top-6 right-6 rotate-2"},
+  {badge:"bg-brand-pale text-brand-dark",line:"bg-brand-light",icon:"text-brand-light",position:"top-8 right-8 -rotate-3"},
+  {badge:"bg-brand-light text-background",line:"bg-brand-dark",icon:"text-brand-dark",position:"top-6 left-6 rotate-3"},
+  {badge:"bg-brand-dark text-background",line:"bg-brand-mid",icon:"text-brand-mid",position:"top-6 left-1/2 -translate-x-1/2 -rotate-2"},
 ] as const;
 
 function PartnerMark({name,category,Icon,index}:{name:string;category:string;Icon:LucideIcon;index:number}){const accent=accents[index] ?? accents[0];return <div role="img" aria-label={`${name} logo alanı`} className={`relative grid aspect-[3/2] place-items-center overflow-hidden border border-foreground bg-muted p-6 text-center ${index%2?"border-b-4":"border-t-4"}`}><div className={`absolute ${index%2?"right-5 top-5":"bottom-5 left-5"} grid grid-cols-3 gap-1 opacity-35`} aria-hidden="true">{Array.from({length:9},(_,dot)=><i key={dot} className={`size-1 ${accent.line}`}/>)}</div><span className={`absolute z-10 px-2 py-1 text-[10px] font-bold uppercase ${accent.badge} ${accent.position}`}>{String(index+1).padStart(2,"0")} · {category}</span><Icon className={`size-12 ${accent.icon}`} strokeWidth={1.35}/><span className="absolute bottom-4 right-4 max-w-[55%] font-display text-lg font-semibold leading-tight text-muted-foreground">{name}</span></div>}

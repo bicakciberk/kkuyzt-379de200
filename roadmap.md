@@ -14,3 +14,5 @@
 - [x] Turuncu/sarı vurgu sistemini sıcak, grileştirilmiş petrol mavisi ve koyu lacivert palete dönüştür.
 - [x] Mavi paleti koyu, orta ve açık ton rollerine ayır; bordoyu soğut ve sayaç kutularına ton ritmi ver.
 - [x] Takım kadrosunu yeni departman sırası, üyeler ve görevlerle güncelle.
+- [x] Bordo/kırmızı vurguları kaldır; poster, kart, ikon ve çizgileri yalnız mavi ailesine taşı.
+- [x] Bartu Bayram ve Eray Taşpunar fotoğraflarını doğru kartlarla eşleştir; diğer portreleri kontrol et.
