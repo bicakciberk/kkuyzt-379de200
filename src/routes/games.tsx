@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { Backspace, CalendarDays, Check, Copy, CornerDownLeft } from "lucide-react";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState, type CSSProperties } from "react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
@@ -159,7 +159,7 @@ function Games(){
     <section className="mx-auto max-w-7xl px-5 py-12 lg:px-8 lg:py-20">
       <div className="grid gap-14 lg:grid-cols-[minmax(0,1fr)_18rem] lg:items-start">
         <div className="min-w-0">
-          <div className="game-board mx-auto" style={{"--word-length":answer.length} as React.CSSProperties} aria-label={`${answer.length} harfli kelime için altı tahmin`}>
+          <div className="game-board mx-auto" style={{"--word-length":answer.length} as CSSProperties} aria-label={`${answer.length} harfli kelime için altı tahmin`}>
             {rows.flatMap((guess,row)=>Array.from({length:answer.length},(_,column)=>{const letter=guess[column]??"";const tileState=row<guesses.length?scoreGuess(guess,answer)[column]:undefined;return <div key={`${row}-${column}`} className={cn("game-tile",letter&&"game-tile-filled",tileState&&`game-tile-${tileState}`)} aria-label={tileState?`${letter}, ${tileState==="correct"?"doğru yerde":tileState==="present"?"kelimede var, yeri yanlış":"kelimede yok"}`:letter||"boş kutu"}>{letter}</div>}))}
           </div>
           <div className="game-message" role="status" aria-live="polite">{message || (status==="won"?`Kodu kırdın! ${guesses.length}. tahminde buldun.`:status==="lost"?`Bugünün kelimesi: ${answer}`:`${MAX_GUESSES-guesses.length} tahmin hakkın var.`)}</div>
