@@ -6,7 +6,7 @@ import { cn } from "@/lib/utils";
 
 const nav = [
   ["/about", "Hakkımızda"], ["/team", "Takımımız"], ["/events", "Etkinlikler"],
-  ["/partners", "İş Ortakları"], ["/contact", "İletişim"],
+  ["/games", "Mini Oyunlar"], ["/partners", "İş Ortakları"], ["/contact", "İletişim"],
 ] as const;
 
 export function SiteHeader() {
@@ -25,7 +25,7 @@ export function SiteHeader() {
         <span className="grid size-10 place-items-center bg-foreground font-display text-lg font-bold text-background transition-colors group-hover:bg-primary group-hover:text-primary-foreground">YZT</span>
         <span className="hidden text-xs font-semibold leading-tight sm:block">Yapay Zeka<br/>Topluluğu</span>
       </Link>
-      <nav className="hidden items-center gap-7 lg:flex" aria-label="Ana menü">{nav.map(([to,label]) => <Link key={to} to={to} className={cn("text-sm font-medium transition-colors hover:text-primary", pathname===to ? "text-primary" : "text-foreground")}>{label}</Link>)}</nav>
+      <nav className="hidden items-center gap-5 xl:gap-7 lg:flex" aria-label="Ana menü">{nav.map(([to,label]) => <Link key={to} to={to} className={cn("text-sm font-medium transition-colors hover:text-primary", pathname===to ? "text-primary" : "text-foreground")}>{label}</Link>)}</nav>
       <div className="flex items-center gap-2">
         <Button asChild className="hidden sm:inline-flex"><Link to="/join">Bize Katıl <ArrowRight/></Link></Button>
         <Button variant="ghost" size="icon" className="lg:hidden" onClick={() => setOpen(!open)} aria-expanded={open} aria-controls="mobile-menu" aria-label={open ? "Menüyü kapat" : "Menüyü aç"}>{open ? <X/> : <Menu/>}</Button>

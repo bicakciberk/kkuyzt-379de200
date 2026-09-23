@@ -13,6 +13,7 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as EventsRouteImport } from './routes/events'
+import { Route as GamesRouteImport } from './routes/games'
 import { Route as JoinRouteImport } from './routes/join'
 import { Route as PartnersRouteImport } from './routes/partners'
 import { Route as TeamRouteImport } from './routes/team'
@@ -37,6 +38,11 @@ const EventsRoute = EventsRouteImport.update({
   path: '/events',
   getParentRoute: () => rootRouteImport,
 } as any)
+const GamesRoute = GamesRouteImport.update({
+  id: '/games',
+  path: '/games',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const JoinRoute = JoinRouteImport.update({
   id: '/join',
   path: '/join',
@@ -58,6 +64,7 @@ export interface FileRoutesByFullPath {
   '/about': typeof AboutRoute
   '/contact': typeof ContactRoute
   '/events': typeof EventsRoute
+  '/games': typeof GamesRoute
   '/join': typeof JoinRoute
   '/partners': typeof PartnersRoute
   '/team': typeof TeamRoute
@@ -67,6 +74,7 @@ export interface FileRoutesByTo {
   '/about': typeof AboutRoute
   '/contact': typeof ContactRoute
   '/events': typeof EventsRoute
+  '/games': typeof GamesRoute
   '/join': typeof JoinRoute
   '/partners': typeof PartnersRoute
   '/team': typeof TeamRoute
@@ -77,6 +85,7 @@ export interface FileRoutesById {
   '/about': typeof AboutRoute
   '/contact': typeof ContactRoute
   '/events': typeof EventsRoute
+  '/games': typeof GamesRoute
   '/join': typeof JoinRoute
   '/partners': typeof PartnersRoute
   '/team': typeof TeamRoute
@@ -84,15 +93,31 @@ export interface FileRoutesById {
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
-    '/' | '/about' | '/contact' | '/events' | '/join' | '/partners' | '/team'
+    | '/'
+    | '/about'
+    | '/contact'
+    | '/events'
+    | '/games'
+    | '/join'
+    | '/partners'
+    | '/team'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/about' | '/contact' | '/events' | '/join' | '/partners' | '/team'
+  to:
+    | '/'
+    | '/about'
+    | '/contact'
+    | '/events'
+    | '/games'
+    | '/join'
+    | '/partners'
+    | '/team'
   id:
     | '__root__'
     | '/'
     | '/about'
     | '/contact'
     | '/events'
+    | '/games'
     | '/join'
     | '/partners'
     | '/team'
@@ -103,6 +128,7 @@ export interface RootRouteChildren {
   AboutRoute: typeof AboutRoute
   ContactRoute: typeof ContactRoute
   EventsRoute: typeof EventsRoute
+  GamesRoute: typeof GamesRoute
   JoinRoute: typeof JoinRoute
   PartnersRoute: typeof PartnersRoute
   TeamRoute: typeof TeamRoute
@@ -138,6 +164,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof EventsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/games': {
+      id: '/games'
+      path: '/games'
+      fullPath: '/games'
+      preLoaderRoute: typeof GamesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/join': {
       id: '/join'
       path: '/join'
@@ -167,6 +200,7 @@ const rootRouteChildren: RootRouteChildren = {
   AboutRoute: AboutRoute,
   ContactRoute: ContactRoute,
   EventsRoute: EventsRoute,
+  GamesRoute: GamesRoute,
   JoinRoute: JoinRoute,
   PartnersRoute: PartnersRoute,
   TeamRoute: TeamRoute,
