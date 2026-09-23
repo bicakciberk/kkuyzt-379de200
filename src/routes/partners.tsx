@@ -15,9 +15,9 @@ const partners:[string,string,string,LucideIcon][]=[
 const accents=[
   {badge:"bg-primary text-primary-foreground",line:"bg-primary",icon:"text-primary",position:"top-6 right-6 rotate-3"},
   {badge:"bg-wine text-wine-foreground",line:"bg-wine",icon:"text-wine",position:"top-6 left-6 -rotate-2"},
-  {badge:"bg-navy text-background",line:"bg-navy",icon:"text-navy",position:"right-6 bottom-6 rotate-2"},
+  {badge:"bg-navy text-background",line:"bg-navy",icon:"text-navy",position:"top-6 right-6 rotate-2"},
   {badge:"bg-wine text-wine-foreground",line:"bg-primary",icon:"text-primary",position:"top-8 right-8 -rotate-3"},
-  {badge:"bg-primary text-primary-foreground",line:"bg-navy",icon:"text-navy",position:"bottom-6 left-6 rotate-3"},
+  {badge:"bg-primary text-primary-foreground",line:"bg-navy",icon:"text-navy",position:"top-6 left-6 rotate-3"},
   {badge:"bg-navy text-background",line:"bg-wine",icon:"text-wine",position:"top-6 left-1/2 -translate-x-1/2 -rotate-2"},
 ] as const;
 
