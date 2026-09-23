@@ -11,3 +11,4 @@
 - [x] Site genelinde editoryal kartlar, bölüm ritmi, vurgu renkleri, kolaj sayaç ve çizgi ikon dilini yaygınlaştır.
 - [x] Sayfa numaralarını, placeholder varyasyonlarını, portre çerçevelerini ve etkinlik göstergelerini tutarlılaştır.
 - [x] Bölüm ve ekip rozetlerini ardışıklaştır; İş Ortakları kartlarına kategoriye özgü görsel varyasyonlar ekle.
+- [x] Turuncu/sarı vurgu sistemini sıcak, grileştirilmiş petrol mavisi ve koyu lacivert palete dönüştür.
