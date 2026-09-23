@@ -17,4 +17,4 @@
 - [x] Bordo/kırmızı vurguları kaldır; poster, kart, ikon ve çizgileri yalnız mavi ailesine taşı.
 - [x] Bartu Bayram ve Eray Taşpunar fotoğraflarını doğru kartlarla eşleştir; diğer portreleri kontrol et.
 - [x] Ekip rozetlerindeki kalan bordo algısını kaldır; poster sağ alt kartını içerikle doldur.
-- [ ] Mini Oyunlar sayfasını günlük Kod Kırıcı, paylaşım, günlük kilit ve cihaz istatistikleriyle ekle.
+- [x] Mini Oyunlar sayfasını günlük Kod Kırıcı, paylaşım, günlük kilit ve cihaz istatistikleriyle ekle.
