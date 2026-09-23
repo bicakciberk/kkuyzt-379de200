@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { Backspace, CalendarDays, Check, Copy, CornerDownLeft } from "lucide-react";
+import { CalendarDays, Check, Copy, CornerDownLeft, Delete } from "lucide-react";
 import { useCallback, useEffect, useMemo, useState, type CSSProperties } from "react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -164,7 +164,7 @@ function Games(){
           </div>
           <div className="game-message" role="status" aria-live="polite">{message || (status==="won"?`Kodu kırdın! ${guesses.length}. tahminde buldun.`:status==="lost"?`Bugünün kelimesi: ${answer}`:`${MAX_GUESSES-guesses.length} tahmin hakkın var.`)}</div>
           <div className="game-keyboard" aria-label="Türkçe sanal klavye">
-            {KEY_ROWS.map((row,rowIndex)=><div key={row} className="game-keyboard-row">{rowIndex===2&&<Button type="button" variant="outline" className="game-key game-key-wide" onClick={()=>press("ENTER")} aria-label="Tahmini gönder"><CornerDownLeft/></Button>}{Array.from(row).map((letter)=><Button type="button" variant="outline" key={letter} className={cn("game-key",keyStates[letter]&&`game-key-${keyStates[letter]}`)} onClick={()=>press(letter)} aria-label={`${letter} harfi`}>{letter}</Button>)}{rowIndex===2&&<Button type="button" variant="outline" className="game-key game-key-wide" onClick={()=>press("BACKSPACE")} aria-label="Son harfi sil"><Backspace/></Button>}</div>)}
+            {KEY_ROWS.map((row,rowIndex)=><div key={row} className="game-keyboard-row">{rowIndex===2&&<Button type="button" variant="outline" className="game-key game-key-wide" onClick={()=>press("ENTER")} aria-label="Tahmini gönder"><CornerDownLeft/></Button>}{Array.from(row).map((letter)=><Button type="button" variant="outline" key={letter} className={cn("game-key",keyStates[letter]&&`game-key-${keyStates[letter]}`)} onClick={()=>press(letter)} aria-label={`${letter} harfi`}>{letter}</Button>)}{rowIndex===2&&<Button type="button" variant="outline" className="game-key game-key-wide" onClick={()=>press("BACKSPACE")} aria-label="Son harfi sil"><Delete/></Button>}</div>)}
           </div>
           {status!=="playing"&&<div className="mt-8 flex justify-center"><Button type="button" size="lg" onClick={share}>{copied?<><Check/>Kopyalandı</>:<><Copy/>Sonucu paylaş</>}</Button></div>}
         </div>
