@@ -16,3 +16,4 @@
 - [x] Takım kadrosunu yeni departman sırası, üyeler ve görevlerle güncelle.
 - [x] Bordo/kırmızı vurguları kaldır; poster, kart, ikon ve çizgileri yalnız mavi ailesine taşı.
 - [x] Bartu Bayram ve Eray Taşpunar fotoğraflarını doğru kartlarla eşleştir; diğer portreleri kontrol et.
+- [x] Ekip rozetlerindeki kalan bordo algısını kaldır; poster sağ alt kartını içerikle doldur.
