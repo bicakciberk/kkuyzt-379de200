@@ -13,3 +13,4 @@
 - [x] Bölüm ve ekip rozetlerini ardışıklaştır; İş Ortakları kartlarına kategoriye özgü görsel varyasyonlar ekle.
 - [x] Turuncu/sarı vurgu sistemini sıcak, grileştirilmiş petrol mavisi ve koyu lacivert palete dönüştür.
 - [x] Mavi paleti koyu, orta ve açık ton rollerine ayır; bordoyu soğut ve sayaç kutularına ton ritmi ver.
+- [x] Takım kadrosunu yeni departman sırası, üyeler ve görevlerle güncelle.
