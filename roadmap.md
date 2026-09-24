@@ -19,3 +19,4 @@
 - [x] Ekip rozetlerindeki kalan bordo algısını kaldır; poster sağ alt kartını içerikle doldur.
 - [x] Mini Oyunlar sayfasını günlük Kod Kırıcı, paylaşım, günlük kilit ve cihaz istatistikleriyle ekle.
 - [x] Header ve ana sayfadaki “Bize Katıl” butonlarına mavi-krem konfeti animasyonu ekle.
+- [x] Geri sayıma flip efekti ve sayfalar arası krem zeminli yumuşak geçiş ekle.
