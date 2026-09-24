@@ -20,3 +20,4 @@
 - [x] Mini Oyunlar sayfasını günlük Kod Kırıcı, paylaşım, günlük kilit ve cihaz istatistikleriyle ekle.
 - [x] Header ve ana sayfadaki “Bize Katıl” butonlarına mavi-krem konfeti animasyonu ekle.
 - [x] Geri sayıma flip efekti ve sayfalar arası krem zeminli yumuşak geçiş ekle.
+- [x] Poster çizgi ikonlarını sayfa girişleri, ana sayfa bölümleri ve footer boyunca hafif parallax görsel imzasına dönüştür.
