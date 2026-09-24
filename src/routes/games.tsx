@@ -2,6 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { CalendarDays, Check, Copy, CornerDownLeft, Delete } from "lucide-react";
 import { useCallback, useEffect, useMemo, useState, type CSSProperties } from "react";
 import { Button } from "@/components/ui/button";
+import { DecorativeMotif } from "@/components/site";
 import { cn } from "@/lib/utils";
 
 const WORDS = [
@@ -150,8 +151,9 @@ function Games(){
   };
 
   return <>
-    <section className="border-b border-border bg-background pt-32 pb-10 md:pt-40 md:pb-14">
-      <div className="mx-auto grid max-w-7xl gap-8 px-5 md:grid-cols-[1fr_auto] md:items-end lg:px-8">
+    <section className="motif-section border-b border-border bg-background pt-32 pb-10 md:pt-40 md:pb-14">
+      <DecorativeMotif variant="arrow" position="left"/>
+      <div className="motif-content mx-auto grid max-w-7xl gap-8 px-5 md:grid-cols-[1fr_auto] md:items-end lg:px-8">
         <div><p className="eyebrow">Mini Oyunlar · 01</p><h1 className="mt-5 font-display text-5xl leading-none font-semibold sm:text-7xl">Kod Kırıcı</h1><p className="mt-5 max-w-xl leading-7 text-muted-foreground">Günün teknoloji kelimesini altı tahminde çöz. Her gün tek kelime, tek hak.</p></div>
         <div className="flex items-center gap-3 border-l-2 border-brand-mid pl-4 text-sm font-bold"><CalendarDays className="size-5 text-brand-mid"/><span>{dateKey?dateKey.split("-").reverse().join("."):"Gün yükleniyor"}</span></div>
       </div>
