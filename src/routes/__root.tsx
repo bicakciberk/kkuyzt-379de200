@@ -10,6 +10,7 @@ import {
 import { useEffect, type ReactNode } from "react";
 import { SiteFooter, SiteHeader } from "@/components/site";
 import { JoinConfettiLayer } from "@/components/join-confetti";
+import { PremiumPointerLayer } from "@/components/premium-interactions";
 
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
@@ -119,6 +120,7 @@ function RootComponent() {
       <main><Outlet /></main>
       <SiteFooter />
       <JoinConfettiLayer />
+      <PremiumPointerLayer />
     </QueryClientProvider>
   );
 }
