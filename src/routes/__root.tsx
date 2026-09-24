@@ -9,6 +9,7 @@ import {
 } from "@tanstack/react-router";
 import { useEffect, type ReactNode } from "react";
 import { SiteFooter, SiteHeader } from "@/components/site";
+import { JoinConfettiLayer } from "@/components/join-confetti";
 
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
@@ -117,6 +118,7 @@ function RootComponent() {
       <SiteHeader />
       <main><Outlet /></main>
       <SiteFooter />
+      <JoinConfettiLayer />
     </QueryClientProvider>
   );
 }

@@ -2,6 +2,7 @@ import { Link, useRouterState } from "@tanstack/react-router";
 import { ArrowRight, Instagram, Mail, MapPin, Menu, X } from "lucide-react";
 import { useEffect, useState, type ReactNode } from "react";
 import { Button } from "@/components/ui/button";
+import { launchJoinConfetti } from "@/components/join-confetti";
 import { cn } from "@/lib/utils";
 
 const nav = [
@@ -27,11 +28,11 @@ export function SiteHeader() {
       </Link>
       <nav className="hidden items-center gap-5 xl:gap-7 lg:flex" aria-label="Ana menü">{nav.map(([to,label]) => <Link key={to} to={to} className={cn("text-sm font-medium transition-colors hover:text-primary", pathname===to ? "text-primary" : "text-foreground")}>{label}</Link>)}</nav>
       <div className="flex items-center gap-2">
-        <Button asChild className="hidden sm:inline-flex"><Link to="/join">Bize Katıl <ArrowRight/></Link></Button>
+        <Button asChild className="hidden sm:inline-flex"><Link to="/join" onClick={(event) => launchJoinConfetti(event.currentTarget)}>Bize Katıl <ArrowRight/></Link></Button>
         <Button variant="ghost" size="icon" className="lg:hidden" onClick={() => setOpen(!open)} aria-expanded={open} aria-controls="mobile-menu" aria-label={open ? "Menüyü kapat" : "Menüyü aç"}>{open ? <X/> : <Menu/>}</Button>
       </div>
     </div>
-    {open && <div id="mobile-menu" className="border-t border-border bg-background px-5 py-5 lg:hidden"><nav className="flex flex-col" aria-label="Mobil menü">{nav.map(([to,label]) => <Link key={to} to={to} className="border-b border-border py-4 font-display text-2xl">{label}</Link>)}<Button asChild className="mt-5"><Link to="/join">Bize Katıl <ArrowRight/></Link></Button></nav></div>}
+    {open && <div id="mobile-menu" className="border-t border-border bg-background px-5 py-5 lg:hidden"><nav className="flex flex-col" aria-label="Mobil menü">{nav.map(([to,label]) => <Link key={to} to={to} className="border-b border-border py-4 font-display text-2xl">{label}</Link>)}<Button asChild className="mt-5"><Link to="/join" onClick={(event) => launchJoinConfetti(event.currentTarget)}>Bize Katıl <ArrowRight/></Link></Button></nav></div>}
   </header>;
 }
 
