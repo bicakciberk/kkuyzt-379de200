@@ -6,7 +6,7 @@ function cursorLabel(target: EventTarget | null) {
   if (!(target instanceof Element)) return "";
   const interactive = target.closest<HTMLElement>("[data-cursor],a,button,[role='button']");
   if (!interactive) return "";
-  const explicit = interactive.dataset.cursor;
+  const explicit = interactive.dataset["cursor"];
   if (explicit) return explicit;
   return interactive.textContent?.toLocaleLowerCase("tr-TR").includes("katıl") ? "Katıl" : "Aç";
 }
