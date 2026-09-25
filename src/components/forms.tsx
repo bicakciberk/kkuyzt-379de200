@@ -1,7 +1,7 @@
 import { CheckCircle2, Loader2, Send } from "lucide-react";
 import { useState, type FormEvent } from "react";
 import { Button } from "@/components/ui/button";
-import { submitForm } from "@/lib/forms.functions";
+import { submitForm } from "@/lib/forms";
 
 type Field = { name: string; label: string; type?: string; placeholder: string; required?: boolean; max: number };
 const base = "mt-2 w-full border border-input bg-background px-4 py-3 text-sm outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/20";
