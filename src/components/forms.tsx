@@ -1,14 +1,13 @@
 import { CheckCircle2, Loader2, Send } from "lucide-react";
 import { useState, type FormEvent } from "react";
-import { useServerFn } from "@tanstack/react-start";
 import { Button } from "@/components/ui/button";
-import { submitForm } from "@/lib/forms.functions";
+import { submitForm } from "@/lib/forms";
 
 type Field = { name: string; label: string; type?: string; placeholder: string; required?: boolean; max: number };
 const base = "mt-2 w-full border border-input bg-background px-4 py-3 text-sm outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/20";
 
 export function ContactForm({ membership = false }: { membership?: boolean }) {
-  const send = useServerFn(submitForm);
+  const send = (args: { data: Parameters<typeof submitForm>[0] }) => submitForm(args.data);
   const [sent, setSent] = useState(false);
   const [busy, setBusy] = useState(false);
   const [formError, setFormError] = useState("");
