@@ -1,4 +1,4 @@
-const WEB3FORMS_KEY = "288e6986-666d-4e67-8275-68692ea66e49";
+const WEB3FORMS_KEY = "b5f97b2b-33dd-48d0-a471-8c1ca014bdaa";
 
 export type FormPayload =
   | { kind: "membership"; name: string; studentNo: string; department: string; email: string; phone: string; message: string }
