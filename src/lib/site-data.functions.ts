@@ -21,10 +21,11 @@ export const getSiteData = createServerFn({ method: "GET" }).handler(async () =>
       },
     },
   });
-  const [ev, tm, ps] = await Promise.all([
+  const [ev, tm, ps, hp] = await Promise.all([
     sb.from("events").select("*").order("event_date", { ascending: false }),
     sb.from("team_members").select("*").order("sort_order").order("created_at"),
     sb.from("social_posts").select("*").order("sort_order").order("post_date", { ascending: false }),
+    sb.from("hero_poster").select("*").eq("id", 1).maybeSingle(),
   ]);
   if (ev.error || tm.error || ps.error) console.error("site data", ev.error ?? tm.error ?? ps.error);
   const events = ev.data ?? [];
@@ -44,6 +45,7 @@ export const getSiteData = createServerFn({ method: "GET" }).handler(async () =>
     events: events.map((e) => ({ ...e, image_url: resolve(e.image_url) })),
     team: team.map((t) => ({ ...t, photo_url: resolve(t.photo_url) })),
     posts: posts.map((p) => ({ ...p, image_url: resolve(p.image_url) ?? "" })).filter((p) => p.image_url),
+    poster: hp.data ?? null,
     ok: !ev.error && !tm.error && !ps.error,
   };
 });
