@@ -49,7 +49,7 @@ export function PageLoadingBar() {
   const loading = useRouterState({ select: (s) => s.isLoading });
   const [state, setState] = useState<"idle" | "running" | "done">("idle");
   const first = useRef(true);
-  const timer = useRef<number>();
+  const timer = useRef<number | undefined>(undefined);
 
   useEffect(() => {
     if (first.current) { first.current = false; return; }

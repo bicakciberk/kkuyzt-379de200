@@ -22,3 +22,5 @@
 - [x] Geri sayıma flip efekti ve sayfalar arası krem zeminli yumuşak geçiş ekle.
 - [x] Poster çizgi ikonlarını sayfa girişleri, ana sayfa bölümleri ve footer boyunca hafif parallax görsel imzasına dönüştür.
 - [x] Masaüstüne özel cursor, hero nokta ağı ve etkinlik/ekip kartlarına hafif 3D tilt ekle.
+
+- [ ] Koyu mod, 404, yukarı çık, favicon, paylaşım görseli, yükleme çubuğu
