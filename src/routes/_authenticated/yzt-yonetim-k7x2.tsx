@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { supabase } from "@/integrations/supabase/client";
-import { STORAGE_PREFIX } from "@/lib/site-data.functions";
+import { STORAGE_PREFIX, getSiteData } from "@/lib/site-data.functions";
 import { DEPARTMENTS, EVENT_CATEGORIES, ROLES, formatTrDate, siteDataQuery } from "@/lib/site-data";
 
 export const Route = createFileRoute("/_authenticated/yzt-yonetim-k7x2")({
@@ -19,7 +19,7 @@ export const Route = createFileRoute("/_authenticated/yzt-yonetim-k7x2")({
 });
 
 const field = "mt-1.5 w-full border border-input bg-background px-3 py-2.5 text-sm outline-none focus:border-primary focus:ring-2 focus:ring-primary/20";
-type SiteData = Awaited<ReturnType<typeof siteDataQuery.queryFn>>;
+type SiteData = Awaited<ReturnType<typeof getSiteData>>;
 type Ev = SiteData["events"][number];
 type Mem = SiteData["team"][number];
 type Post = SiteData["posts"][number];
@@ -134,7 +134,7 @@ function EventDialog({ item, onClose }: { item: Ev | null; onClose: () => void }
       const row: Record<string, unknown> = { title: v("title"), category: v("category"), event_date: v("event_date"), event_time: v("event_time"), location: v("location"), description: v("description"), is_next: isNext };
       if (file) row["image_url"] = await uploadImage(file, "events"); else if (removed) row["image_url"] = null;
       if (isNext) check(await supabase.from("events").update({ is_next: false }).eq("is_next", true));
-      if (item) check(await supabase.from("events").update(row).eq("id", item.id));
+      if (item) check(await supabase.from("events").update(row as never).eq("id", item.id));
       else check(await supabase.from("events").insert(row as never));
     }, onClose);
   }
@@ -184,7 +184,7 @@ function MemberDialog({ item, nextOrder, onClose }: { item: Mem | null; nextOrde
     s.run(async () => {
       const row: Record<string, unknown> = { name: v("name"), department: v("department"), role: v("role"), program: v("program"), sort_order: Number(v("sort_order")) || 0 };
       if (file) row["photo_url"] = await uploadImage(file, "team"); else if (removed) row["photo_url"] = null;
-      if (item) check(await supabase.from("team_members").update(row).eq("id", item.id));
+      if (item) check(await supabase.from("team_members").update(row as never).eq("id", item.id));
       else check(await supabase.from("team_members").insert(row as never));
     }, onClose);
   }
@@ -233,7 +233,7 @@ function PostDialog({ item, nextOrder, onClose }: { item: Post | null; nextOrder
     s.run(async () => {
       const row: Record<string, unknown> = { caption: v("caption"), post_date: v("post_date") || new Date().toISOString().slice(0, 10), link_url: v("link_url") || null };
       if (file) row["image_url"] = await uploadImage(file, "social");
-      if (item) check(await supabase.from("social_posts").update(row).eq("id", item.id));
+      if (item) check(await supabase.from("social_posts").update(row as never).eq("id", item.id));
       else check(await supabase.from("social_posts").insert({ ...row, sort_order: nextOrder } as never));
     }, onClose);
   }
