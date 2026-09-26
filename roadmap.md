@@ -23,4 +23,4 @@
 - [x] Poster çizgi ikonlarını sayfa girişleri, ana sayfa bölümleri ve footer boyunca hafif parallax görsel imzasına dönüştür.
 - [x] Masaüstüne özel cursor, hero nokta ağı ve etkinlik/ekip kartlarına hafif 3D tilt ekle.
 
-- [ ] Koyu mod, 404, yukarı çık, favicon, paylaşım görseli, yükleme çubuğu
+- [x] Koyu mod, 404, yukarı çık, favicon, paylaşım görseli, yükleme çubuğu
