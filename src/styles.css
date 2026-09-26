@@ -84,3 +84,19 @@
 .marquee-dot { color: var(--brand-light); }
 @keyframes marquee-scroll { to { transform: translateX(-50%); } }
 @media (prefers-reduced-motion: reduce) { .marquee-track { animation: none; } }
+
+/* Yeni içerik blokları */
+.faq-tag{display:inline-grid;min-width:2.25rem;place-items:center;padding:.2rem .4rem;font-family:var(--font-sans);font-size:.65rem;font-weight:800;color:var(--color-background)}
+.faq-tag-0{background:var(--color-brand-dark);transform:rotate(-3deg)}.faq-tag-1{background:var(--color-brand-mid);transform:rotate(2deg)}.faq-tag-2{background:var(--color-brand-light);transform:rotate(-1deg)}
+.resource-card{position:relative;display:flex;flex-direction:column;border:1px solid var(--color-foreground);background:var(--color-background);padding:1.75rem;transition:transform .25s ease,box-shadow .25s ease}
+.resource-card:hover{transform:translate(-3px,-3px);box-shadow:6px 6px 0 var(--color-brand-pale)}
+.resource-type{position:absolute;top:-.7rem;left:1.5rem;padding:.25rem .55rem;font-size:.65rem;font-weight:800;text-transform:uppercase;letter-spacing:.06em}
+.timeline::before{content:"";position:absolute;top:0;bottom:0;left:1.25rem;width:2px;background:var(--color-foreground)}
+.timeline-item{position:relative;padding:0 0 3rem 4rem;opacity:.25;transform:translateY(24px);transition:opacity .6s ease,transform .6s ease}
+.timeline-item.is-visible{opacity:1;transform:none}
+.timeline-marker{position:absolute;left:0;top:0;display:grid;width:2.6rem;height:2.6rem;place-items:center;font-size:.75rem;font-weight:800;color:var(--color-background);border:1px solid var(--color-foreground);transition:transform .5s ease}
+.timeline-marker-0{background:var(--color-brand-dark);transform:rotate(-6deg)}.timeline-marker-1{background:var(--color-brand-mid);transform:rotate(4deg)}.timeline-marker-2{background:var(--color-brand-light);transform:rotate(-3deg)}
+.timeline-item.is-visible .timeline-marker{transform:rotate(0) scale(1.08)}
+.timeline-card{border:1px solid var(--color-foreground);background:var(--color-background);padding:1.5rem;max-width:26rem}
+@media (min-width:768px){.timeline::before{left:50%}.timeline-item{width:50%;padding:0 3.5rem 3.5rem 0}.timeline-item .timeline-marker{left:auto;right:-1.3rem}.timeline-right{margin-left:50%;padding:0 0 3.5rem 3.5rem}.timeline-right .timeline-marker{left:-1.3rem;right:auto}.timeline-left .timeline-card{margin-left:auto}}
+@media (prefers-reduced-motion:reduce){.timeline-item{opacity:1;transform:none;transition:none}}

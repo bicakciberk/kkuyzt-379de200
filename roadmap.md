@@ -24,3 +24,4 @@
 - [x] Masaüstüne özel cursor, hero nokta ağı ve etkinlik/ekip kartlarına hafif 3D tilt ekle.
 
 - [x] Koyu mod, 404, yukarı çık, favicon, paylaşım görseli, yükleme çubuğu
+- [x] Kaynaklar sayfası, SSS (ana sayfa + sayfa + üyelik), Hakkımızda zaman tüneli, Destek Ol sayfası + ana sayfa çağrısı, "Daha Fazla" menüsü
