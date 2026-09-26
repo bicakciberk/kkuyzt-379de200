@@ -21,7 +21,7 @@ export const getSiteData = createServerFn({ method: "GET" }).handler(async () =>
       },
     },
   });
-  const [ev, tm, ps, hp, tx, factsResult, timelineResult, partnersResult] = await Promise.all([
+  const [ev, tm, ps, hp, tx, factsResult, timelineResult, partnersResult, deptResult] = await Promise.all([
     sb.from("events").select("*").order("event_date", { ascending: false }),
     sb.from("team_members").select("*").order("sort_order").order("created_at"),
     sb.from("social_posts").select("*").order("sort_order").order("post_date", { ascending: false }),
@@ -30,6 +30,7 @@ export const getSiteData = createServerFn({ method: "GET" }).handler(async () =>
     sb.from("daily_facts").select("*").order("sort_order").order("created_at").order("id"),
     sb.from("timeline_milestones").select("id,sort_order,period,title,description,created_at,updated_at").order("sort_order").order("created_at").order("id"),
     sb.from("partners").select("*").order("sort_order").order("created_at"),
+    sb.from("departments").select("id,name,sort_order").order("sort_order").order("name"),
   ]);
   if (ev.error || tm.error || ps.error) console.error("site data", ev.error ?? tm.error ?? ps.error);
   const events = ev.data ?? [];
@@ -56,6 +57,7 @@ export const getSiteData = createServerFn({ method: "GET" }).handler(async () =>
     facts: factsResult.data ?? [],
     milestones: timelineResult.data ?? [],
     partners: (partnersResult.data ?? []).map((p) => ({ ...p, image_url: resolve(p.image_url) })),
+    departments: deptResult.data ?? [],
     ok: !ev.error && !tm.error && !ps.error,
   };
 });

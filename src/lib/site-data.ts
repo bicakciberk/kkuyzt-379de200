@@ -39,10 +39,10 @@ export function nextEvent(events: UiEvent[]) {
 }
 
 export type UiMember = { id: string; name: string; role: string; program: string; photo: string | null; linkedin: string | null };
-export function toTeam(rows: TeamRow[]) {
+export function toTeam(rows: TeamRow[], departments: readonly { name: string }[] = DEPARTMENTS.map((name) => ({ name }))) {
   const map = (t: TeamRow): UiMember => ({ id: t.id, name: t.name, role: t.role === "Üye" ? "Yönetim Kurulu" : t.role, program: t.program, photo: t.photo_url, linkedin: t.linkedin_url });
   const leaders = rows.filter((t) => t.department === "Topluluk" || t.role === "Topluluk Başkanı").map(map);
-  const groups = DEPARTMENTS.map((group) => ({ group, members: rows.filter((t) => t.department === group && t.role !== "Topluluk Başkanı").map(map) })).filter((g) => g.members.length);
+  const groups = departments.map(({ name: group }) => ({ group, members: rows.filter((t) => t.department === group && t.role !== "Topluluk Başkanı").map(map) })).filter((g) => g.members.length);
   return { leaders, groups };
 }
 export const PANEL_PATH = "/yzt-yonetim-k7x2" as const;

@@ -15,7 +15,7 @@ export const Route = createFileRoute("/team")({
 
 function Team() {
   const { data } = useSuspenseQuery(siteDataQuery);
-  const { leaders, groups } = toTeam(data.team);
+  const { leaders, groups } = toTeam(data.team, data.departments);
   let n = leaders.length;
   const starts = groups.map((g) => { const s = n; n += g.members.length; return s; });
   return <><PageIntro eyebrow="Takımımız · 01" title="Dört departman, ortak bir merak."><p>Dış ilişkilerden organizasyona, sosyal medyadan tanıtıma kadar her adımı gönüllü öğrenciler birlikte yürütüyor.</p></PageIntro>
