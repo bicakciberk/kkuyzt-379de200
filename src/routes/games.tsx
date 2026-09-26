@@ -177,7 +177,9 @@ function CodeBreaker(){
 const GAMES = [
   { id: "kod-kirici", label: "Kod Kırıcı", title: "Kod Kırıcı", intro: "Günün teknoloji kelimesini altı tahminde çöz. Her gün tek kelime, tek hak." },
   { id: "ai-evrimi", label: "AI Evrimi", title: "AI Evrimi", intro: "Aynı modelleri birleştir: Perceptron'dan başla, 2048'de yapay genel zekâya ulaş." },
+  { id: "turing", label: "İnsan mı, AI mı?", title: "İnsan mı, Yapay Zekâ mı?", intro: "Beş metin, iki seçenek. Kimin yazdığını bilebilecek misin?" },
 ] as const;
+
 
 function Games(){
   const [active,setActive]=useState<(typeof GAMES)[number]["id"]>("kod-kirici");
