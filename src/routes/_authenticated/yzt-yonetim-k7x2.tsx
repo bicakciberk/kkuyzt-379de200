@@ -8,7 +8,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { supabase } from "@/integrations/supabase/client";
 import { STORAGE_PREFIX, getSiteData } from "@/lib/site-data.functions";
 import { DEFAULT_TEXT, type TextKey } from "@/lib/site-text";
-import { PARTNER_ICONS } from "@/lib/partner-icons";
+import { PARTNER_ICONS, partnerIcon } from "@/lib/partner-icons";
 import { DEPARTMENTS, EVENT_CATEGORIES, ROLES, formatTrDate, siteDataQuery } from "@/lib/site-data";
 
 export const Route = createFileRoute("/_authenticated/yzt-yonetim-k7x2")({
@@ -334,7 +334,7 @@ function PartnersTab({ partners }: { partners: Partner[] }) {
     <p className="mt-2 text-sm text-muted-foreground">Kayıtlar İş Ortakları sayfasında bu sırayla gösterilir. Görsel yoksa seçtiğin ikon gösterilir.</p>
     {s.error && <p role="alert" className="mt-3 text-sm text-destructive">{s.error}</p>}
     <ul className="mt-4 divide-y divide-border border border-foreground bg-background">
-      {partners.map((item, i) => { const Icon = (PARTNER_ICONS.find((x) => x.id === item.icon) ?? PARTNER_ICONS[0]).Icon; return <li key={item.id} className="flex flex-wrap items-center gap-3 p-4">
+      {partners.map((item, i) => { const Icon = partnerIcon(item.icon); return <li key={item.id} className="flex flex-wrap items-center gap-3 p-4">
         <span className="shrink-0 bg-brand-pale px-2 py-1 text-xs font-bold text-brand-dark">{String(i + 1).padStart(2, "0")}</span>
         <div className="grid size-12 shrink-0 place-items-center overflow-hidden border border-input bg-muted">{item.image_url ? <img src={item.image_url} alt="" className="size-full object-cover" /> : <Icon className="size-5 text-brand-mid" />}</div>
         <div className="min-w-0 flex-1 basis-44"><p className="font-semibold">{item.name}</p><p className="text-xs text-muted-foreground">{item.category}</p><p className="mt-1 text-sm text-muted-foreground">{item.description}</p></div>
