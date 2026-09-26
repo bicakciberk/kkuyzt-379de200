@@ -7,6 +7,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/u
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { supabase } from "@/integrations/supabase/client";
 import { STORAGE_PREFIX, getSiteData } from "@/lib/site-data.functions";
+import { DEFAULT_TEXT, type TextKey } from "@/lib/site-text";
 import { DEPARTMENTS, EVENT_CATEGORIES, ROLES, formatTrDate, siteDataQuery } from "@/lib/site-data";
 
 export const Route = createFileRoute("/_authenticated/yzt-yonetim-k7x2")({
@@ -81,6 +82,8 @@ function Panel() {
             <TabsTrigger value="team" className="rounded-none px-5 py-2 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">Takım ({data.team.length})</TabsTrigger>
             <TabsTrigger value="social" className="rounded-none px-5 py-2 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">Sosyal Medya ({data.posts.length})</TabsTrigger>
             <TabsTrigger value="poster" className="rounded-none px-5 py-2 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">Hero Posteri</TabsTrigger>
+            <TabsTrigger value="texts" className="rounded-none px-5 py-2 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">Sayfa Metinleri</TabsTrigger>
+            <TabsTrigger value="settings" className="rounded-none px-5 py-2 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">Site Ayarları</TabsTrigger>
             <TabsTrigger value="inbox" className="rounded-none px-5 py-2 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">Başvurular / Mesajlar</TabsTrigger>
             <TabsTrigger value="log" className="rounded-none px-5 py-2 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">Aktivite Geçmişi</TabsTrigger>
           </TabsList>
@@ -88,6 +91,8 @@ function Panel() {
           <TabsContent value="team"><TeamTab team={data.team} /></TabsContent>
           <TabsContent value="social"><SocialTab posts={data.posts} /></TabsContent>
           <TabsContent value="poster"><PosterTab poster={data.poster} /></TabsContent>
+          <TabsContent value="texts"><TextsTab texts={data.texts} groups={TEXT_GROUPS} title="Sayfa Metinleri" note="Boş bırakılan alanlarda sitenin varsayılan metni gösterilir. Paragrafları boş bir satırla ayırabilirsin." /></TabsContent>
+          <TabsContent value="settings"><TextsTab texts={data.texts} groups={SETTING_GROUPS} title="Site Ayarları" note="Bu bilgiler header, footer, iletişim sayfası ve ana sayfadaki tüm ilgili yerlerde kullanılır." /></TabsContent>
           <TabsContent value="inbox"><InboxTab /></TabsContent>
           <TabsContent value="log"><LogTab /></TabsContent>
         </Tabs>}
@@ -352,5 +357,40 @@ function PosterTab({ poster }: { poster: SiteData["poster"] }) {
     </div>
     {s.error && <p className="mt-4 text-sm text-destructive">{s.error}</p>}
     <div className="mt-5 flex items-center gap-3"><Button type="submit" disabled={s.busy}>{s.busy && <Loader2 className="animate-spin" />}Kaydet</Button>{saved && <span className="text-sm text-primary">Kaydedildi.</span>}</div>
+  </form>;
+}
+
+/* ---------- Sayfa Metinleri / Site Ayarları ---------- */
+type TextGroup = { title: string; fields: readonly (readonly [TextKey, string, boolean?])[] };
+const TEXT_GROUPS: TextGroup[] = [
+  { title: "Ana Sayfa", fields: [["home_hero_title", "Hero başlığı"], ["home_hero_text", "Hero alt açıklaması", true], ["home_features_title", "“Bir kulüpten daha fazlası” bölüm başlığı"], ["home_feat_about", "Kart: Hakkımızda"], ["home_feat_team", "Kart: Takımımız"], ["home_feat_events", "Kart: Etkinlikler"], ["home_feat_partners", "Kart: İş Ortakları"]] },
+  { title: "Hakkımızda", fields: [["about_title", "Sayfa başlığı"], ["about_intro", "Başlık açıklaması", true], ["about_story", "Hikâyemiz metni", true], ["about_mission", "Misyonumuz metni", true], ["about_work_seminer", "Ne yapıyoruz: Seminerler", true], ["about_work_atolye", "Ne yapıyoruz: Atölyeler", true], ["about_work_gezi", "Ne yapıyoruz: Teknik geziler", true], ["about_work_paylasim", "Ne yapıyoruz: Paylaşım", true], ["about_value_merak", "Değer: Merak", true], ["about_value_paylasim", "Değer: Paylaşım", true], ["about_value_sorumluluk", "Değer: Sorumluluk", true]] },
+  { title: "Footer", fields: [["footer_tagline", "Footer açıklaması"]] },
+];
+const SETTING_GROUPS: TextGroup[] = [
+  { title: "Genel bilgiler", fields: [["contact_email", "İletişim e-posta adresi"], ["instagram_handle", "Instagram kullanıcı adı (örn. kku_yzt)"], ["address", "Adres"], ["slogan", "Slogan"]] },
+];
+function TextsTab({ texts, groups, title, note }: { texts: Record<string, string>; groups: TextGroup[]; title: string; note: string }) {
+  const s = useSaver();
+  const [saved, setSaved] = useState(false);
+  function submit(e: FormEvent<HTMLFormElement>) {
+    e.preventDefault(); setSaved(false);
+    const f = new FormData(e.currentTarget);
+    const changed = groups.flatMap((g) => g.fields.map(([k]) => k)).map((k) => [k, String(f.get(k) ?? "").trim()] as const).filter(([k, v]) => v !== (texts[k] ?? ""));
+    if (changed.some(([k, v]) => k === "contact_email" && v && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v))) { window.alert("Geçerli bir e-posta adresi yaz."); return; }
+    s.run(async () => { for (const [k, v] of changed) check(await supabase.from("site_content").update({ value: v }).eq("key", k)); }, () => setSaved(true));
+  }
+  return <form onSubmit={submit} className="mt-6 space-y-6">
+    <div><h2 className="font-display text-2xl">{title}</h2><p className="mt-2 text-sm text-muted-foreground">{note}</p></div>
+    {groups.map((g) => <fieldset key={g.title} className="border border-foreground bg-background p-5 sm:p-6">
+      <legend className="bg-primary px-2 py-1 text-xs font-bold uppercase text-primary-foreground">{g.title}</legend>
+      <div className="grid gap-4 sm:grid-cols-2">
+        {g.fields.map(([k, label, long]) => <div key={k} className={long ? "sm:col-span-2" : ""}><Field label={label}>{long
+          ? <textarea name={k} defaultValue={texts[k] ?? ""} placeholder={DEFAULT_TEXT[k]} rows={k === "about_story" ? 6 : 3} maxLength={4000} className={field} />
+          : <input name={k} defaultValue={texts[k] ?? ""} placeholder={DEFAULT_TEXT[k]} maxLength={300} className={field} />}</Field></div>)}
+      </div>
+    </fieldset>)}
+    {s.error && <p className="text-sm text-destructive">{s.error}</p>}
+    <div className="sticky bottom-4 flex items-center gap-3"><Button type="submit" disabled={s.busy}>{s.busy && <Loader2 className="animate-spin" />}Kaydet</Button>{saved && <span className="bg-background px-2 text-sm text-primary">Kaydedildi.</span>}</div>
   </form>;
 }
