@@ -34,7 +34,8 @@ export const getSiteData = createServerFn({ method: "GET" }).handler(async () =>
   const team = tm.data ?? [];
   const posts = ps.data ?? [];
   // Resolve private storage paths into signed URLs.
-  const paths = [...events.map((e) => e.image_url), ...team.map((t) => t.photo_url), ...posts.map((p) => p.image_url)]
+  const texts = Object.fromEntries((tx.data ?? []).map((r) => [r.key, r.value])) as Record<string, string>;
+  const paths = [...events.map((e) => e.image_url), ...team.map((t) => t.photo_url), ...posts.map((p) => p.image_url), texts["about_story_image"]]
     .filter((u): u is string => !!u && u.startsWith(STORAGE_PREFIX))
     .map((u) => u.slice(STORAGE_PREFIX.length));
   const signed: Record<string, string> = {};
@@ -48,7 +49,8 @@ export const getSiteData = createServerFn({ method: "GET" }).handler(async () =>
     team: team.map((t) => ({ ...t, photo_url: resolve(t.photo_url) })),
     posts: posts.map((p) => ({ ...p, image_url: resolve(p.image_url) ?? "" })).filter((p) => p.image_url),
     poster: hp.data ?? null,
-    texts: Object.fromEntries((tx.data ?? []).map((r) => [r.key, r.value])) as Record<string, string>,
+    texts,
+    aboutStoryImage: resolve(texts["about_story_image"] ?? null),
     facts: factsResult.data ?? [],
     ok: !ev.error && !tm.error && !ps.error,
   };

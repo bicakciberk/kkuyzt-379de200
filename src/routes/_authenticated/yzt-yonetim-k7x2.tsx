@@ -94,7 +94,7 @@ function Panel() {
           <TabsContent value="social"><SocialTab posts={data.posts} /></TabsContent>
           <TabsContent value="poster"><PosterTab poster={data.poster} /></TabsContent>
           <TabsContent value="facts"><FactsTab facts={data.facts} /></TabsContent>
-          <TabsContent value="texts"><TextsTab texts={data.texts} groups={TEXT_GROUPS} title="Sayfa Metinleri" note="Boş bırakılan alanlarda sitenin varsayılan metni gösterilir. Paragrafları boş bir satırla ayırabilirsin." /></TabsContent>
+          <TabsContent value="texts"><TextsTab texts={data.texts} groups={TEXT_GROUPS} title="Sayfa Metinleri" note="Boş bırakılan alanlarda sitenin varsayılan metni gösterilir. Paragrafları boş bir satırla ayırabilirsin." /><StoryImageEditor image={data.aboutStoryImage} storedPath={data.texts["about_story_image"] ?? ""} /></TabsContent>
           <TabsContent value="settings"><TextsTab texts={data.texts} groups={SETTING_GROUPS} title="Site Ayarları" note="Bu bilgiler header, footer, iletişim sayfası ve ana sayfadaki tüm ilgili yerlerde kullanılır." /></TabsContent>
           <TabsContent value="inbox"><InboxTab /></TabsContent>
           <TabsContent value="log"><LogTab /></TabsContent>
@@ -411,6 +411,29 @@ const TEXT_GROUPS: TextGroup[] = [
 const SETTING_GROUPS: TextGroup[] = [
   { title: "Genel bilgiler", fields: [["contact_email", "İletişim e-posta adresi"], ["instagram_handle", "Instagram kullanıcı adı (örn. kku_yzt)"], ["address", "Adres"], ["slogan", "Slogan"]] },
 ];
+function StoryImageEditor({ image, storedPath }: { image: string | null; storedPath: string }) {
+  const s = useSaver();
+  const [file, setFile] = useState<File | null>(null);
+  const [removed, setRemoved] = useState(false);
+  const [saved, setSaved] = useState(false);
+  function submit(e: FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    if (!file && !removed) return;
+    if (file && (!file.type.startsWith("image/") || file.size > 10 * 1024 * 1024)) { window.alert("Lütfen 10 MB'tan küçük bir görsel seç."); return; }
+    setSaved(false);
+    s.run(async () => {
+      const value = file ? await uploadImage(file, "about") : "";
+      check(await supabase.from("site_content").update({ value }).eq("key", "about_story_image"));
+    }, () => { setSaved(true); setFile(null); setRemoved(false); });
+  }
+  return <form onSubmit={submit} className="mt-6 border border-foreground bg-background p-5 sm:p-6">
+    <h2 className="font-display text-2xl">Hikâyemiz fotoğrafı</h2>
+    <p className="mt-2 text-sm text-muted-foreground">Hakkımızda sayfasındaki “Fotoğraf yakında” alanında görünür. Fotoğraf kaldırılırsa yer tutucu geri gelir.</p>
+    <div className="mt-5"><ImageField key={image ?? storedPath} current={removed ? null : image} onFile={(f) => { setFile(f); setRemoved(false); }} onRemove={() => { setFile(null); setRemoved(true); }} /></div>
+    {s.error && <p role="alert" className="mt-4 text-sm text-destructive">{s.error}</p>}
+    <div className="mt-5 flex items-center gap-3"><Button type="submit" disabled={s.busy || (!file && !removed)}>{s.busy && <Loader2 className="animate-spin" />}Kaydet</Button>{saved && <span className="text-sm text-primary">Kaydedildi.</span>}</div>
+  </form>;
+}
 function TextsTab({ texts, groups, title, note }: { texts: Record<string, string>; groups: TextGroup[]; title: string; note: string }) {
   const s = useSaver();
   const [saved, setSaved] = useState(false);
