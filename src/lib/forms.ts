@@ -1,3 +1,5 @@
+import { supabase } from "@/integrations/supabase/client";
+
 const WEB3FORMS_KEY = "b5f97b2b-33dd-48d0-a471-8c1ca014bdaa";
 
 export type FormPayload =
@@ -19,15 +21,21 @@ export async function submitForm(data: FormPayload): Promise<{ ok: true } | { ok
   const fail = data.kind === "membership"
     ? "Başvuru gönderilirken bir sorun oluştu. Lütfen tekrar deneyin."
     : "Mesaj gönderilirken bir sorun oluştu. Lütfen tekrar deneyin.";
-  try {
+  const save = (data.kind === "membership"
+    ? supabase.from("applications").insert({ name: data.name, student_no: data.studentNo, department: data.department, email: data.email, phone: data.phone, message: data.message })
+    : supabase.from("contact_messages").insert({ name: data.name, email: data.email, subject: data.subject, message: data.message })
+  ).then((r) => !r.error, () => false);
+  const mail = (async () => { try {
     const res = await fetch("https://api.web3forms.com/submit", {
       method: "POST",
       headers: { "Content-Type": "application/json", Accept: "application/json" },
       body: JSON.stringify({ access_key: WEB3FORMS_KEY, from_name: "YZT Web Sitesi", replyto: data.email, botcheck: "", ...body }),
     });
     const json = await res.json().catch(() => null);
-    return res.ok && json?.success ? { ok: true } : { ok: false, error: fail };
+    return Boolean(res.ok && json?.success);
   } catch {
-    return { ok: false, error: fail };
-  }
+    return false;
+  } })();
+  const [saved, mailed] = await Promise.all([save, mail]);
+  return saved || mailed ? { ok: true } : { ok: false, error: fail };
 }
