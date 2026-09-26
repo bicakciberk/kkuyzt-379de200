@@ -184,7 +184,7 @@ export function AiEvolution() {
     else step(dy > 0 ? "down" : "up");
   };
 
-  const highest = grid.reduce((max, cell) => Math.max(max, cell ?? 0), 0);
+  const highest = grid.reduce<number>((max, cell) => Math.max(max, cell ?? 0), 0);
   const highestStage = highest ? stageFor(highest) : null;
 
   return (
