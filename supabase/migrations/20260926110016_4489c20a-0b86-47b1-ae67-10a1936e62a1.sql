@@ -1,0 +1,2 @@
+ALTER TABLE public.team_members DROP CONSTRAINT IF EXISTS team_role_check;
+ALTER TABLE public.team_members ADD CONSTRAINT team_role_check CHECK (role IN ('Topluluk Başkanı', 'Başkan Yardımcısı', 'Departman Başkanı', 'Yönetim Kurulu'));
