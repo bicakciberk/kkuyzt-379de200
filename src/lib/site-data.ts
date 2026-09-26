@@ -17,7 +17,7 @@ export function istanbulDateKey(date = new Date()) {
 
 export const EVENT_CATEGORIES = ["Seminer", "Atölye", "Teknik Gezi", "Söyleşi", "Topluluk"] as const;
 export const DEPARTMENTS = ["Organizasyon", "Dış İlişkiler", "Sosyal Medya", "Tanıtım"] as const;
-export const ROLES = ["Topluluk Başkanı", "Departman Başkanı", "Üye"] as const;
+export const ROLES = ["Topluluk Başkanı", "Departman Başkanı", "Yönetim Kurulu"] as const;
 
 export function formatTrDate(iso: string) {
   const [y, m, d] = iso.split("-").map(Number);
@@ -38,9 +38,9 @@ export function nextEvent(events: UiEvent[]) {
   return events.find((e) => e.isNext) ?? [...events].filter((e) => e.status === "Yaklaşan").sort((a, b) => a.iso.localeCompare(b.iso))[0] ?? null;
 }
 
-export type UiMember = { id: string; name: string; role: string; program: string; photo: string | null };
+export type UiMember = { id: string; name: string; role: string; program: string; photo: string | null; linkedin: string | null };
 export function toTeam(rows: TeamRow[]) {
-  const map = (t: TeamRow): UiMember => ({ id: t.id, name: t.name, role: t.role, program: t.program, photo: t.photo_url });
+  const map = (t: TeamRow): UiMember => ({ id: t.id, name: t.name, role: t.role === "Üye" ? "Yönetim Kurulu" : t.role, program: t.program, photo: t.photo_url, linkedin: t.linkedin_url });
   const leaders = rows.filter((t) => t.department === "Topluluk" || t.role === "Topluluk Başkanı").map(map);
   const groups = DEPARTMENTS.map((group) => ({ group, members: rows.filter((t) => t.department === group && t.role !== "Topluluk Başkanı").map(map) })).filter((g) => g.members.length);
   return { leaders, groups };
