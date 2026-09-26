@@ -8,6 +8,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { supabase } from "@/integrations/supabase/client";
 import { STORAGE_PREFIX, getSiteData } from "@/lib/site-data.functions";
 import { DEFAULT_TEXT, type TextKey } from "@/lib/site-text";
+import { PARTNER_ICONS } from "@/lib/partner-icons";
 import { DEPARTMENTS, EVENT_CATEGORIES, ROLES, formatTrDate, siteDataQuery } from "@/lib/site-data";
 
 export const Route = createFileRoute("/_authenticated/yzt-yonetim-k7x2")({
@@ -26,6 +27,7 @@ type Mem = SiteData["team"][number];
 type Post = SiteData["posts"][number];
 type Fact = SiteData["facts"][number];
 type Milestone = SiteData["milestones"][number];
+type Partner = SiteData["partners"][number];
 
 async function uploadImage(file: File, folder: string) {
   const ext = file.name.split(".").pop()?.toLowerCase() || "jpg";
@@ -86,6 +88,7 @@ function Panel() {
             <TabsTrigger value="poster" className="rounded-none px-5 py-2 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">Hero Posteri</TabsTrigger>
             <TabsTrigger value="facts" className="rounded-none px-5 py-2 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">Günün Bilgisi ({data.facts.length})</TabsTrigger>
             <TabsTrigger value="timeline" className="rounded-none px-5 py-2 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">Zaman Tüneli ({data.milestones.length})</TabsTrigger>
+            <TabsTrigger value="partners" className="rounded-none px-5 py-2 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">İş Ortakları ({data.partners.length})</TabsTrigger>
             <TabsTrigger value="texts" className="rounded-none px-5 py-2 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">Sayfa Metinleri</TabsTrigger>
             <TabsTrigger value="settings" className="rounded-none px-5 py-2 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">Site Ayarları</TabsTrigger>
             <TabsTrigger value="inbox" className="rounded-none px-5 py-2 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">Başvurular / Mesajlar</TabsTrigger>
@@ -97,6 +100,7 @@ function Panel() {
           <TabsContent value="poster"><PosterTab poster={data.poster} /></TabsContent>
           <TabsContent value="facts"><FactsTab facts={data.facts} /></TabsContent>
           <TabsContent value="timeline"><TimelineTab milestones={data.milestones} /></TabsContent>
+          <TabsContent value="partners"><PartnersTab partners={data.partners} /></TabsContent>
           <TabsContent value="texts"><TextsTab texts={data.texts} groups={TEXT_GROUPS} title="Sayfa Metinleri" note="Boş bırakılan alanlarda sitenin varsayılan metni gösterilir. Paragrafları boş bir satırla ayırabilirsin." /><StoryImageEditor image={data.aboutStoryImage} storedPath={data.texts["about_story_image"] ?? ""} /></TabsContent>
           <TabsContent value="settings"><TextsTab texts={data.texts} groups={SETTING_GROUPS} title="Site Ayarları" note="Bu bilgiler header, footer, iletişim sayfası ve ana sayfadaki tüm ilgili yerlerde kullanılır." /></TabsContent>
           <TabsContent value="inbox"><InboxTab /></TabsContent>
@@ -312,6 +316,66 @@ function FactDialog({ item, nextOrder, onClose }: { item: Fact | null; nextOrder
   return <FormDialog title={item ? "Bilgiyi düzenle" : "Yeni bilgi"} onClose={onClose} onSubmit={submit} busy={s.busy} error={s.error}>
     <Field label="Bilgi *" hint="Bir ya da iki kısa cümle (10–400 karakter)."><textarea name="content" rows={4} defaultValue={item?.content} minLength={10} maxLength={400} required className={field} /></Field>
     <Field label="Sıra" hint="Küçük sayı önce görünür."><input name="sort_order" type="number" step="1" required defaultValue={item?.sort_order ?? nextOrder} className={field} /></Field>
+  </FormDialog>;
+}
+
+/* ---------- İş Ortakları ---------- */
+function PartnersTab({ partners }: { partners: Partner[] }) {
+  const [editing, setEditing] = useState<Partner | "new" | null>(null);
+  const s = useSaver();
+  const remove = (item: Partner) => { if (window.confirm(`“${item.name}” silinsin mi? Bu işlem geri alınamaz.`)) s.run(async () => check(await supabase.from("partners").delete().eq("id", item.id))); };
+  const move = (index: number, direction: -1 | 1) => {
+    if (s.busy || !partners[index + direction]) return;
+    const list = [...partners]; const [cur] = list.splice(index, 1); list.splice(index + direction, 0, cur!);
+    s.run(async () => { for (const [i, row] of list.entries()) { const next = (i + 1) * 10; if (row.sort_order !== next) check(await supabase.from("partners").update({ sort_order: next }).eq("id", row.id)); } });
+  };
+  return <>
+    <Toolbar title="İş Ortakları" addLabel="Yeni İş Ortağı Ekle" onAdd={() => setEditing("new")} />
+    <p className="mt-2 text-sm text-muted-foreground">Kayıtlar İş Ortakları sayfasında bu sırayla gösterilir. Görsel yoksa seçtiğin ikon gösterilir.</p>
+    {s.error && <p role="alert" className="mt-3 text-sm text-destructive">{s.error}</p>}
+    <ul className="mt-4 divide-y divide-border border border-foreground bg-background">
+      {partners.map((item, i) => { const Icon = (PARTNER_ICONS.find((x) => x.id === item.icon) ?? PARTNER_ICONS[0]).Icon; return <li key={item.id} className="flex flex-wrap items-center gap-3 p-4">
+        <span className="shrink-0 bg-brand-pale px-2 py-1 text-xs font-bold text-brand-dark">{String(i + 1).padStart(2, "0")}</span>
+        <div className="grid size-12 shrink-0 place-items-center overflow-hidden border border-input bg-muted">{item.image_url ? <img src={item.image_url} alt="" className="size-full object-cover" /> : <Icon className="size-5 text-brand-mid" />}</div>
+        <div className="min-w-0 flex-1 basis-44"><p className="font-semibold">{item.name}</p><p className="text-xs text-muted-foreground">{item.category}</p><p className="mt-1 text-sm text-muted-foreground">{item.description}</p></div>
+        <RowActions onEdit={() => setEditing(item)} onDelete={() => remove(item)} extra={<>
+          <Button size="icon" variant="ghost" title="Yukarı taşı" aria-label={`${item.name} yukarı taşı`} disabled={i === 0 || s.busy} onClick={() => move(i, -1)}><ArrowUp /></Button>
+          <Button size="icon" variant="ghost" title="Aşağı taşı" aria-label={`${item.name} aşağı taşı`} disabled={i === partners.length - 1 || s.busy} onClick={() => move(i, 1)}><ArrowDown /></Button>
+        </>} />
+      </li>; })}
+      {!partners.length && <li className="p-6 text-sm text-muted-foreground">Henüz iş ortağı yok.</li>}
+    </ul>
+    {editing && <PartnerDialog item={editing === "new" ? null : editing} nextOrder={partners.reduce((m, p) => Math.max(m, p.sort_order), 0) + 10} onClose={() => setEditing(null)} />}
+  </>;
+}
+function PartnerDialog({ item, nextOrder, onClose }: { item: Partner | null; nextOrder: number; onClose: () => void }) {
+  const s = useSaver();
+  const [file, setFile] = useState<File | null>(null);
+  const [removeImg, setRemoveImg] = useState(false);
+  function submit(e: FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    const f = new FormData(e.currentTarget);
+    const name = String(f.get("name") ?? "").trim();
+    const description = String(f.get("description") ?? "").trim();
+    const category = String(f.get("category") ?? "").trim();
+    const icon = String(f.get("icon") ?? "coffee");
+    const sortOrder = Number(f.get("sort_order"));
+    if (!name || !description || !category || !Number.isSafeInteger(sortOrder) || sortOrder < 0) { window.alert("Ad, açıklama ve kategoriyi doldur; sıra için tam sayı gir."); return; }
+    s.run(async () => {
+      const row: { name: string; description: string; category: string; icon: string; sort_order: number; image_url?: string | null } = { name, description, category, icon, sort_order: sortOrder };
+      if (file) row.image_url = await uploadImage(file, "partners");
+      else if (removeImg) row.image_url = null;
+      if (item) check(await supabase.from("partners").update(row).eq("id", item.id));
+      else check(await supabase.from("partners").insert(row));
+    }, onClose);
+  }
+  return <FormDialog title={item ? "İş ortağını düzenle" : "Yeni iş ortağı"} onClose={onClose} onSubmit={submit} busy={s.busy} error={s.error}>
+    <Field label="İşletme adı *"><input name="name" maxLength={80} defaultValue={item?.name ?? ""} className={field} required /></Field>
+    <Field label="Açıklama / indirim bilgisi *"><input name="description" maxLength={240} defaultValue={item?.description ?? ""} className={field} required /></Field>
+    <Field label="Kategori etiketi *" hint="Kartın üstündeki rozette görünür (örn. Kahve)."><input name="category" maxLength={30} defaultValue={item?.category ?? ""} className={field} required /></Field>
+    <Field label="İkon" hint="Görsel yüklenmezse bu ikon gösterilir."><select name="icon" defaultValue={item?.icon ?? "coffee"} className={field}>{PARTNER_ICONS.map((x) => <option key={x.id} value={x.id}>{x.label}</option>)}</select></Field>
+    <ImageField current={item?.image_url ?? null} onFile={(f) => { setFile(f); setRemoveImg(false); }} onRemove={() => { setFile(null); setRemoveImg(true); }} />
+    <Field label="Sıra *" hint="Küçük sayı önce görünür."><input name="sort_order" type="number" min="0" step="1" defaultValue={item?.sort_order ?? nextOrder} className={field} required /></Field>
   </FormDialog>;
 }
 

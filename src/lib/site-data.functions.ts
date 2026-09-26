@@ -21,7 +21,7 @@ export const getSiteData = createServerFn({ method: "GET" }).handler(async () =>
       },
     },
   });
-  const [ev, tm, ps, hp, tx, factsResult, timelineResult] = await Promise.all([
+  const [ev, tm, ps, hp, tx, factsResult, timelineResult, partnersResult] = await Promise.all([
     sb.from("events").select("*").order("event_date", { ascending: false }),
     sb.from("team_members").select("*").order("sort_order").order("created_at"),
     sb.from("social_posts").select("*").order("sort_order").order("post_date", { ascending: false }),
@@ -29,6 +29,7 @@ export const getSiteData = createServerFn({ method: "GET" }).handler(async () =>
     sb.from("site_content").select("key, value"),
     sb.from("daily_facts").select("*").order("sort_order").order("created_at").order("id"),
     sb.from("timeline_milestones").select("id,sort_order,period,title,description,created_at,updated_at").order("sort_order").order("created_at").order("id"),
+    sb.from("partners").select("*").order("sort_order").order("created_at"),
   ]);
   if (ev.error || tm.error || ps.error) console.error("site data", ev.error ?? tm.error ?? ps.error);
   const events = ev.data ?? [];
@@ -36,7 +37,7 @@ export const getSiteData = createServerFn({ method: "GET" }).handler(async () =>
   const posts = ps.data ?? [];
   // Resolve private storage paths into signed URLs.
   const texts = Object.fromEntries((tx.data ?? []).map((r) => [r.key, r.value])) as Record<string, string>;
-  const paths = [...events.map((e) => e.image_url), ...team.map((t) => t.photo_url), ...posts.map((p) => p.image_url), texts["about_story_image"]]
+  const paths = [...events.map((e) => e.image_url), ...team.map((t) => t.photo_url), ...posts.map((p) => p.image_url), ...(partnersResult.data ?? []).map((p) => p.image_url), texts["about_story_image"]]
     .filter((u): u is string => !!u && u.startsWith(STORAGE_PREFIX))
     .map((u) => u.slice(STORAGE_PREFIX.length));
   const signed: Record<string, string> = {};
@@ -54,6 +55,7 @@ export const getSiteData = createServerFn({ method: "GET" }).handler(async () =>
     aboutStoryImage: resolve(texts["about_story_image"] ?? null),
     facts: factsResult.data ?? [],
     milestones: timelineResult.data ?? [],
+    partners: (partnersResult.data ?? []).map((p) => ({ ...p, image_url: resolve(p.image_url) })),
     ok: !ev.error && !tm.error && !ps.error,
   };
 });
