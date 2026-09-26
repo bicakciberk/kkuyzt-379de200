@@ -2,6 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { CalendarDays, Check, Copy, CornerDownLeft, Delete } from "lucide-react";
 import { useCallback, useEffect, useMemo, useState, type CSSProperties } from "react";
 import { Button } from "@/components/ui/button";
+import { AiEvolution } from "@/components/ai-evolution";
 import { DecorativeMotif } from "@/components/site";
 import { cn } from "@/lib/utils";
 
