@@ -2,6 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { CalendarDays, Check, Copy, CornerDownLeft, Delete } from "lucide-react";
 import { useCallback, useEffect, useMemo, useState, type CSSProperties } from "react";
 import { Button } from "@/components/ui/button";
+import { AiEvolution } from "@/components/ai-evolution";
 import { DecorativeMotif } from "@/components/site";
 import { cn } from "@/lib/utils";
 
@@ -22,10 +23,10 @@ type SavedGames = { records:Record<string,DailyRecord> };
 
 export const Route = createFileRoute("/games")({
   head:()=>({meta:[
-    {title:"Kod Kırıcı — YZT Mini Oyunlar"},
-    {name:"description",content:"YZT'nin her gün yenilenen yapay zekâ ve teknoloji temalı kelime tahmin oyunu."},
-    {property:"og:title",content:"Kod Kırıcı — YZT Mini Oyunlar"},
-    {property:"og:description",content:"Altı tahminde günün teknoloji kelimesini bul."},
+    {title:"Mini Oyunlar — Kod Kırıcı ve AI Evrimi | YZT"},
+    {name:"description",content:"YZT'nin mini oyunları: her gün yenilenen kelime oyunu Kod Kırıcı ve yapay zekâ tarihini birleştirdiğin AI Evrimi."},
+    {property:"og:title",content:"Mini Oyunlar — Kod Kırıcı ve AI Evrimi | YZT"},
+    {property:"og:description",content:"Altı tahminde günün teknoloji kelimesini bul ya da Perceptron'dan AGI'ye ilerle."},
     {property:"og:type",content:"website"},
     {name:"twitter:card",content:"summary_large_image"},
   ]}),
@@ -84,7 +85,7 @@ function getStats(records:Record<string,DailyRecord>){
   return {played:completed.length,winRate:completed.length?Math.round(wins/completed.length*100):0,longest};
 }
 
-function Games(){
+function CodeBreaker(){
   const [dateKey,setDateKey]=useState("");
   const [saved,setSaved]=useState<SavedGames>({records:{}});
   const [guesses,setGuesses]=useState<string[]>([]);
@@ -151,15 +152,8 @@ function Games(){
   };
 
   return <>
-    <section className="motif-section border-b border-border bg-background pt-32 pb-10 md:pt-40 md:pb-14">
-      <DecorativeMotif variant="arrow" position="left"/>
-      <div className="motif-content mx-auto grid max-w-7xl gap-8 px-5 md:grid-cols-[1fr_auto] md:items-end lg:px-8">
-        <div><p className="eyebrow">Mini Oyunlar · 01</p><h1 className="mt-5 font-display text-5xl leading-none font-semibold sm:text-7xl">Kod Kırıcı</h1><p className="mt-5 max-w-xl leading-7 text-muted-foreground">Günün teknoloji kelimesini altı tahminde çöz. Her gün tek kelime, tek hak.</p></div>
-        <div className="flex items-center gap-3 border-l-2 border-brand-mid pl-4 text-sm font-bold"><CalendarDays className="size-5 text-brand-mid"/><span>{dateKey?dateKey.split("-").reverse().join("."):"Gün yükleniyor"}</span></div>
-      </div>
-    </section>
-    <section className="mx-auto max-w-7xl px-5 py-12 lg:px-8 lg:py-20">
-      <div className="grid gap-14 lg:grid-cols-[minmax(0,1fr)_18rem] lg:items-start">
+    <div className="flex items-center gap-3 border-l-2 border-brand-mid pl-4 text-sm font-bold"><CalendarDays className="size-5 text-brand-mid"/><span>{dateKey?dateKey.split("-").reverse().join("."):"Gün yükleniyor"}</span></div>
+    <div className="mt-10 grid gap-14 lg:grid-cols-[minmax(0,1fr)_18rem] lg:items-start">
         <div className="min-w-0">
           <div className="game-board mx-auto" style={{"--word-length":answer.length} as CSSProperties} aria-label={`${answer.length} harfli kelime için altı tahmin`}>
             {rows.flatMap((guess,row)=>Array.from({length:answer.length},(_,column)=>{const letter=guess[column]??"";const tileState=row<guesses.length?scoreGuess(guess,answer)[column]:undefined;return <div key={`${row}-${column}`} className={cn("game-tile",letter&&"game-tile-filled",tileState&&`game-tile-${tileState}`)} aria-label={tileState?`${letter}, ${tileState==="correct"?"doğru yerde":tileState==="present"?"kelimede var, yeri yanlış":"kelimede yok"}`:letter||"boş kutu"}>{letter}</div>}))}
@@ -177,6 +171,32 @@ function Games(){
           <div className="mt-8 border border-foreground p-5 text-sm leading-6"><p className="font-bold">Renklerin ipucu</p><div className="mt-4 space-y-3"><p className="flex items-center gap-3"><span className="game-legend-correct size-4"/>Doğru harf, doğru yer</p><p className="flex items-center gap-3"><span className="game-legend-present size-4"/>Doğru harf, farklı yer</p><p className="flex items-center gap-3"><span className="game-legend-absent size-4"/>Bu harf kelimede yok</p></div></div>
         </aside>
       </div>
+  </>;
+}
+
+const GAMES = [
+  { id: "kod-kirici", label: "Kod Kırıcı", title: "Kod Kırıcı", intro: "Günün teknoloji kelimesini altı tahminde çöz. Her gün tek kelime, tek hak." },
+  { id: "ai-evrimi", label: "AI Evrimi", title: "AI Evrimi", intro: "Aynı modelleri birleştir: Perceptron'dan başla, 2048'de yapay genel zekâya ulaş." },
+] as const;
+
+function Games(){
+  const [active,setActive]=useState<(typeof GAMES)[number]["id"]>("kod-kirici");
+  const game=GAMES.find((item)=>item.id===active) ?? GAMES[0];
+
+  return <>
+    <section className="motif-section border-b border-border bg-background pt-32 pb-10 md:pt-40 md:pb-14">
+      <DecorativeMotif variant="arrow" position="left"/>
+      <div className="motif-content mx-auto max-w-7xl px-5 lg:px-8">
+        <p className="eyebrow">Mini Oyunlar · 01</p>
+        <h1 className="mt-5 font-display text-5xl leading-none font-semibold sm:text-7xl">{game.title}</h1>
+        <p className="mt-5 max-w-xl leading-7 text-muted-foreground">{game.intro}</p>
+        <div className="mt-8 flex flex-wrap gap-3">
+          {GAMES.map((item)=><button key={item.id} type="button" onClick={()=>setActive(item.id)} className={cn("game-tab",item.id===active&&"game-tab-active")} aria-pressed={item.id===active}>{item.label}</button>)}
+        </div>
+      </div>
+    </section>
+    <section className="mx-auto max-w-7xl px-5 py-12 lg:px-8 lg:py-20">
+      {active==="kod-kirici"?<CodeBreaker/>:<AiEvolution/>}
     </section>
   </>;
 }
