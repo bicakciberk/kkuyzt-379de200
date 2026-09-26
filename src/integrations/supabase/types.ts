@@ -307,6 +307,7 @@ export type Database = {
           created_at: string
           department: string
           id: string
+          linkedin_url: string | null
           name: string
           photo_url: string | null
           program: string
@@ -317,6 +318,7 @@ export type Database = {
           created_at?: string
           department: string
           id?: string
+          linkedin_url?: string | null
           name: string
           photo_url?: string | null
           program?: string
@@ -327,6 +329,7 @@ export type Database = {
           created_at?: string
           department?: string
           id?: string
+          linkedin_url?: string | null
           name?: string
           photo_url?: string | null
           program?: string
