@@ -10,7 +10,7 @@ import type { Database } from "@/integrations/supabase/types";
 import { STORAGE_PREFIX, getSiteData } from "@/lib/site-data.functions";
 import { DEFAULT_TEXT, type TextKey } from "@/lib/site-text";
 import { PARTNER_ICONS, partnerIcon } from "@/lib/partner-icons";
-import { DEPARTMENTS, EVENT_CATEGORIES, ROLES, formatTrDate, siteDataQuery } from "@/lib/site-data";
+import { EVENT_CATEGORIES, ROLES, formatTrDate, siteDataQuery } from "@/lib/site-data";
 
 export const Route = createFileRoute("/_authenticated/yzt-yonetim-k7x2")({
   head: () => ({ meta: [
@@ -98,7 +98,7 @@ function Panel() {
             <TabsTrigger value="log" className="rounded-none px-5 py-2 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">Aktivite Geçmişi</TabsTrigger>
           </TabsList>
           <TabsContent value="events"><EventsTab events={data.events} /></TabsContent>
-          <TabsContent value="team"><TeamTab team={data.team} /></TabsContent>
+          <TabsContent value="team"><TeamTab team={data.team} departments={data.departments} /></TabsContent>
           <TabsContent value="social"><SocialTab posts={data.posts} /></TabsContent>
           <TabsContent value="poster"><PosterTab poster={data.poster} /></TabsContent>
           <TabsContent value="facts"><FactsTab facts={data.facts} /></TabsContent>
@@ -178,12 +178,64 @@ function EventDialog({ item, onClose }: { item: Ev | null; onClose: () => void }
 }
 
 /* ---------- Takım ---------- */
-const TEAM_GROUPS = ["Topluluk", ...DEPARTMENTS] as const;
-function TeamTab({ team }: { team: Mem[] }) {
+type Dept = { id: string; name: string; sort_order: number };
+function DepartmentsPanel({ departments, team }: { departments: Dept[]; team: Mem[] }) {
+  const s = useSaver();
+  const [name, setName] = useState("");
+  const [editId, setEditId] = useState<string | null>(null);
+  const [editName, setEditName] = useState("");
+  const valid = (n: string) => {
+    if (n.length < 2 || n.length > 60) { alert("Departman adı 2-60 karakter olmalı."); return false; }
+    if (n === "Topluluk") { alert("“Topluluk” adı ayrılmış, başka bir ad seç."); return false; }
+    return true;
+  };
+  const add = () => { const n = name.trim(); if (!valid(n)) return; if (departments.some((d) => d.name.toLocaleLowerCase("tr") === n.toLocaleLowerCase("tr"))) { alert("Bu departman zaten var."); return; }
+    s.run(async () => { check(await supabase.from("departments").insert({ name: n, sort_order: departments.reduce((m, d) => Math.max(m, d.sort_order), 0) + 1 })); setName(""); }); };
+  const rename = (d: Dept) => { const n = editName.trim(); if (!valid(n)) return; if (n === d.name) { setEditId(null); return; }
+    if (departments.some((o) => o.id !== d.id && o.name.toLocaleLowerCase("tr") === n.toLocaleLowerCase("tr"))) { alert("Bu adla başka bir departman var."); return; }
+    s.run(async () => { check(await supabase.from("departments").update({ name: n }).eq("id", d.id)); setEditId(null); }); };
+  const remove = (d: Dept, count: number) => { if (count) { alert(`“${d.name}” departmanında ${count} üye var. Önce üyeleri başka departmana taşı ya da sil.`); return; }
+    if (window.confirm(`“${d.name}” departmanı silinsin mi?`)) s.run(async () => check(await supabase.from("departments").delete().eq("id", d.id))); };
+  const move = (i: number, dir: -1 | 1) => { const a = departments[i], b = departments[i + dir]; if (!a || !b || s.busy) return;
+    s.run(async () => {
+      const ao = a.sort_order === b.sort_order ? b.sort_order + dir : b.sort_order;
+      check(await supabase.from("departments").update({ sort_order: ao }).eq("id", a.id));
+      check(await supabase.from("departments").update({ sort_order: a.sort_order }).eq("id", b.id));
+    }); };
+  return <section className="mt-6 border border-foreground bg-muted/40 p-4">
+    <h3 className="text-sm font-bold">Departmanlar</h3>
+    <p className="mt-1 text-xs text-muted-foreground">Takımımız sayfasında bu sırayla gösterilir. Üyesi olmayan departman sayfada görünmez. İçinde üye olan departman silinemez.</p>
+    {s.error && <p role="alert" className="mt-2 text-sm text-destructive">{s.error}</p>}
+    <ul className="mt-3 divide-y divide-border border border-input bg-background">
+      {departments.map((d, i) => { const count = team.filter((m) => m.department === d.name).length; return <li key={d.id} className="flex flex-wrap items-center gap-2 p-2">
+        {editId === d.id
+          ? <input autoFocus value={editName} onChange={(e) => setEditName(e.target.value)} onKeyDown={(e) => { if (e.key === "Enter") rename(d); if (e.key === "Escape") setEditId(null); }} maxLength={60} aria-label="Departman adı" className={`${field} flex-1`} />
+          : <p className="flex-1 font-semibold">{d.name} <span className="text-xs font-normal text-muted-foreground">· {count} üye</span></p>}
+        <div className="flex gap-1">
+          <Button type="button" size="icon" variant="outline" disabled={!i || s.busy} onClick={() => move(i, -1)} aria-label={`${d.name} yukarı taşı`}><ArrowUp /></Button>
+          <Button type="button" size="icon" variant="outline" disabled={i === departments.length - 1 || s.busy} onClick={() => move(i, 1)} aria-label={`${d.name} aşağı taşı`}><ArrowDown /></Button>
+          {editId === d.id
+            ? <Button type="button" size="sm" disabled={s.busy} onClick={() => rename(d)}>Kaydet</Button>
+            : <Button type="button" size="icon" variant="outline" onClick={() => { setEditId(d.id); setEditName(d.name); }} aria-label={`${d.name} adını düzenle`}><Pencil /></Button>}
+          <Button type="button" size="icon" variant="outline" disabled={s.busy} onClick={() => remove(d, count)} aria-label={`${d.name} sil`}><Trash2 /></Button>
+        </div>
+      </li>; })}
+    </ul>
+    <form className="mt-3 flex gap-2" onSubmit={(e) => { e.preventDefault(); add(); }}>
+      <input value={name} onChange={(e) => setName(e.target.value)} placeholder="Yeni departman adı (örn. Teknik Takım)" maxLength={60} aria-label="Yeni departman adı" className={`${field} flex-1`} />
+      <Button type="submit" disabled={s.busy}><Plus />Ekle</Button>
+    </form>
+  </section>;
+}
+function TeamTab({ team, departments }: { team: Mem[]; departments: Dept[] }) {
+  const TEAM_GROUPS = ["Topluluk", ...departments.map((d) => d.name)];
+  const orphans = team.filter((m) => !TEAM_GROUPS.includes(m.department));
   const [editing, setEditing] = useState<Mem | "new" | null>(null);
   const del = useDelete("team_members");
   return <>
     <Toolbar title="Takım" addLabel="Yeni Üye Ekle" onAdd={() => setEditing("new")} />
+    <DepartmentsPanel departments={departments} team={team} />
+    {orphans.length > 0 && <p className="mt-4 text-sm text-destructive">Departmanı bulunamayan üyeler: {orphans.map((m) => m.name).join(", ")}</p>}
     {TEAM_GROUPS.map((g) => { const list = team.filter((m) => m.department === g); return <div key={g} className="mt-6">
       <h3 className="text-xs font-bold uppercase tracking-wider text-brand-dark">{g === "Topluluk" ? "Topluluk Başkanı" : g} · {list.length}</h3>
       <ul className="mt-2 divide-y divide-border border border-foreground bg-background">
@@ -195,10 +247,10 @@ function TeamTab({ team }: { team: Mem[] }) {
         {!list.length && <li className="p-4 text-sm text-muted-foreground">Bu grupta kimse yok.</li>}
       </ul>
     </div>; })}
-    {editing && <MemberDialog item={editing === "new" ? null : editing} nextOrder={team.reduce((m, t) => Math.max(m, t.sort_order), 0) + 1} onClose={() => setEditing(null)} />}
+    {editing && <MemberDialog groups={TEAM_GROUPS} item={editing === "new" ? null : editing} nextOrder={team.reduce((m, t) => Math.max(m, t.sort_order), 0) + 1} onClose={() => setEditing(null)} />}
   </>;
 }
-function MemberDialog({ item, nextOrder, onClose }: { item: Mem | null; nextOrder: number; onClose: () => void }) {
+function MemberDialog({ groups, item, nextOrder, onClose }: { groups: string[]; item: Mem | null; nextOrder: number; onClose: () => void }) {
   const s = useSaver();
   const [file, setFile] = useState<File | null>(null);
   const [removed, setRemoved] = useState(false);
@@ -217,7 +269,7 @@ function MemberDialog({ item, nextOrder, onClose }: { item: Mem | null; nextOrde
   return <FormDialog title={item ? "Üyeyi düzenle" : "Yeni üye"} onClose={onClose} onSubmit={submit} busy={s.busy} error={s.error}>
     <Field label="Ad soyad *"><input name="name" defaultValue={item?.name} className={field} maxLength={100} /></Field>
     <div className="grid gap-4 sm:grid-cols-2">
-      <Field label="Departman" hint="Topluluk başkanı için “Topluluk” seç."><select name="department" defaultValue={item?.department ?? "Organizasyon"} className={field}>{TEAM_GROUPS.map((d) => <option key={d}>{d}</option>)}</select></Field>
+      <Field label="Departman" hint="Topluluk başkanı için “Topluluk” seç."><select name="department" defaultValue={item?.department ?? groups[1] ?? "Topluluk"} className={field}>{groups.map((d) => <option key={d}>{d}</option>)}</select></Field>
       <Field label="Rol"><select name="role" defaultValue={item?.role === "Üye" ? "Yönetim Kurulu" : item?.role ?? "Yönetim Kurulu"} className={field}>{ROLES.map((r) => <option key={r}>{r}</option>)}</select></Field>
       <Field label="Bölüm"><input name="program" defaultValue={item?.program ?? "Endüstri Mühendisliği"} className={field} maxLength={120} /></Field>
       <Field label="Sıra" hint="Küçük sayı önce gösterilir."><input name="sort_order" type="number" defaultValue={item?.sort_order ?? nextOrder} className={field} /></Field>
