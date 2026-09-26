@@ -69,6 +69,7 @@ export function ScrollReveal() {
 
     return () => {
       window.clearTimeout(timer);
+      window.clearTimeout(startTimer);
       mo.disconnect();
       io.disconnect();
       document.querySelectorAll("[data-sr]").forEach((el) => el.removeAttribute("data-sr"));
