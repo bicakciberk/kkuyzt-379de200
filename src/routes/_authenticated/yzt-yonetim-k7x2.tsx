@@ -80,12 +80,14 @@ function Panel() {
             <TabsTrigger value="events" className="rounded-none px-5 py-2 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">Etkinlikler ({data.events.length})</TabsTrigger>
             <TabsTrigger value="team" className="rounded-none px-5 py-2 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">Takım ({data.team.length})</TabsTrigger>
             <TabsTrigger value="social" className="rounded-none px-5 py-2 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">Sosyal Medya ({data.posts.length})</TabsTrigger>
+            <TabsTrigger value="poster" className="rounded-none px-5 py-2 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">Hero Posteri</TabsTrigger>
             <TabsTrigger value="inbox" className="rounded-none px-5 py-2 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">Başvurular / Mesajlar</TabsTrigger>
             <TabsTrigger value="log" className="rounded-none px-5 py-2 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">Aktivite Geçmişi</TabsTrigger>
           </TabsList>
           <TabsContent value="events"><EventsTab events={data.events} /></TabsContent>
           <TabsContent value="team"><TeamTab team={data.team} /></TabsContent>
           <TabsContent value="social"><SocialTab posts={data.posts} /></TabsContent>
+          <TabsContent value="poster"><PosterTab poster={data.poster} /></TabsContent>
           <TabsContent value="inbox"><InboxTab /></TabsContent>
           <TabsContent value="log"><LogTab /></TabsContent>
         </Tabs>}
@@ -323,4 +325,32 @@ function LogTab() {
       {!(q.data ?? []).length && <li className="p-6 text-sm text-muted-foreground">Henüz kayıtlı işlem yok.</li>}
     </ul>}
   </>;
+}
+
+/* ---------- Hero Posteri ---------- */
+const POSTER_FIELDS = [
+  ["kicker", "Üst etiket", "Örn. YZT sunar"], ["season", "Sağ üst sezon / numara", "Örn. 26—27"],
+  ["title", "Ana başlık", "Son kelime büyük yazılır. Örn. Topluluk Tanışması"], ["subtitle", "Alt başlık / dönem", "“/” ile satır bölünür. Örn. Yeni dönem / İlk buluşma"],
+  ["date_text", "Tarih", "Örn. 15 Eylül"], ["time_text", "Saat", "Örn. 19.00"], ["door_text", "Saat altı not", "Örn. Kapılar 18.30 (boş bırakılabilir)"],
+  ["place_text", "Yer", "Örn. Swallowe"], ["footer_left", "Alt sol metin", "Örn. Kırıkkale Üniversitesi"], ["footer_right", "Alt sağ metin", "Örn. 01 / Açılış"],
+] as const;
+function PosterTab({ poster }: { poster: SiteData["poster"] }) {
+  const s = useSaver();
+  const [saved, setSaved] = useState(false);
+  if (!poster) return <p className="mt-6 text-sm text-muted-foreground">Poster bilgisi yüklenemedi.</p>;
+  function submit(e: FormEvent<HTMLFormElement>) {
+    e.preventDefault(); setSaved(false);
+    const f = new FormData(e.currentTarget);
+    const row = Object.fromEntries(POSTER_FIELDS.map(([k]) => [k, String(f.get(k) ?? "").trim()]));
+    s.run(async () => check(await supabase.from("hero_poster").update(row as never).eq("id", 1)), () => setSaved(true));
+  }
+  return <form onSubmit={submit} className="mt-6 border border-foreground bg-background p-5 sm:p-6">
+    <h2 className="font-display text-2xl">Hero Posteri</h2>
+    <p className="mt-2 text-sm text-muted-foreground">Ana sayfanın sağındaki poster kartı. Kaydedince hemen sitede görünür.</p>
+    <div className="mt-5 grid gap-4 sm:grid-cols-2">
+      {POSTER_FIELDS.map(([k, label, hint]) => <Field key={k} label={label} hint={hint}><input name={k} defaultValue={poster[k]} maxLength={80} required={k !== "door_text"} className={field} /></Field>)}
+    </div>
+    {s.error && <p className="mt-4 text-sm text-destructive">{s.error}</p>}
+    <div className="mt-5 flex items-center gap-3"><Button type="submit" disabled={s.busy}>{s.busy && <Loader2 className="animate-spin" />}Kaydet</Button>{saved && <span className="text-sm text-primary">Kaydedildi.</span>}</div>
+  </form>;
 }
