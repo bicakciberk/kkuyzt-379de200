@@ -25,6 +25,7 @@ type Ev = SiteData["events"][number];
 type Mem = SiteData["team"][number];
 type Post = SiteData["posts"][number];
 type Fact = SiteData["facts"][number];
+type Milestone = SiteData["milestones"][number];
 
 async function uploadImage(file: File, folder: string) {
   const ext = file.name.split(".").pop()?.toLowerCase() || "jpg";
@@ -84,6 +85,7 @@ function Panel() {
             <TabsTrigger value="social" className="rounded-none px-5 py-2 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">Sosyal Medya ({data.posts.length})</TabsTrigger>
             <TabsTrigger value="poster" className="rounded-none px-5 py-2 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">Hero Posteri</TabsTrigger>
             <TabsTrigger value="facts" className="rounded-none px-5 py-2 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">Günün Bilgisi ({data.facts.length})</TabsTrigger>
+            <TabsTrigger value="timeline" className="rounded-none px-5 py-2 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">Zaman Tüneli ({data.milestones.length})</TabsTrigger>
             <TabsTrigger value="texts" className="rounded-none px-5 py-2 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">Sayfa Metinleri</TabsTrigger>
             <TabsTrigger value="settings" className="rounded-none px-5 py-2 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">Site Ayarları</TabsTrigger>
             <TabsTrigger value="inbox" className="rounded-none px-5 py-2 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">Başvurular / Mesajlar</TabsTrigger>
@@ -94,6 +96,7 @@ function Panel() {
           <TabsContent value="social"><SocialTab posts={data.posts} /></TabsContent>
           <TabsContent value="poster"><PosterTab poster={data.poster} /></TabsContent>
           <TabsContent value="facts"><FactsTab facts={data.facts} /></TabsContent>
+          <TabsContent value="timeline"><TimelineTab milestones={data.milestones} /></TabsContent>
           <TabsContent value="texts"><TextsTab texts={data.texts} groups={TEXT_GROUPS} title="Sayfa Metinleri" note="Boş bırakılan alanlarda sitenin varsayılan metni gösterilir. Paragrafları boş bir satırla ayırabilirsin." /><StoryImageEditor image={data.aboutStoryImage} storedPath={data.texts["about_story_image"] ?? ""} /></TabsContent>
           <TabsContent value="settings"><TextsTab texts={data.texts} groups={SETTING_GROUPS} title="Site Ayarları" note="Bu bilgiler header, footer, iletişim sayfası ve ana sayfadaki tüm ilgili yerlerde kullanılır." /></TabsContent>
           <TabsContent value="inbox"><InboxTab /></TabsContent>
@@ -309,6 +312,74 @@ function FactDialog({ item, nextOrder, onClose }: { item: Fact | null; nextOrder
   return <FormDialog title={item ? "Bilgiyi düzenle" : "Yeni bilgi"} onClose={onClose} onSubmit={submit} busy={s.busy} error={s.error}>
     <Field label="Bilgi *" hint="Bir ya da iki kısa cümle (10–400 karakter)."><textarea name="content" rows={4} defaultValue={item?.content} minLength={10} maxLength={400} required className={field} /></Field>
     <Field label="Sıra" hint="Küçük sayı önce görünür."><input name="sort_order" type="number" step="1" required defaultValue={item?.sort_order ?? nextOrder} className={field} /></Field>
+  </FormDialog>;
+}
+
+/* ---------- Zaman Tüneli ---------- */
+function TimelineTab({ milestones }: { milestones: Milestone[] }) {
+  const [editing, setEditing] = useState<Milestone | "new" | null>(null);
+  const s = useSaver();
+  const remove = (item: Milestone) => {
+    if (window.confirm(`“${item.title}” silinsin mi? Bu işlem geri alınamaz.`)) s.run(async () => check(await supabase.from("timeline_milestones").delete().eq("id", item.id)));
+  };
+  const move = (index: number, direction: -1 | 1) => {
+    const other = milestones[index + direction];
+    if (!other || s.busy) return;
+    const current = milestones[index];
+    if (!current) return;
+    s.run(async () => {
+      // Fractional ordering avoids two writes to swap neighboring entries.
+      const before = direction === -1 ? milestones[index - 2] : other;
+      const after = direction === -1 ? other : milestones[index + 2];
+      const desired = direction === -1 ? (before ? (before.sort_order + other.sort_order) / 2 : other.sort_order - 1) : (after ? (after.sort_order + other.sort_order) / 2 : other.sort_order + 1);
+      if (Number.isSafeInteger(desired) && desired !== other.sort_order) {
+        check(await supabase.from("timeline_milestones").update({ sort_order: desired }).eq("id", current.id));
+      } else {
+        // Normalize crowded or duplicate order values, then move this entry.
+        for (const [i, row] of milestones.entries()) check(await supabase.from("timeline_milestones").update({ sort_order: (i + 1) * 10 }).eq("id", row.id));
+        check(await supabase.from("timeline_milestones").update({ sort_order: direction === -1 ? (index * 10) - 5 : (index + 2) * 10 + 5 }).eq("id", current.id));
+      }
+    });
+  };
+  return <>
+    <Toolbar title="Zaman Tüneli" addLabel="Yeni Kilometre Taşı Ekle" onAdd={() => setEditing("new")} />
+    <p className="mt-2 text-sm text-muted-foreground">Kayıtlar Hakkımızda sayfasında bu sırayla gösterilir. Sıra numarasını düzenleyebilir veya oklarla taşıyabilirsin.</p>
+    {s.error && <p role="alert" className="mt-3 text-sm text-destructive">{s.error}</p>}
+    <ul className="mt-4 divide-y divide-border border border-foreground bg-background">
+      {milestones.map((item, i) => <li key={item.id} className="flex flex-wrap items-center gap-3 p-4">
+        <span className="shrink-0 bg-brand-pale px-2 py-1 text-xs font-bold text-brand-dark">{String(i + 1).padStart(2, "0")}</span>
+        <div className="min-w-0 flex-1 basis-44"><p className="font-semibold">{item.title}</p><p className="text-xs text-muted-foreground">{item.period} · Sıra {item.sort_order}</p><p className="mt-1 text-sm text-muted-foreground">{item.description}</p></div>
+        <RowActions onEdit={() => setEditing(item)} onDelete={() => remove(item)} extra={<>
+          <Button size="icon" variant="ghost" title="Yukarı taşı" aria-label={`${item.title} yukarı taşı`} disabled={i === 0 || s.busy} onClick={() => move(i, -1)}><ArrowUp /></Button>
+          <Button size="icon" variant="ghost" title="Aşağı taşı" aria-label={`${item.title} aşağı taşı`} disabled={i === milestones.length - 1 || s.busy} onClick={() => move(i, 1)}><ArrowDown /></Button>
+        </>} />
+      </li>)}
+      {!milestones.length && <li className="p-6 text-sm text-muted-foreground">Henüz kilometre taşı yok.</li>}
+    </ul>
+    {editing && <MilestoneDialog item={editing === "new" ? null : editing} nextOrder={milestones.reduce((max, m) => Math.max(max, m.sort_order), 0) + 1} onClose={() => setEditing(null)} />}
+  </>;
+}
+function MilestoneDialog({ item, nextOrder, onClose }: { item: Milestone | null; nextOrder: number; onClose: () => void }) {
+  const s = useSaver();
+  function submit(e: FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    const f = new FormData(e.currentTarget);
+    const period = String(f.get("period") ?? "").trim();
+    const title = String(f.get("title") ?? "").trim();
+    const description = String(f.get("description") ?? "").trim();
+    const sortOrder = Number(f.get("sort_order"));
+    if (!period || !title || !description || !Number.isSafeInteger(sortOrder) || sortOrder < 1) { window.alert("Tarih, başlık ve açıklamayı doldur; sıra için 1 veya daha büyük tam sayı gir."); return; }
+    s.run(async () => {
+      const row = { period, title, description, sort_order: sortOrder };
+      if (item) check(await supabase.from("timeline_milestones").update(row).eq("id", item.id));
+      else check(await supabase.from("timeline_milestones").insert(row));
+    }, onClose);
+  }
+  return <FormDialog title={item ? "Kilometre taşını düzenle" : "Yeni kilometre taşı"} onClose={onClose} onSubmit={submit} busy={s.busy} error={s.error}>
+    <Field label="Sıra numarası *" hint="Küçük sayı önce görünür."><input name="sort_order" type="number" min="1" step="1" defaultValue={item?.sort_order ?? nextOrder} className={field} required /></Field>
+    <Field label="Tarih / dönem *"><input name="period" defaultValue={item?.period ?? ""} maxLength={80} placeholder="2024 · Bahar veya Bugün" className={field} required /></Field>
+    <Field label="Başlık *"><input name="title" defaultValue={item?.title ?? ""} maxLength={160} className={field} required /></Field>
+    <Field label="Açıklama *"><textarea name="description" defaultValue={item?.description ?? ""} maxLength={800} rows={4} className={field} required /></Field>
   </FormDialog>;
 }
 
