@@ -1,30 +1,6 @@
 import { useRouterState } from "@tanstack/react-router";
-import { ArrowUp, Moon, Sun } from "lucide-react";
+import { ArrowUp } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
-
-const THEME_KEY = "yzt-theme";
-
-export const themeInitScript = `(function(){try{var t=localStorage.getItem('${THEME_KEY}');if(t==='dark'||(!t&&window.matchMedia('(prefers-color-scheme: dark)').matches))document.documentElement.classList.add('dark')}catch(e){}})()`;
-
-export function ThemeToggle() {
-  const [dark, setDark] = useState(false);
-  useEffect(() => setDark(document.documentElement.classList.contains("dark")), []);
-  const toggle = () => {
-    const root = document.documentElement;
-    const next = !root.classList.contains("dark");
-    root.classList.add("theme-fading");
-    root.classList.toggle("dark", next);
-    try { localStorage.setItem(THEME_KEY, next ? "dark" : "light"); } catch { /* yok say */ }
-    setDark(next);
-    window.setTimeout(() => root.classList.remove("theme-fading"), 450);
-  };
-  return (
-    <button type="button" onClick={toggle} aria-label={dark ? "Açık temaya geç" : "Koyu temaya geç"} aria-pressed={dark}
-      className="grid size-10 place-items-center border border-border text-foreground transition-colors hover:border-primary hover:text-primary">
-      {dark ? <Sun className="size-4" /> : <Moon className="size-4" />}
-    </button>
-  );
-}
 
 export function ScrollTopButton() {
   const [show, setShow] = useState(false);

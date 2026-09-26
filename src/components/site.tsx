@@ -4,7 +4,6 @@ import { useEffect, useRef, useState, type ReactNode } from "react";
 import { Button } from "@/components/ui/button";
 import { launchJoinConfetti } from "@/components/join-confetti";
 import { cn } from "@/lib/utils";
-import { ThemeToggle } from "@/components/site-extras";
 
 export const SLOGAN = "Geleceği birlikte şekillendirelim.";
 
@@ -36,7 +35,6 @@ export function SiteHeader() {
       </Link>
       <nav className="hidden items-center gap-5 xl:gap-7 lg:flex" aria-label="Ana menü">{nav.map(([to,label]) => <Link key={to} to={to} className={cn("text-sm font-medium transition-colors hover:text-primary", pathname===to ? "text-primary" : "text-foreground")}>{label}</Link>)}</nav>
       <div className="flex items-center gap-2">
-        <ThemeToggle />
         <Button asChild className="hidden sm:inline-flex"><Link to="/join" onClick={(event) => launchJoinConfetti(event.currentTarget)}>Bize Katıl <ArrowRight/></Link></Button>
         <Button variant="ghost" size="icon" className="lg:hidden" onClick={() => setOpen(!open)} aria-expanded={open} aria-controls="mobile-menu" aria-label={open ? "Menüyü kapat" : "Menüyü aç"}>{open ? <X/> : <Menu/>}</Button>
       </div>
