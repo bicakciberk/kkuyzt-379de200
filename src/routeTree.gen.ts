@@ -22,6 +22,7 @@ import { Route as PartnersRouteImport } from './routes/partners'
 import { Route as ResourcesRouteImport } from './routes/resources'
 import { Route as SponsorRouteImport } from './routes/sponsor'
 import { Route as TeamRouteImport } from './routes/team'
+import { Route as YztCardRouteImport } from './routes/yzt-card'
 import { Route as AuthenticatedYztYonetimK7x2RouteImport } from './routes/_authenticated/yzt-yonetim-k7x2'
 import { Route as LovableEmailTransactionalPreviewRouteImport } from './routes/lovable/email/transactional/preview'
 
@@ -89,6 +90,11 @@ const TeamRoute = TeamRouteImport.update({
   path: '/team',
   getParentRoute: () => rootRouteImport,
 } as any)
+const YztCardRoute = YztCardRouteImport.update({
+  id: '/yzt-card',
+  path: '/yzt-card',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AuthenticatedYztYonetimK7x2Route =
   AuthenticatedYztYonetimK7x2RouteImport.update({
     id: '/yzt-yonetim-k7x2',
@@ -115,6 +121,7 @@ export interface FileRoutesByFullPath {
   '/resources': typeof ResourcesRoute
   '/sponsor': typeof SponsorRoute
   '/team': typeof TeamRoute
+  '/yzt-card': typeof YztCardRoute
   '/yzt-yonetim-k7x2': typeof AuthenticatedYztYonetimK7x2Route
   '/lovable/email/transactional/preview': typeof LovableEmailTransactionalPreviewRoute
 }
@@ -131,6 +138,7 @@ export interface FileRoutesByTo {
   '/resources': typeof ResourcesRoute
   '/sponsor': typeof SponsorRoute
   '/team': typeof TeamRoute
+  '/yzt-card': typeof YztCardRoute
   '/yzt-yonetim-k7x2': typeof AuthenticatedYztYonetimK7x2Route
   '/lovable/email/transactional/preview': typeof LovableEmailTransactionalPreviewRoute
 }
@@ -149,6 +157,7 @@ export interface FileRoutesById {
   '/resources': typeof ResourcesRoute
   '/sponsor': typeof SponsorRoute
   '/team': typeof TeamRoute
+  '/yzt-card': typeof YztCardRoute
   '/_authenticated/yzt-yonetim-k7x2': typeof AuthenticatedYztYonetimK7x2Route
   '/lovable/email/transactional/preview': typeof LovableEmailTransactionalPreviewRoute
 }
@@ -167,6 +176,7 @@ export interface FileRouteTypes {
     | '/resources'
     | '/sponsor'
     | '/team'
+    | '/yzt-card'
     | '/yzt-yonetim-k7x2'
     | '/lovable/email/transactional/preview'
   fileRoutesByTo: FileRoutesByTo
@@ -183,6 +193,7 @@ export interface FileRouteTypes {
     | '/resources'
     | '/sponsor'
     | '/team'
+    | '/yzt-card'
     | '/yzt-yonetim-k7x2'
     | '/lovable/email/transactional/preview'
   id:
@@ -200,6 +211,7 @@ export interface FileRouteTypes {
     | '/resources'
     | '/sponsor'
     | '/team'
+    | '/yzt-card'
     | '/_authenticated/yzt-yonetim-k7x2'
     | '/lovable/email/transactional/preview'
   fileRoutesById: FileRoutesById
@@ -218,6 +230,7 @@ export interface RootRouteChildren {
   ResourcesRoute: typeof ResourcesRoute
   SponsorRoute: typeof SponsorRoute
   TeamRoute: typeof TeamRoute
+  YztCardRoute: typeof YztCardRoute
   LovableEmailTransactionalPreviewRoute: typeof LovableEmailTransactionalPreviewRoute
 }
 
@@ -314,6 +327,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof TeamRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/yzt-card': {
+      id: '/yzt-card'
+      path: '/yzt-card'
+      fullPath: '/yzt-card'
+      preLoaderRoute: typeof YztCardRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/_authenticated/yzt-yonetim-k7x2': {
       id: '/_authenticated/yzt-yonetim-k7x2'
       path: '/yzt-yonetim-k7x2'
@@ -356,6 +376,7 @@ const rootRouteChildren: RootRouteChildren = {
   ResourcesRoute: ResourcesRoute,
   SponsorRoute: SponsorRoute,
   TeamRoute: TeamRoute,
+  YztCardRoute: YztCardRoute,
   LovableEmailTransactionalPreviewRoute: LovableEmailTransactionalPreviewRoute,
 }
 export const routeTree = rootRouteImport
