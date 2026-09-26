@@ -38,9 +38,9 @@ export function nextEvent(events: UiEvent[]) {
   return events.find((e) => e.isNext) ?? [...events].filter((e) => e.status === "Yaklaşan").sort((a, b) => a.iso.localeCompare(b.iso))[0] ?? null;
 }
 
-export type UiMember = { id: string; name: string; role: string; program: string; photo: string | null; linkedin: string | null };
+export type UiMember = { id: string; name: string; role: string; program: string; classYear: string; photo: string | null; linkedin: string | null };
 export function toTeam(rows: TeamRow[], departments: readonly { name: string }[] = DEPARTMENTS.map((name) => ({ name }))) {
-  const map = (t: TeamRow): UiMember => ({ id: t.id, name: t.name, role: t.role === "Üye" ? "Yönetim Kurulu" : t.role, program: t.program, photo: t.photo_url, linkedin: t.linkedin_url });
+  const map = (t: TeamRow): UiMember => ({ id: t.id, name: t.name, role: t.role === "Üye" ? "Yönetim Kurulu" : t.role, program: t.program, classYear: t.class_year, photo: t.photo_url, linkedin: t.linkedin_url });
   const leaders = rows.filter((t) => t.department === "Topluluk" || t.role === "Topluluk Başkanı").map(map);
   const groups = departments.map(({ name: group }) => ({ group, members: rows.filter((t) => t.department === group && t.role !== "Topluluk Başkanı").map(map) })).filter((g) => g.members.length);
   return { leaders, groups };
