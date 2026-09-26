@@ -23,10 +23,10 @@ type SavedGames = { records:Record<string,DailyRecord> };
 
 export const Route = createFileRoute("/games")({
   head:()=>({meta:[
-    {title:"Kod Kırıcı — YZT Mini Oyunlar"},
-    {name:"description",content:"YZT'nin her gün yenilenen yapay zekâ ve teknoloji temalı kelime tahmin oyunu."},
-    {property:"og:title",content:"Kod Kırıcı — YZT Mini Oyunlar"},
-    {property:"og:description",content:"Altı tahminde günün teknoloji kelimesini bul."},
+    {title:"Mini Oyunlar — Kod Kırıcı ve AI Evrimi | YZT"},
+    {name:"description",content:"YZT'nin mini oyunları: her gün yenilenen kelime oyunu Kod Kırıcı ve yapay zekâ tarihini birleştirdiğin AI Evrimi."},
+    {property:"og:title",content:"Mini Oyunlar — Kod Kırıcı ve AI Evrimi | YZT"},
+    {property:"og:description",content:"Altı tahminde günün teknoloji kelimesini bul ya da Perceptron'dan AGI'ye ilerle."},
     {property:"og:type",content:"website"},
     {name:"twitter:card",content:"summary_large_image"},
   ]}),
