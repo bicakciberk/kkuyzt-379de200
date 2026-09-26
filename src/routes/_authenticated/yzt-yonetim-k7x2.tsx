@@ -260,7 +260,7 @@ function MemberDialog({ groups, item, nextOrder, onClose }: { groups: string[]; 
     if (!v("name")) { alert("Ad soyad zorunlu."); return; }
     if (v("linkedin_url") && !/^https:\/\/([a-z0-9-]+\.)?linkedin\.com\/.+/i.test(v("linkedin_url"))) { alert("LinkedIn adresi https://www.linkedin.com/in/... biçiminde olmalı."); return; }
     s.run(async () => {
-      const row: Record<string, unknown> = { name: v("name"), department: v("department"), role: v("role"), program: v("program"), linkedin_url: v("linkedin_url") || null, sort_order: Number(v("sort_order")) || 0 };
+      const row: Record<string, unknown> = { name: v("name"), department: v("department"), role: v("role"), program: v("program"), class_year: v("class_year"), linkedin_url: v("linkedin_url") || null, sort_order: Number(v("sort_order")) || 0 };
       if (file) row["photo_url"] = await uploadImage(file, "team"); else if (removed) row["photo_url"] = null;
       if (item) check(await supabase.from("team_members").update(row as never).eq("id", item.id));
       else check(await supabase.from("team_members").insert(row as never));
@@ -272,6 +272,7 @@ function MemberDialog({ groups, item, nextOrder, onClose }: { groups: string[]; 
       <Field label="Departman" hint="Topluluk başkanı için “Topluluk” seç."><select name="department" defaultValue={item?.department ?? groups[1] ?? "Topluluk"} className={field}>{groups.map((d) => <option key={d}>{d}</option>)}</select></Field>
       <Field label="Rol"><select name="role" defaultValue={item?.role === "Üye" ? "Yönetim Kurulu" : item?.role ?? "Yönetim Kurulu"} className={field}>{ROLES.map((r) => <option key={r}>{r}</option>)}</select></Field>
       <Field label="Bölüm"><input name="program" defaultValue={item?.program ?? "Endüstri Mühendisliği"} className={field} maxLength={120} /></Field>
+      <Field label="Sınıf" hint="Opsiyonel — boş bırakılabilir."><select name="class_year" defaultValue={item?.class_year ?? ""} className={field}>{["", "Hazırlık", "1. Sınıf", "2. Sınıf", "3. Sınıf", "4. Sınıf", "Mezun"].map((c) => <option key={c} value={c}>{c || "—"}</option>)}</select></Field>
       <Field label="Sıra" hint="Küçük sayı önce gösterilir."><input name="sort_order" type="number" defaultValue={item?.sort_order ?? nextOrder} className={field} /></Field>
       <Field label="LinkedIn URL" hint="Opsiyonel — boş bırakılırsa ikon görünmez."><input name="linkedin_url" type="url" defaultValue={item?.linkedin_url ?? ""} placeholder="https://www.linkedin.com/in/..." className={field} maxLength={300} /></Field>
     </div>
