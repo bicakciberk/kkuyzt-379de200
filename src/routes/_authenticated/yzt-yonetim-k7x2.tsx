@@ -24,6 +24,7 @@ type SiteData = Awaited<ReturnType<typeof getSiteData>>;
 type Ev = SiteData["events"][number];
 type Mem = SiteData["team"][number];
 type Post = SiteData["posts"][number];
+type Fact = SiteData["facts"][number];
 
 async function uploadImage(file: File, folder: string) {
   const ext = file.name.split(".").pop()?.toLowerCase() || "jpg";
@@ -82,6 +83,7 @@ function Panel() {
             <TabsTrigger value="team" className="rounded-none px-5 py-2 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">Takım ({data.team.length})</TabsTrigger>
             <TabsTrigger value="social" className="rounded-none px-5 py-2 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">Sosyal Medya ({data.posts.length})</TabsTrigger>
             <TabsTrigger value="poster" className="rounded-none px-5 py-2 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">Hero Posteri</TabsTrigger>
+            <TabsTrigger value="facts" className="rounded-none px-5 py-2 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">Günün Bilgisi ({data.facts.length})</TabsTrigger>
             <TabsTrigger value="texts" className="rounded-none px-5 py-2 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">Sayfa Metinleri</TabsTrigger>
             <TabsTrigger value="settings" className="rounded-none px-5 py-2 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">Site Ayarları</TabsTrigger>
             <TabsTrigger value="inbox" className="rounded-none px-5 py-2 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">Başvurular / Mesajlar</TabsTrigger>
@@ -91,6 +93,7 @@ function Panel() {
           <TabsContent value="team"><TeamTab team={data.team} /></TabsContent>
           <TabsContent value="social"><SocialTab posts={data.posts} /></TabsContent>
           <TabsContent value="poster"><PosterTab poster={data.poster} /></TabsContent>
+          <TabsContent value="facts"><FactsTab facts={data.facts} /></TabsContent>
           <TabsContent value="texts"><TextsTab texts={data.texts} groups={TEXT_GROUPS} title="Sayfa Metinleri" note="Boş bırakılan alanlarda sitenin varsayılan metni gösterilir. Paragrafları boş bir satırla ayırabilirsin." /></TabsContent>
           <TabsContent value="settings"><TextsTab texts={data.texts} groups={SETTING_GROUPS} title="Site Ayarları" note="Bu bilgiler header, footer, iletişim sayfası ve ana sayfadaki tüm ilgili yerlerde kullanılır." /></TabsContent>
           <TabsContent value="inbox"><InboxTab /></TabsContent>
@@ -269,6 +272,44 @@ function FormDialog({ title, children, onClose, onSubmit, busy, error }: { title
       </form>
     </DialogContent>
   </Dialog>;
+}
+
+/* ---------- Günün Bilgisi ---------- */
+function FactsTab({ facts }: { facts: Fact[] }) {
+  const [editing, setEditing] = useState<Fact | "new" | null>(null);
+  const s = useSaver();
+  const remove = (fact: Fact) => {
+    if (window.confirm("Bu bilgi silinsin mi? Bu işlem geri alınamaz.")) s.run(async () => check(await supabase.from("daily_facts").delete().eq("id", fact.id)));
+  };
+  return <>
+    <Toolbar title="Günün Bilgisi" addLabel="Yeni Bilgi Ekle" onAdd={() => setEditing("new")} />
+    <p className="mt-2 text-sm text-muted-foreground">Bilgiler sırayla, her gün İstanbul saatine göre değişir. Sıra numarası küçük olan önce gelir.</p>
+    {s.error && <p role="alert" className="mt-3 text-sm text-destructive">{s.error}</p>}
+    <ul className="mt-4 divide-y divide-border border border-foreground bg-background">
+      {facts.map((fact, i) => <li key={fact.id} className="flex items-start gap-4 p-4"><span className="shrink-0 bg-brand-pale px-2 py-1 text-xs font-bold text-brand-dark">{String(i + 1).padStart(2, "0")}</span><p className="min-w-0 flex-1 text-sm leading-6">{fact.content}</p><RowActions onEdit={() => setEditing(fact)} onDelete={() => remove(fact)} /></li>)}
+      {!facts.length && <li className="p-6 text-sm text-muted-foreground">Henüz bilgi yok.</li>}
+    </ul>
+    {editing && <FactDialog item={editing === "new" ? null : editing} nextOrder={facts.reduce((max, fact) => Math.max(max, fact.sort_order), 0) + 1} onClose={() => setEditing(null)} />}
+  </>;
+}
+function FactDialog({ item, nextOrder, onClose }: { item: Fact | null; nextOrder: number; onClose: () => void }) {
+  const s = useSaver();
+  function submit(e: FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    const form = new FormData(e.currentTarget);
+    const content = String(form.get("content") ?? "").trim();
+    const sortOrder = Number(form.get("sort_order"));
+    if (content.length < 10 || content.length > 400 || !Number.isSafeInteger(sortOrder)) { window.alert("Bilgi 10-400 karakter olmalı; sıra için tam sayı girilmeli."); return; }
+    s.run(async () => {
+      const row = { content, sort_order: sortOrder };
+      if (item) check(await supabase.from("daily_facts").update(row).eq("id", item.id));
+      else check(await supabase.from("daily_facts").insert(row));
+    }, onClose);
+  }
+  return <FormDialog title={item ? "Bilgiyi düzenle" : "Yeni bilgi"} onClose={onClose} onSubmit={submit} busy={s.busy} error={s.error}>
+    <Field label="Bilgi *" hint="Bir ya da iki kısa cümle (10–400 karakter)."><textarea name="content" rows={4} defaultValue={item?.content} minLength={10} maxLength={400} required className={field} /></Field>
+    <Field label="Sıra" hint="Küçük sayı önce görünür."><input name="sort_order" type="number" step="1" required defaultValue={item?.sort_order ?? nextOrder} className={field} /></Field>
+  </FormDialog>;
 }
 
 /* ---------- Başvurular / Mesajlar ---------- */

@@ -13,3 +13,4 @@
 - Uploaded images go to the private `site-media` bucket, stored as `storage://path` and turned into signed URLs server-side; why: workspace blocks public buckets.
 - Form submissions are saved to `applications`/`contact_messages` (anon insert only) alongside the Web3Forms email; panel activity is logged by the `log_panel_activity` DB trigger into read-only `activity_log`; why: trigger logging cannot be skipped or forged from the browser.
 - Editable page texts and site settings (email, Instagram, address, slogan) live in key/value `site_content`, read via `useSiteText()` (src/lib/site-text.ts) with code defaults as fallback; why: one central source, editable from the panel.
+- Daily AI facts live in `daily_facts`, rotate by the Europe/Istanbul calendar day and ordered pool index, and log panel edits via a database trigger; why: every visitor sees the same daily fact and editors can maintain the pool.

@@ -1,4 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
+import { useSyncExternalStore } from "react";
 import { siteDataQuery } from "@/lib/site-data";
 
 export const DEFAULT_TEXT = {
@@ -31,8 +32,11 @@ export type TextKey = keyof typeof DEFAULT_TEXT;
 /** Site texts from the database, falling back to defaults for empty/missing values. */
 export function useSiteText() {
   const { data } = useQuery(siteDataQuery);
+  // The shared footer renders outside the home route loader. Keep its first
+  // client render identical to SSR before applying the hydrated query cache.
+  const hydrated = useSyncExternalStore(() => () => {}, () => true, () => false);
   const t = { ...DEFAULT_TEXT };
-  for (const k of Object.keys(t) as TextKey[]) { const v = data?.texts?.[k]?.trim(); if (v) t[k] = v; }
+  for (const k of Object.keys(t) as TextKey[]) { const v = hydrated ? data?.texts?.[k]?.trim() : undefined; if (v) t[k] = v; }
   const handle = t.instagram_handle.replace(/^@/, "").replace(/^https?:\/\/(www\.)?instagram\.com\//, "").replace(/\/.*$/, "");
   return { ...t, instagram_handle: handle, instagramUrl: `https://instagram.com/${handle}`, paragraphs: (k: TextKey) => t[k].split(/\n\s*\n/).map((x) => x.trim()).filter(Boolean) };
 }

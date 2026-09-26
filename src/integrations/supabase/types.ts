@@ -110,6 +110,30 @@ export type Database = {
         }
         Relationships: []
       }
+      daily_facts: {
+        Row: {
+          content: string
+          created_at: string
+          id: string
+          sort_order: number
+          updated_at: string
+        }
+        Insert: {
+          content: string
+          created_at?: string
+          id?: string
+          sort_order?: number
+          updated_at?: string
+        }
+        Update: {
+          content?: string
+          created_at?: string
+          id?: string
+          sort_order?: number
+          updated_at?: string
+        }
+        Relationships: []
+      }
       events: {
         Row: {
           category: string
