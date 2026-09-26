@@ -28,6 +28,7 @@ type Post = SiteData["posts"][number];
 type Fact = SiteData["facts"][number];
 type Milestone = SiteData["milestones"][number];
 type Partner = SiteData["partners"][number];
+type CardApplication = Database["public"]["Tables"]["yzt_card_applications"]["Row"];
 
 async function uploadImage(file: File, folder: string) {
   const ext = file.name.split(".").pop()?.toLowerCase() || "jpg";
