@@ -84,7 +84,7 @@ function getStats(records:Record<string,DailyRecord>){
   return {played:completed.length,winRate:completed.length?Math.round(wins/completed.length*100):0,longest};
 }
 
-function Games(){
+function CodeBreaker(){
   const [dateKey,setDateKey]=useState("");
   const [saved,setSaved]=useState<SavedGames>({records:{}});
   const [guesses,setGuesses]=useState<string[]>([]);
