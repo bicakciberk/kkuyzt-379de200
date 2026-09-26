@@ -45,138 +45,57 @@ export function TiltLayer() {
   return null;
 }
 
-export function HeroDotGrid() {
-  const canvasRef = useRef<HTMLCanvasElement>(null);
-  const position = useRef({ x: -1000, y: -1000, inside: false });
-  const frame = useRef(0);
+export function HeroCursorTrail() {
+  const trailRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const canvas = canvasRef.current;
-    const section = canvas?.parentElement;
-    if (!canvas || !section) return;
+    const trail = trailRef.current;
+    const section = trail?.parentElement;
+    if (!trail || !section) return;
     const pointer = window.matchMedia(DESKTOP_POINTER);
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)");
-    const context = canvas.getContext("2d");
-    if (!context) return;
+    let frame = 0;
+    let fadeTimer = 0;
+    let currentX = -100;
+    let currentY = -100;
+    let targetX = -100;
+    let targetY = -100;
 
-    const memory = "deviceMemory" in navigator ? Number(navigator.deviceMemory) : 8;
-    const reducedPerformance = navigator.hardwareConcurrency <= 4 || memory <= 4;
-
-    const makePoint = (column: number, row: number, gap: number) => {
-      const seed = column * 41 + row * 67;
-      return {
-        x: 18 + column * gap + Math.sin(seed) * gap * .16,
-        y: 18 + row * gap + Math.cos(seed * 1.37) * gap * .16,
-      };
+    const animate = () => {
+      currentX += (targetX - currentX) * .2;
+      currentY += (targetY - currentY) * .2;
+      trail.style.transform = `translate3d(${currentX}px, ${currentY}px, 0) translate(-50%, -50%)`;
+      if (Math.abs(targetX - currentX) > .2 || Math.abs(targetY - currentY) > .2) frame = requestAnimationFrame(animate);
+      else frame = 0;
     };
-
-    const draw = () => {
-      frame.current = 0;
-      const box = section.getBoundingClientRect();
-      const ratio = Math.min(window.devicePixelRatio || 1, reducedPerformance ? 1.2 : 1.5);
-      const width = Math.round(box.width);
-      const height = Math.round(box.height);
-      if (canvas.width !== Math.round(width * ratio) || canvas.height !== Math.round(height * ratio)) {
-        canvas.width = Math.round(width * ratio); canvas.height = Math.round(height * ratio);
-        canvas.style.width = `${width}px`; canvas.style.height = `${height}px`;
-      }
-      context.setTransform(ratio, 0, 0, ratio, 0, 0);
-      context.clearRect(0, 0, width, height);
-      const interactive = pointer.matches && !reduced.matches && position.current.inside;
-      const mobile = !pointer.matches;
-      const gap = mobile ? 54 : reducedPerformance ? 42 : 36;
-      const radius = reducedPerformance ? 185 : 235;
-      const columns = Math.ceil(width / gap) + 1;
-      const rows = Math.ceil(height / gap) + 1;
-      const styles = getComputedStyle(document.documentElement);
-      const midBlue = styles.getPropertyValue("--brand-mid").trim();
-      const lightBlue = styles.getPropertyValue("--brand-light").trim();
-      const points = Array.from({ length: columns * rows }, (_, index) => {
-        const column = index % columns;
-        const row = Math.floor(index / columns);
-        const point = makePoint(column, row, gap);
-        const distance = interactive
-          ? Math.hypot(point.x - position.current.x, point.y - position.current.y)
-          : Number.POSITIVE_INFINITY;
-        return { ...point, influence: Math.max(0, 1 - distance / radius) };
-      });
-
-      if (interactive && !reducedPerformance) {
-        const neighborOffsets = [[1, 0], [0, 1], [1, 1], [-1, 1]] as const;
-        context.strokeStyle = lightBlue;
-        context.lineCap = "round";
-        for (let row = 0; row < rows; row += 1) {
-          for (let column = 0; column < columns; column += 1) {
-            const point = points[row * columns + column];
-            if (!point || point.influence <= .04) continue;
-            for (const [offsetX, offsetY] of neighborOffsets) {
-              const nextColumn = column + offsetX;
-              const nextRow = row + offsetY;
-              if (nextColumn < 0 || nextColumn >= columns || nextRow >= rows) continue;
-              const neighbor = points[nextRow * columns + nextColumn];
-              if (!neighbor || neighbor.influence <= .04) continue;
-              const proximity = Math.min(point.influence, neighbor.influence);
-              const connectionDistance = Math.hypot(point.x - neighbor.x, point.y - neighbor.y);
-              const distanceStrength = Math.max(0, 1 - connectionDistance / (gap * 1.75));
-              context.globalAlpha = proximity * distanceStrength * .48;
-              context.lineWidth = .35 + proximity * distanceStrength * 1.15;
-              context.beginPath();
-              context.moveTo(point.x, point.y);
-              context.lineTo(neighbor.x, neighbor.y);
-              context.stroke();
-            }
-          }
-        }
-      }
-
-      context.fillStyle = midBlue;
-      for (const point of points) {
-        const influence = point.influence;
-        context.globalAlpha = mobile ? .12 : .13 + influence * .67;
-        if (influence > .03 && !reducedPerformance) {
-          context.shadowColor = lightBlue;
-          context.shadowBlur = 4 + influence * 18;
-        } else {
-          context.shadowBlur = 0;
-        }
-        context.beginPath();
-        context.arc(point.x, point.y, mobile ? .75 : .85 + influence * 2.55, 0, Math.PI * 2);
-        context.fill();
-
-        if (influence > .3 && !reducedPerformance) {
-          context.globalAlpha = influence * .16;
-          context.beginPath();
-          context.arc(point.x, point.y, 4 + influence * 10, 0, Math.PI * 2);
-          context.fill();
-        }
-      }
-      context.shadowBlur = 0;
-      context.globalAlpha = 1;
+    const hide = () => {
+      window.clearTimeout(fadeTimer);
+      trail.classList.remove("is-visible");
     };
-    const schedule = () => { if (!frame.current) frame.current = requestAnimationFrame(draw); };
     const onMove = (event: globalThis.PointerEvent) => {
-      if (!pointer.matches || reduced.matches) return;
+      if (!pointer.matches || reduced.matches || event.pointerType === "touch") return;
       const box = section.getBoundingClientRect();
-      position.current = { x: event.clientX - box.left, y: event.clientY - box.top, inside: true };
-      schedule();
+      targetX = event.clientX - box.left;
+      targetY = event.clientY - box.top;
+      if (currentX < 0) {
+        currentX = targetX;
+        currentY = targetY;
+      }
+      trail.classList.add("is-visible");
+      window.clearTimeout(fadeTimer);
+      fadeTimer = window.setTimeout(hide, 520);
+      if (!frame) frame = requestAnimationFrame(animate);
     };
-    const onLeave = () => { position.current.inside = false; schedule(); };
-    const observer = new ResizeObserver(schedule);
-    observer.observe(section);
+
     section.addEventListener("pointermove", onMove, { passive: true });
-    section.addEventListener("pointerleave", onLeave);
-    pointer.addEventListener("change", schedule);
-    reduced.addEventListener("change", schedule);
-    draw();
+    section.addEventListener("pointerleave", hide);
     return () => {
-      observer.disconnect();
       section.removeEventListener("pointermove", onMove);
-      section.removeEventListener("pointerleave", onLeave);
-      pointer.removeEventListener("change", schedule);
-      reduced.removeEventListener("change", schedule);
-      if (frame.current) cancelAnimationFrame(frame.current);
+      section.removeEventListener("pointerleave", hide);
+      window.clearTimeout(fadeTimer);
+      if (frame) cancelAnimationFrame(frame);
     };
   }, []);
 
-  return <canvas ref={canvasRef} className="hero-dot-grid" aria-hidden="true"/>;
+  return <div ref={trailRef} className="hero-cursor-trail" aria-hidden="true"/>;
 }

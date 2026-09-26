@@ -33,4 +33,4 @@
 - [x] “Ne Yapıyoruz” kartlarını motifler ve panelden düzenlenen verilerle zenginleştir; YZT Kart sayfası, başvurusu ve panel sekmesini ekle.
 - [x] Kod Kırıcı harf kutuları, sanal klavye, renk açıklaması ve paylaşım ızgarasını standart Wordle yeşil/sarı/gri diline geçir.
 - [x] Başkan Yardımcısı rolünü panele ekle; Takımımız'da başkanla bağlantılı, çok üyeli Yönetim alanında göster ve değişiklikleri aktiviteye kaydet.
-- [x] Hero nokta ağını bağlantı çizgileri, geniş etki alanı ve mavi ışık haleleriyle canlı nöron ağına dönüştür; mobilde sadeleştir.
+- [x] Hero nokta ağını kaldır; yalnız masaüstünde çalışan tek parçalı, düşük opaklıklı mavi fare izi ekle.

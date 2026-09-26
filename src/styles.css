@@ -60,13 +60,13 @@
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.reveal,.join-confetti-piece,.countdown-digit,::view-transition-old(root),::view-transition-new(root){animation:none}*{transition-duration:.01ms!important}.event-collage,.event-collage-title,.event-collage-mark,.event-sticker{transform:none!important}.decorative-motif{will-change:auto;transform:rotate(var(--motif-rotate,0deg))}}
 
 /* Desktop pointer interactions */
-.hero-interactive{position:relative;isolation:isolate;overflow:hidden}.hero-content{position:relative;z-index:1}.hero-dot-grid{position:absolute;inset:0;z-index:0;pointer-events:none;opacity:.88}
+.hero-interactive{position:relative;isolation:isolate;overflow:hidden}.hero-content{position:relative;z-index:1}.hero-cursor-trail{position:absolute;left:0;top:0;z-index:0;width:5rem;height:5rem;pointer-events:none;border-radius:50%;background:radial-gradient(circle,var(--color-brand-light) 0%,color-mix(in oklab,var(--color-brand-mid) 42%,transparent) 28%,transparent 72%);filter:blur(9px);opacity:0;will-change:transform,opacity;transition:opacity .72s ease-out}.hero-cursor-trail.is-visible{opacity:.2;transition-duration:.16s}
 @media(hover:hover) and (pointer:fine){
   .premium-tilt{--tilt-x:0deg;--tilt-y:0deg;--tilt-lift:0px;transform:perspective(900px) translateY(var(--tilt-lift)) rotateX(var(--tilt-x)) rotateY(var(--tilt-y));transform-style:preserve-3d;transition:transform .16s ease-out;will-change:transform}
   .event-card-offset{margin-top:3.5rem}.team-card-offset{margin-top:1rem}
 }
-@media(max-width:767px),(hover:none),(pointer:coarse){.hero-dot-grid{opacity:.36}.premium-tilt{transform:none!important}.event-card-offset,.team-card-offset{margin-top:0}}
-@media(prefers-reduced-motion:reduce){.premium-tilt{transform:none!important;will-change:auto}.hero-dot-grid{opacity:.42}}
+@media(max-width:767px),(hover:none),(pointer:coarse){.hero-cursor-trail{display:none}.premium-tilt{transform:none!important}.event-card-offset,.team-card-offset{margin-top:0}}
+@media(prefers-reduced-motion:reduce){.premium-tilt{transform:none!important;will-change:auto}.hero-cursor-trail{display:none}}
 
 /* Koyu tema */
 
