@@ -3,7 +3,8 @@ import { ArrowRight, ArrowUpRight } from "lucide-react";
 import { useEffect, useRef } from "react";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Button } from "@/components/ui/button";
-import { faqs, milestones } from "@/lib/extra-content";
+import { faqs } from "@/lib/extra-content";
+import type { Database } from "@/integrations/supabase/types";
 import { cn } from "@/lib/utils";
 
 export function FaqList({ limit }: { limit?: number }) {
@@ -18,7 +19,7 @@ export function FaqList({ limit }: { limit?: number }) {
   </Accordion>;
 }
 
-export function Timeline() {
+export function Timeline({ milestones }: { milestones: Pick<Database["public"]["Tables"]["timeline_milestones"]["Row"], "id" | "period" | "title" | "description">[] }) {
   const ref = useRef<HTMLOListElement>(null);
   useEffect(() => {
     const items = ref.current?.querySelectorAll<HTMLElement>(".timeline-item");
@@ -27,14 +28,14 @@ export function Timeline() {
     const io = new IntersectionObserver((entries) => entries.forEach((e) => { if (e.isIntersecting) { e.target.classList.add("is-visible"); io.unobserve(e.target); } }), { threshold: 0.45, rootMargin: "0px 0px -10% 0px" });
     items.forEach((el) => io.observe(el));
     return () => io.disconnect();
-  }, []);
+  }, [milestones]);
   return <ol ref={ref} className="timeline relative mt-14">
-    {milestones.map((m, i) => <li key={m.title} className={cn("timeline-item", i % 2 ? "timeline-right" : "timeline-left")}>
+    {milestones.map((m, i) => <li key={m.id} className={cn("timeline-item", i % 2 ? "timeline-right" : "timeline-left")}>
       <span className={cn("timeline-marker", `timeline-marker-${i % 3}`)} aria-hidden="true">{String(i + 1).padStart(2, "0")}</span>
       <div className="timeline-card">
-        <p className="text-xs font-bold uppercase tracking-wider text-brand-light">{m.date}</p>
+        <p className="text-xs font-bold uppercase tracking-wider text-brand-light">{m.period}</p>
         <h3 className="mt-2 font-display text-3xl">{m.title}</h3>
-        <p className="mt-2 text-sm leading-6 text-muted-foreground">{m.desc}</p>
+        <p className="mt-2 text-sm leading-6 text-muted-foreground">{m.description}</p>
       </div>
     </li>)}
   </ol>;

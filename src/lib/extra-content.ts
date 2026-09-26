@@ -34,14 +34,6 @@ export const resourceLevels: { level: string; note: string; items: Resource[] }[
   ]},
 ];
 
-export const milestones = [
-  { date: "2024 · Bahar", title: "İlk fikir", desc: "Kantinde bir soru: “Yapay zekâyı neden birlikte öğrenmiyoruz?”" },
-  { date: "2024 · Güz", title: "İlk toplantı", desc: "Bir avuç öğrenci, bir sınıf ve beyaz tahtada ilk yol haritası." },
-  { date: "2025 · Bahar", title: "İlk etkinlik", desc: "Salonu dolduran ilk seminerle topluluk kampüste görünür oldu." },
-  { date: "2025 · Güz", title: "İlk 100 üye", desc: "Ekipler kuruldu, atölyeler düzenli bir takvime kavuştu." },
-  { date: "Bugün", title: "Birlikte büyüyoruz", desc: "Dört departman, düzenli etkinlikler ve her dönem yeni yüzler." },
-] as const;
-
 export const sponsorReasons = [
   ["Sektörle bağlantı", "Şirketinizi kampüste yapay zekâ konuşan öğrencilerle doğrudan buluşturuyoruz."],
   ["Genç yeteneklere erişim", "Staj ve işe alım süreçleriniz için meraklı, üreten öğrencilerle erken tanışın."],
