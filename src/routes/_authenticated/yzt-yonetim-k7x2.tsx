@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { supabase } from "@/integrations/supabase/client";
+import type { Database } from "@/integrations/supabase/types";
 import { STORAGE_PREFIX, getSiteData } from "@/lib/site-data.functions";
 import { DEFAULT_TEXT, type TextKey } from "@/lib/site-text";
 import { PARTNER_ICONS, partnerIcon } from "@/lib/partner-icons";
@@ -28,6 +29,7 @@ type Post = SiteData["posts"][number];
 type Fact = SiteData["facts"][number];
 type Milestone = SiteData["milestones"][number];
 type Partner = SiteData["partners"][number];
+type CardApplication = Database["public"]["Tables"]["yzt_card_applications"]["Row"];
 
 async function uploadImage(file: File, folder: string) {
   const ext = file.name.split(".").pop()?.toLowerCase() || "jpg";
@@ -92,6 +94,7 @@ function Panel() {
             <TabsTrigger value="texts" className="rounded-none px-5 py-2 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">Sayfa Metinleri</TabsTrigger>
             <TabsTrigger value="settings" className="rounded-none px-5 py-2 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">Site Ayarları</TabsTrigger>
             <TabsTrigger value="inbox" className="rounded-none px-5 py-2 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">Başvurular / Mesajlar</TabsTrigger>
+            <TabsTrigger value="card-apps" className="rounded-none px-5 py-2 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">YZT Kart Başvuruları</TabsTrigger>
             <TabsTrigger value="log" className="rounded-none px-5 py-2 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">Aktivite Geçmişi</TabsTrigger>
           </TabsList>
           <TabsContent value="events"><EventsTab events={data.events} /></TabsContent>
@@ -104,6 +107,7 @@ function Panel() {
           <TabsContent value="texts"><TextsTab texts={data.texts} groups={TEXT_GROUPS} title="Sayfa Metinleri" note="Boş bırakılan alanlarda sitenin varsayılan metni gösterilir. Paragrafları boş bir satırla ayırabilirsin." /><StoryImageEditor image={data.aboutStoryImage} storedPath={data.texts["about_story_image"] ?? ""} /></TabsContent>
           <TabsContent value="settings"><TextsTab texts={data.texts} groups={SETTING_GROUPS} title="Site Ayarları" note="Bu bilgiler header, footer, iletişim sayfası ve ana sayfadaki tüm ilgili yerlerde kullanılır." /></TabsContent>
           <TabsContent value="inbox"><InboxTab /></TabsContent>
+          <TabsContent value="card-apps"><CardApplicationsTab /></TabsContent>
           <TabsContent value="log"><LogTab /></TabsContent>
         </Tabs>}
     </div>
@@ -449,8 +453,24 @@ function MilestoneDialog({ item, nextOrder, onClose }: { item: Milestone | null;
 
 /* ---------- Başvurular / Mesajlar ---------- */
 const STATUSES = ["Bekliyor", "İncelendi", "Yanıtlandı"] as const;
-const statusClass: Record<string, string> = { "Bekliyor": "bg-primary text-primary-foreground", "İncelendi": "bg-brand-pale text-foreground", "Yanıtlandı": "bg-muted text-muted-foreground" };
+const statusClass: Record<string, string> = { "Bekliyor": "bg-primary text-primary-foreground", "İncelendi": "bg-brand-pale text-foreground", "Yanıtlandı": "bg-muted text-muted-foreground", "Onaylandı": "bg-brand-mid text-background", "Teslim Edildi": "bg-muted text-muted-foreground" };
 const fmtDateTime = (d: string) => new Date(d).toLocaleString("tr-TR", { day: "numeric", month: "long", year: "numeric", hour: "2-digit", minute: "2-digit", timeZone: "Europe/Istanbul" });
+
+const CARD_STATUSES = ["Bekliyor", "Onaylandı", "Teslim Edildi"] as const;
+function CardApplicationsTab() {
+  const q = useQuery({ queryKey: ["panel", "yzt_card_applications"], queryFn: async () => check(await supabase.from("yzt_card_applications").select("*").order("created_at", { ascending: false })) ?? [] });
+  const s = useSaver();
+  const setStatus = (id: string, status: CardApplication["status"]) => s.run(async () => check(await supabase.from("yzt_card_applications").update({ status }).eq("id", id)));
+  const remove = (item: CardApplication) => { if (window.confirm(`“${item.name}” YZT Kart başvurusu silinsin mi? Bu işlem geri alınamaz.`)) s.run(async () => check(await supabase.from("yzt_card_applications").delete().eq("id", item.id))); };
+  return <>
+    <div className="mt-6"><h2 className="font-display text-2xl">YZT Kart Başvuruları</h2><p className="mt-2 text-sm text-muted-foreground">Başvurular en yeniden eskiye sıralanır. Durumu kart hazırlık ve teslim sürecine göre güncelleyebilirsin.</p></div>
+    {s.error && <p role="alert" className="mt-3 text-sm text-destructive">{s.error}</p>}
+    {q.isLoading ? <div className="grid place-items-center py-16"><Loader2 className="animate-spin"/></div> : <ul className="mt-4 divide-y divide-border border border-foreground bg-background">
+      {(q.data ?? []).map((item) => <li key={item.id} className="p-4"><div className="flex flex-wrap items-start justify-between gap-3"><div><p className="font-semibold">{item.name}</p><p className="text-xs text-muted-foreground">{fmtDateTime(item.created_at)}</p></div><div className="flex items-center gap-2"><select aria-label={`${item.name} başvuru durumu`} value={item.status} onChange={(e) => setStatus(item.id, e.target.value as CardApplication["status"])} className={`border-0 px-2 py-1 text-xs font-bold ${statusClass[item.status] ?? "bg-brand-pale text-foreground"}`}>{CARD_STATUSES.map((status) => <option key={status} value={status}>{status}</option>)}</select><Button size="icon" variant="ghost" aria-label={`${item.name} başvurusunu sil`} onClick={() => remove(item)}><Trash2/></Button></div></div><dl className="mt-3 grid gap-x-6 gap-y-1 text-sm sm:grid-cols-2"><div><dt className="inline text-muted-foreground">Bölüm: </dt><dd className="inline">{item.department}</dd></div><div><dt className="inline text-muted-foreground">Öğrenci no: </dt><dd className="inline">{item.student_no}</dd></div><div><dt className="inline text-muted-foreground">E-posta: </dt><dd className="inline"><a className="underline" href={`mailto:${item.email}`}>{item.email}</a></dd></div><div><dt className="inline text-muted-foreground">Telefon: </dt><dd className="inline">{item.phone}</dd></div></dl></li>)}
+      {!(q.data ?? []).length && <li className="p-6 text-sm text-muted-foreground">Henüz YZT Kart başvurusu yok.</li>}
+    </ul>}
+  </>;
+}
 
 function InboxTab() {
   const [view, setView] = useState<"applications" | "contact_messages">("applications");
@@ -540,7 +560,7 @@ function PosterTab({ poster }: { poster: SiteData["poster"] }) {
 type TextGroup = { title: string; fields: readonly (readonly [TextKey, string, boolean?])[] };
 const TEXT_GROUPS: TextGroup[] = [
   { title: "Ana Sayfa", fields: [["home_hero_title", "Hero başlığı"], ["home_hero_text", "Hero alt açıklaması", true], ["home_features_title", "“Bir kulüpten daha fazlası” bölüm başlığı"], ["home_feat_about", "Kart: Hakkımızda"], ["home_feat_team", "Kart: Takımımız"], ["home_feat_events", "Kart: Etkinlikler"], ["home_feat_partners", "Kart: İş Ortakları"]] },
-  { title: "Hakkımızda", fields: [["about_title", "Sayfa başlığı"], ["about_intro", "Başlık açıklaması", true], ["about_story", "Hikâyemiz metni", true], ["about_mission", "Misyonumuz metni", true], ["about_work_seminer", "Ne yapıyoruz: Seminerler", true], ["about_work_atolye", "Ne yapıyoruz: Atölyeler", true], ["about_work_gezi", "Ne yapıyoruz: Teknik geziler", true], ["about_work_paylasim", "Ne yapıyoruz: Paylaşım", true], ["about_value_merak", "Değer: Merak", true], ["about_value_paylasim", "Değer: Paylaşım", true], ["about_value_sorumluluk", "Değer: Sorumluluk", true]] },
+  { title: "Hakkımızda", fields: [["about_title", "Sayfa başlığı"], ["about_intro", "Başlık açıklaması", true], ["about_story", "Hikâyemiz metni", true], ["about_mission", "Misyonumuz metni", true], ["about_work_seminer", "Ne yapıyoruz: Seminerler", true], ["about_work_seminer_stat", "Seminerler sayısal bilgisi"], ["about_work_atolye", "Ne yapıyoruz: Atölyeler", true], ["about_work_atolye_stat", "Atölyeler sayısal bilgisi"], ["about_work_gezi", "Ne yapıyoruz: Teknik geziler", true], ["about_work_gezi_stat", "Teknik geziler sayısal bilgisi"], ["about_work_paylasim", "Ne yapıyoruz: Paylaşım", true], ["about_work_paylasim_stat", "Paylaşım sayısal bilgisi"], ["about_value_merak", "Değer: Merak", true], ["about_value_paylasim", "Değer: Paylaşım", true], ["about_value_sorumluluk", "Değer: Sorumluluk", true]] },
   { title: "Footer", fields: [["footer_tagline", "Footer açıklaması"]] },
 ];
 const SETTING_GROUPS: TextGroup[] = [

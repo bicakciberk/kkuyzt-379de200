@@ -81,3 +81,38 @@ export function ContactForm({ membership = false, defaultSubject }: { membership
     </form>
   );
 }
+
+export function YztCardForm() {
+  const [sent, setSent] = useState(false);
+  const [busy, setBusy] = useState(false);
+  const [formError, setFormError] = useState("");
+  const [errors, setErrors] = useState<Record<string, string>>({});
+  const fields: Field[] = [
+    { name: "name", label: "Ad soyad", placeholder: "Adınız ve soyadınız", required: true, max: 100 },
+    { name: "studentNo", label: "Öğrenci numarası", placeholder: "Örn. 210206001", required: true, max: 30 },
+    { name: "department", label: "Bölüm", placeholder: "Örn. Endüstri Mühendisliği", required: true, max: 120 },
+    { name: "email", label: "E-posta", type: "email", placeholder: "ad.soyad@ogrenci.kku.edu.tr", required: true, max: 255 },
+    { name: "phone", label: "Telefon", type: "tel", placeholder: "05xx xxx xx xx", required: true, max: 30 },
+  ];
+  async function submit(e: FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    if (busy) return;
+    setFormError("");
+    const form = new FormData(e.currentTarget);
+    const v = (key: string) => String(form.get(key) || "").trim();
+    const next: Record<string, string> = {};
+    fields.forEach((item) => { if (!v(item.name)) next[item.name] = "Bu alanı doldurmalısın."; });
+    if (v("email") && !/^\S+@\S+\.\S+$/.test(v("email"))) next["email"] = "Geçerli bir e-posta adresi yazmalısın.";
+    setErrors(next);
+    if (Object.keys(next).length) return;
+    setBusy(true);
+    try {
+      const result = await submitForm({ kind: "yzt_card", name: v("name"), studentNo: v("studentNo"), department: v("department"), email: v("email"), phone: v("phone") });
+      if (result.ok) { e.currentTarget.reset(); setSent(true); }
+      else setFormError(result.error);
+    } catch { setFormError("Başvuru gönderilirken bir sorun oluştu. Lütfen tekrar deneyin."); }
+    finally { setBusy(false); }
+  }
+  if (sent) return <div className="border border-primary bg-primary/10 p-8" role="status"><CheckCircle2 className="size-8 text-primary"/><h2 className="mt-5 font-display text-3xl font-semibold">YZT Kart başvurun alındı!</h2><p className="mt-3 max-w-lg leading-7 text-muted-foreground">Başvurunu inceleyip kart süreciyle ilgili seninle iletişime geçeceğiz.</p><Button variant="outline" className="mt-6" onClick={() => setSent(false)}>Yeni başvuru yap</Button></div>;
+  return <form onSubmit={submit} noValidate className="space-y-5"><div className="grid gap-5 sm:grid-cols-2">{fields.map((item) => <label key={item.name} className="text-sm font-semibold">{item.label}<input name={item.name} type={item.type || "text"} maxLength={item.max} placeholder={item.placeholder} className={base} aria-invalid={!!errors[item.name]} aria-describedby={`${item.name}-card-error`}/>{errors[item.name] && <span id={`${item.name}-card-error`} className="mt-1 block text-xs text-destructive">{errors[item.name]}</span>}</label>)}</div>{formError && <p role="alert" className="border-l-2 border-brand-dark bg-accent px-4 py-3 text-sm">{formError}</p>}<Button size="lg" type="submit" disabled={busy}>{busy ? "Gönderiliyor…" : "YZT Kart başvurusu yap"}{busy ? <Loader2 className="animate-spin"/> : <Send/>}</Button></form>;
+}
