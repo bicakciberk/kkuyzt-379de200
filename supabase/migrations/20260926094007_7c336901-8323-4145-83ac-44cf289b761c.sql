@@ -1,0 +1,1 @@
+REVOKE ALL ON FUNCTION public.log_daily_facts() FROM PUBLIC, anon, authenticated;
