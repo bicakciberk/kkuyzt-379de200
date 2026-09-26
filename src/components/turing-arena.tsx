@@ -186,9 +186,17 @@ export function TuringArena() {
                   )}
                 </div>
                 <p className="mt-4 leading-7">
-                  Bu metni <strong>{current.source === "human" ? "bir insan" : "bir yapay zekâ"}</strong> yazdı:{" "}
-                  {current.label}.
+                  {current.source === "human" ? (
+                    <>
+                      Bu metni <strong>bir insan</strong> yazdı: {current.label}.
+                    </>
+                  ) : (
+                    <>
+                      Bu metni <strong>bir yapay zekâ</strong> üretti.
+                    </>
+                  )}
                 </p>
+
                 <p className="mt-2 text-sm text-muted-foreground">{current.note}</p>
                 <Button onClick={next} className="mt-8 rounded-none">
                   {index + 1 === round.length ? "Sonucu gör" : "Sıradaki metin"}
