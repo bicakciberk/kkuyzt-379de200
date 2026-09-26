@@ -453,7 +453,7 @@ function MilestoneDialog({ item, nextOrder, onClose }: { item: Milestone | null;
 
 /* ---------- Başvurular / Mesajlar ---------- */
 const STATUSES = ["Bekliyor", "İncelendi", "Yanıtlandı"] as const;
-const statusClass: Record<string, string> = { "Bekliyor": "bg-primary text-primary-foreground", "İncelendi": "bg-brand-pale text-foreground", "Yanıtlandı": "bg-muted text-muted-foreground" };
+const statusClass: Record<string, string> = { "Bekliyor": "bg-primary text-primary-foreground", "İncelendi": "bg-brand-pale text-foreground", "Yanıtlandı": "bg-muted text-muted-foreground", "Onaylandı": "bg-brand-mid text-background", "Teslim Edildi": "bg-muted text-muted-foreground" };
 const fmtDateTime = (d: string) => new Date(d).toLocaleString("tr-TR", { day: "numeric", month: "long", year: "numeric", hour: "2-digit", minute: "2-digit", timeZone: "Europe/Istanbul" });
 
 const CARD_STATUSES = ["Bekliyor", "Onaylandı", "Teslim Edildi"] as const;

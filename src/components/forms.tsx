@@ -102,7 +102,7 @@ export function YztCardForm() {
     const v = (key: string) => String(form.get(key) || "").trim();
     const next: Record<string, string> = {};
     fields.forEach((item) => { if (!v(item.name)) next[item.name] = "Bu alanı doldurmalısın."; });
-    if (v("email") && !/^\S+@\S+\.\S+$/.test(v("email"))) next.email = "Geçerli bir e-posta adresi yazmalısın.";
+    if (v("email") && !/^\S+@\S+\.\S+$/.test(v("email"))) next["email"] = "Geçerli bir e-posta adresi yazmalısın.";
     setErrors(next);
     if (Object.keys(next).length) return;
     setBusy(true);
