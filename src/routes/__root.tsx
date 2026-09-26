@@ -11,7 +11,7 @@ import { useEffect, type ReactNode } from "react";
 import { SiteFooter, SiteHeader } from "@/components/site";
 import { JoinConfettiLayer } from "@/components/join-confetti";
 import { TiltLayer } from "@/components/premium-interactions";
-import { PageLoadingBar, ScrollTopButton, themeInitScript } from "@/components/site-extras";
+import { PageLoadingBar, ScrollTopButton } from "@/components/site-extras";
 
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
@@ -110,7 +110,6 @@ function RootShell({ children }: { children: ReactNode }) {
   return (
     <html lang="tr" suppressHydrationWarning>
       <head>
-        <script dangerouslySetInnerHTML={{ __html: themeInitScript }} />
         <HeadContent />
       </head>
       <body>
