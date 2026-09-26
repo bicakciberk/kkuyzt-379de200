@@ -13,9 +13,12 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as EventsRouteImport } from './routes/events'
+import { Route as FaqRouteImport } from './routes/faq'
 import { Route as GamesRouteImport } from './routes/games'
 import { Route as JoinRouteImport } from './routes/join'
 import { Route as PartnersRouteImport } from './routes/partners'
+import { Route as ResourcesRouteImport } from './routes/resources'
+import { Route as SponsorRouteImport } from './routes/sponsor'
 import { Route as TeamRouteImport } from './routes/team'
 import { Route as LovableEmailTransactionalPreviewRouteImport } from './routes/lovable/email/transactional/preview'
 
@@ -39,6 +42,11 @@ const EventsRoute = EventsRouteImport.update({
   path: '/events',
   getParentRoute: () => rootRouteImport,
 } as any)
+const FaqRoute = FaqRouteImport.update({
+  id: '/faq',
+  path: '/faq',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const GamesRoute = GamesRouteImport.update({
   id: '/games',
   path: '/games',
@@ -52,6 +60,16 @@ const JoinRoute = JoinRouteImport.update({
 const PartnersRoute = PartnersRouteImport.update({
   id: '/partners',
   path: '/partners',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ResourcesRoute = ResourcesRouteImport.update({
+  id: '/resources',
+  path: '/resources',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SponsorRoute = SponsorRouteImport.update({
+  id: '/sponsor',
+  path: '/sponsor',
   getParentRoute: () => rootRouteImport,
 } as any)
 const TeamRoute = TeamRouteImport.update({
@@ -71,9 +89,12 @@ export interface FileRoutesByFullPath {
   '/about': typeof AboutRoute
   '/contact': typeof ContactRoute
   '/events': typeof EventsRoute
+  '/faq': typeof FaqRoute
   '/games': typeof GamesRoute
   '/join': typeof JoinRoute
   '/partners': typeof PartnersRoute
+  '/resources': typeof ResourcesRoute
+  '/sponsor': typeof SponsorRoute
   '/team': typeof TeamRoute
   '/lovable/email/transactional/preview': typeof LovableEmailTransactionalPreviewRoute
 }
@@ -82,9 +103,12 @@ export interface FileRoutesByTo {
   '/about': typeof AboutRoute
   '/contact': typeof ContactRoute
   '/events': typeof EventsRoute
+  '/faq': typeof FaqRoute
   '/games': typeof GamesRoute
   '/join': typeof JoinRoute
   '/partners': typeof PartnersRoute
+  '/resources': typeof ResourcesRoute
+  '/sponsor': typeof SponsorRoute
   '/team': typeof TeamRoute
   '/lovable/email/transactional/preview': typeof LovableEmailTransactionalPreviewRoute
 }
@@ -94,9 +118,12 @@ export interface FileRoutesById {
   '/about': typeof AboutRoute
   '/contact': typeof ContactRoute
   '/events': typeof EventsRoute
+  '/faq': typeof FaqRoute
   '/games': typeof GamesRoute
   '/join': typeof JoinRoute
   '/partners': typeof PartnersRoute
+  '/resources': typeof ResourcesRoute
+  '/sponsor': typeof SponsorRoute
   '/team': typeof TeamRoute
   '/lovable/email/transactional/preview': typeof LovableEmailTransactionalPreviewRoute
 }
@@ -107,9 +134,12 @@ export interface FileRouteTypes {
     | '/about'
     | '/contact'
     | '/events'
+    | '/faq'
     | '/games'
     | '/join'
     | '/partners'
+    | '/resources'
+    | '/sponsor'
     | '/team'
     | '/lovable/email/transactional/preview'
   fileRoutesByTo: FileRoutesByTo
@@ -118,9 +148,12 @@ export interface FileRouteTypes {
     | '/about'
     | '/contact'
     | '/events'
+    | '/faq'
     | '/games'
     | '/join'
     | '/partners'
+    | '/resources'
+    | '/sponsor'
     | '/team'
     | '/lovable/email/transactional/preview'
   id:
@@ -129,9 +162,12 @@ export interface FileRouteTypes {
     | '/about'
     | '/contact'
     | '/events'
+    | '/faq'
     | '/games'
     | '/join'
     | '/partners'
+    | '/resources'
+    | '/sponsor'
     | '/team'
     | '/lovable/email/transactional/preview'
   fileRoutesById: FileRoutesById
@@ -141,9 +177,12 @@ export interface RootRouteChildren {
   AboutRoute: typeof AboutRoute
   ContactRoute: typeof ContactRoute
   EventsRoute: typeof EventsRoute
+  FaqRoute: typeof FaqRoute
   GamesRoute: typeof GamesRoute
   JoinRoute: typeof JoinRoute
   PartnersRoute: typeof PartnersRoute
+  ResourcesRoute: typeof ResourcesRoute
+  SponsorRoute: typeof SponsorRoute
   TeamRoute: typeof TeamRoute
   LovableEmailTransactionalPreviewRoute: typeof LovableEmailTransactionalPreviewRoute
 }
@@ -178,6 +217,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof EventsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/faq': {
+      id: '/faq'
+      path: '/faq'
+      fullPath: '/faq'
+      preLoaderRoute: typeof FaqRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/games': {
       id: '/games'
       path: '/games'
@@ -197,6 +243,20 @@ declare module '@tanstack/react-router' {
       path: '/partners'
       fullPath: '/partners'
       preLoaderRoute: typeof PartnersRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/resources': {
+      id: '/resources'
+      path: '/resources'
+      fullPath: '/resources'
+      preLoaderRoute: typeof ResourcesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/sponsor': {
+      id: '/sponsor'
+      path: '/sponsor'
+      fullPath: '/sponsor'
+      preLoaderRoute: typeof SponsorRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/team': {
@@ -221,9 +281,12 @@ const rootRouteChildren: RootRouteChildren = {
   AboutRoute: AboutRoute,
   ContactRoute: ContactRoute,
   EventsRoute: EventsRoute,
+  FaqRoute: FaqRoute,
   GamesRoute: GamesRoute,
   JoinRoute: JoinRoute,
   PartnersRoute: PartnersRoute,
+  ResourcesRoute: ResourcesRoute,
+  SponsorRoute: SponsorRoute,
   TeamRoute: TeamRoute,
   LovableEmailTransactionalPreviewRoute: LovableEmailTransactionalPreviewRoute,
 }
