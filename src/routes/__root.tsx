@@ -23,7 +23,7 @@ function NotFoundComponent() {
         <div>
           <p className="eyebrow">404 · Sayfa bulunamadı</p>
           <h1 className="mt-6 max-w-4xl font-display text-6xl leading-none sm:text-8xl">Bu sayfa henüz keşfedilmedi.</h1>
-          <p className="mt-7 max-w-lg leading-7 text-muted-foreground">Modelimiz bu adresi eğitim verisinde hiç görmemiş. Belki taşındı, belki hiç var olmadı — ana sayfadan yeniden başlayabilirsin.</p>
+          <p className="mt-7 max-w-lg leading-7 text-muted-foreground">Bu sayfayı henüz birlikte şekillendirmedik. Belki taşındı, belki hiç var olmadı — ana sayfadan yeniden başlayabilirsin.</p>
           <div className="mt-8"><Link to="/" className="inline-flex h-12 items-center bg-primary px-6 text-sm font-bold text-primary-foreground transition-colors hover:bg-primary-hover">Ana sayfaya dön</Link></div>
         </div>
         <div aria-hidden="true" className="relative mx-auto h-72 w-72">

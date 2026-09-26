@@ -79,3 +79,11 @@
 .page-loading-bar.is-running{opacity:1;transform:scaleX(.75);transition:transform 1.6s cubic-bezier(.1,.7,.2,1)}
 .page-loading-bar.is-done{opacity:0;transform:scaleX(1);transition:transform .18s ease-out,opacity .3s ease .15s}
 @media (prefers-reduced-motion:reduce){.scroll-top-button,.page-loading-bar{transition:none!important}}
+
+/* Kayan yazı şeridi */
+.marquee { overflow: hidden; }
+.marquee-track { display: flex; width: max-content; animation: marquee-scroll 30s linear infinite; }
+.marquee-item { display: flex; align-items: center; gap: 1.5rem; padding-right: 1.5rem; font-size: .78rem; font-weight: 700; text-transform: uppercase; letter-spacing: .14em; white-space: nowrap; }
+.marquee-dot { color: var(--brand-light); }
+@keyframes marquee-scroll { to { transform: translateX(-50%); } }
+@media (prefers-reduced-motion: reduce) { .marquee-track { animation: none; } }
