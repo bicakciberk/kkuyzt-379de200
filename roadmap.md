@@ -30,4 +30,4 @@
 - [x] Hakkımızda Hikâyemiz fotoğrafını Sayfa Metinleri bölümünden yükleme/değiştirme/kaldırma.
 - [x] Zaman Tüneli kayıtlarını veritabanından göster; panelde ekleme, düzenleme, silme ve sıralama sağla.
 - [x] İş Ortakları panel sekmesi
-- [ ] “Ne Yapıyoruz” kartlarını motifler ve panelden düzenlenen verilerle zenginleştir; YZT Kart sayfası, başvurusu ve panel sekmesini ekle.
+- [x] “Ne Yapıyoruz” kartlarını motifler ve panelden düzenlenen verilerle zenginleştir; YZT Kart sayfası, başvurusu ve panel sekmesini ekle.
