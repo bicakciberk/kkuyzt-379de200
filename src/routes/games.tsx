@@ -144,7 +144,7 @@ function Games(){
   const rows=Array.from({length:MAX_GUESSES},(_,row)=>guesses[row] ?? (row===guesses.length&&status==="playing"?current:""));
 
   const share=async()=>{
-    const squares=guesses.map((guess)=>scoreGuess(guess,answer).map((state)=>state==="correct"?"🟦":state==="present"?"🔹":"⬜").join("")).join("\n");
+    const squares=guesses.map((guess)=>scoreGuess(guess,answer).map((state)=>state==="correct"?"🟩":state==="present"?"🟨":"⬛").join("")).join("\n");
     const result=status==="won"?`${guesses.length}/${MAX_GUESSES}`:`X/${MAX_GUESSES}`;
     const text=`YZT Kod Kırıcı · ${dateKey} · ${result}\n\n${squares}\n\nkkuyzt.com/games`;
     try{await navigator.clipboard.writeText(text);setCopied(true);window.setTimeout(()=>setCopied(false),2200)}catch{setMessage("Sonuç kopyalanamadı.")}
@@ -174,7 +174,7 @@ function Games(){
           <p className="eyebrow">İstatistik · Bu cihaz</p><div className="mt-6 grid grid-cols-3 gap-3 lg:grid-cols-1">
             {[['Oynanan',stats.played],['Kazanma',`${stats.winRate}%`],['En uzun seri',stats.longest]].map(([label,value],index)=><div key={label} className={cn("game-stat",index===1&&"game-stat-mid",index===2&&"game-stat-pale")}><strong>{value}</strong><span>{label}</span></div>)}
           </div>
-          <div className="mt-8 border border-foreground p-5 text-sm leading-6"><p className="font-bold">Renklerin ipucu</p><div className="mt-4 space-y-3"><p className="flex items-center gap-3"><span className="size-4 bg-brand-dark"/>Doğru harf, doğru yer</p><p className="flex items-center gap-3"><span className="size-4 bg-brand-pale ring-1 ring-brand-mid"/>Doğru harf, farklı yer</p><p className="flex items-center gap-3"><span className="size-4 bg-muted-foreground"/>Bu harf kelimede yok</p></div></div>
+          <div className="mt-8 border border-foreground p-5 text-sm leading-6"><p className="font-bold">Renklerin ipucu</p><div className="mt-4 space-y-3"><p className="flex items-center gap-3"><span className="game-legend-correct size-4"/>Doğru harf, doğru yer</p><p className="flex items-center gap-3"><span className="game-legend-present size-4"/>Doğru harf, farklı yer</p><p className="flex items-center gap-3"><span className="game-legend-absent size-4"/>Bu harf kelimede yok</p></div></div>
         </aside>
       </div>
     </section>

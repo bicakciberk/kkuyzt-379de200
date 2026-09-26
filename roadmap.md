@@ -31,3 +31,4 @@
 - [x] Zaman Tüneli kayıtlarını veritabanından göster; panelde ekleme, düzenleme, silme ve sıralama sağla.
 - [x] İş Ortakları panel sekmesi
 - [x] “Ne Yapıyoruz” kartlarını motifler ve panelden düzenlenen verilerle zenginleştir; YZT Kart sayfası, başvurusu ve panel sekmesini ekle.
+- [x] Kod Kırıcı harf kutuları, sanal klavye, renk açıklaması ve paylaşım ızgarasını standart Wordle yeşil/sarı/gri diline geçir.
