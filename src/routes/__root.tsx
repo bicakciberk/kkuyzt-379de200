@@ -11,6 +11,7 @@ import { useEffect, type ReactNode } from "react";
 import { SiteFooter, SiteHeader } from "@/components/site";
 import { JoinConfettiLayer } from "@/components/join-confetti";
 import { TiltLayer } from "@/components/premium-interactions";
+import { ScrollReveal } from "@/components/scroll-reveal";
 import { PageLoadingBar, ScrollTopButton } from "@/components/site-extras";
 
 import appCss from "../styles.css?url";
@@ -131,6 +132,7 @@ function RootComponent() {
       <SiteFooter />
       <JoinConfettiLayer />
       <TiltLayer />
+      <ScrollReveal />
       <ScrollTopButton />
     </QueryClientProvider>
   );
