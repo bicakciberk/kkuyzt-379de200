@@ -4,7 +4,7 @@ import { Loader2, LockKeyhole } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
 
-export const PANEL_PATH = "/yzt-yonetim-k7x2" as const;
+import { PANEL_PATH } from "@/lib/site-data";
 
 export const Route = createFileRoute("/auth")({
   head: () => ({ meta: [

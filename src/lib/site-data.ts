@@ -34,3 +34,4 @@ export function toTeam(rows: TeamRow[]) {
   const groups = DEPARTMENTS.map((group) => ({ group, members: rows.filter((t) => t.department === group && t.role !== "Topluluk Başkanı").map(map) })).filter((g) => g.members.length);
   return { leaders, groups };
 }
+export const PANEL_PATH = "/yzt-yonetim-k7x2" as const;
