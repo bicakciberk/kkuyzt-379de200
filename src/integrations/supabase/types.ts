@@ -149,6 +149,51 @@ export type Database = {
         }
         Relationships: []
       }
+      hero_poster: {
+        Row: {
+          date_text: string
+          door_text: string
+          footer_left: string
+          footer_right: string
+          id: number
+          kicker: string
+          place_text: string
+          season: string
+          subtitle: string
+          time_text: string
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          date_text?: string
+          door_text?: string
+          footer_left?: string
+          footer_right?: string
+          id?: number
+          kicker?: string
+          place_text?: string
+          season?: string
+          subtitle?: string
+          time_text?: string
+          title?: string
+          updated_at?: string
+        }
+        Update: {
+          date_text?: string
+          door_text?: string
+          footer_left?: string
+          footer_right?: string
+          id?: number
+          kicker?: string
+          place_text?: string
+          season?: string
+          subtitle?: string
+          time_text?: string
+          title?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       social_posts: {
         Row: {
           caption: string
