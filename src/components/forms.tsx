@@ -98,7 +98,8 @@ export function YztCardForm() {
     e.preventDefault();
     if (busy) return;
     setFormError("");
-    const form = new FormData(e.currentTarget);
+    const formEl = e.currentTarget;
+    const form = new FormData(formEl);
     const v = (key: string) => String(form.get(key) || "").trim();
     const next: Record<string, string> = {};
     fields.forEach((item) => { if (!v(item.name)) next[item.name] = "Bu alanı doldurmalısın."; });
@@ -108,7 +109,7 @@ export function YztCardForm() {
     setBusy(true);
     try {
       const result = await submitForm({ kind: "yzt_card", name: v("name"), studentNo: v("studentNo"), department: v("department"), email: v("email"), phone: v("phone") });
-      if (result.ok) { e.currentTarget.reset(); setSent(true); }
+      if (result.ok) { formEl.reset(); setSent(true); }
       else setFormError(result.error);
     } catch { setFormError("Başvuru gönderilirken bir sorun oluştu. Lütfen tekrar deneyin."); }
     finally { setBusy(false); }

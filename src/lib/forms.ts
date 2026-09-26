@@ -49,7 +49,10 @@ export async function submitForm(data: FormPayload): Promise<{ ok: true } | { ok
   } catch {
     return false;
   } })();
-  const [saved, mailed] = await Promise.all([save, mail]);
-  const successful = data.kind === "yzt_card" ? saved && mailed : saved || mailed;
-  return successful ? { ok: true } : { ok: false, error: fail };
+  // Kayıt başarılıysa mail beklenmez; kayıt başarısızsa mail sonucuna (en fazla 12 sn) bakılır.
+  const saved = await save;
+  if (saved) return { ok: true };
+  const timeout = new Promise<boolean>((r) => setTimeout(() => r(false), 12000));
+  const mailed = await Promise.race([mail, timeout]);
+  return mailed ? { ok: true } : { ok: false, error: fail };
 }
