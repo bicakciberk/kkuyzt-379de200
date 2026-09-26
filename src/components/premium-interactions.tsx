@@ -56,12 +56,14 @@ export function HeroCursorTrail() {
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)");
     const context = canvas.getContext("2d");
     if (!context) return;
-    type TrailPoint = { x: number; y: number; time: number };
-    let points: TrailPoint[] = [];
+    type TrailParticle = { x: number; y: number; time: number; size: number; glow: number };
+    let particles: TrailParticle[] = [];
     let frame = 0;
     let width = 0;
     let height = 0;
-    const lifetime = 900;
+    let lastPoint: { x: number; y: number } | null = null;
+    let seed = 0;
+    const lifetime = 420;
 
     const resize = () => {
       const box = section.getBoundingClientRect();
@@ -74,57 +76,63 @@ export function HeroCursorTrail() {
       canvas.style.height = `${height}px`;
       context.setTransform(ratio, 0, 0, ratio, 0, 0);
     };
-    const drawSegment = (start: TrailPoint, control: TrailPoint, end: TrailPoint, alpha: number, glow: boolean) => {
-      context.globalAlpha = alpha;
-      context.lineWidth = glow ? 2.4 : 1.15;
-      context.shadowBlur = glow ? 8 : 0;
-      context.beginPath();
-      context.moveTo(start.x, start.y);
-      context.quadraticCurveTo(control.x, control.y, end.x, end.y);
-      context.stroke();
-    };
     const draw = (now: number) => {
       frame = 0;
       context.clearRect(0, 0, width, height);
-      points = points.filter((point) => now - point.time < lifetime);
-      if (points.length > 1) {
-        context.strokeStyle = getComputedStyle(document.documentElement).getPropertyValue("--brand-light").trim();
-        context.lineCap = "round";
-        context.lineJoin = "round";
-        context.shadowColor = getComputedStyle(document.documentElement).getPropertyValue("--brand-mid").trim();
-        for (let index = 0; index < points.length - 1; index += 1) {
-          const current = points[index];
-          const next = points[index + 1];
-          if (!current || !next) continue;
-          const previous = points[index - 1] ?? current;
-          const start = { ...current, x: (previous.x + current.x) / 2, y: (previous.y + current.y) / 2 };
-          const end = { ...next, x: (current.x + next.x) / 2, y: (current.y + next.y) / 2 };
-          const alpha = Math.max(0, 1 - (now - next.time) / lifetime);
-          drawSegment(start, current, end, alpha * .2, true);
-          drawSegment(start, current, end, alpha * .74, false);
-        }
+      particles = particles.filter((particle) => now - particle.time < lifetime);
+      const styles = getComputedStyle(document.documentElement);
+      context.fillStyle = styles.getPropertyValue("--brand-light").trim();
+      context.shadowColor = styles.getPropertyValue("--brand-mid").trim();
+      for (const particle of particles) {
+        const life = Math.max(0, 1 - (now - particle.time) / lifetime);
+        const easedLife = life * life;
+        context.globalAlpha = easedLife * particle.glow * .78;
+        context.shadowBlur = 3 + particle.size * 3.5;
+        context.beginPath();
+        context.arc(particle.x, particle.y, particle.size * (.55 + life * .45), 0, Math.PI * 2);
+        context.fill();
       }
       context.globalAlpha = 1;
       context.shadowBlur = 0;
-      if (points.length) frame = requestAnimationFrame(draw);
+      if (particles.length) frame = requestAnimationFrame(draw);
     };
     const schedule = () => { if (!frame) frame = requestAnimationFrame(draw); };
     const onMove = (event: globalThis.PointerEvent) => {
       if (!pointer.matches || reduced.matches || event.pointerType === "touch") return;
       const box = section.getBoundingClientRect();
       const point = { x: event.clientX - box.left, y: event.clientY - box.top, time: performance.now() };
-      const last = points.at(-1);
-      if (!last || Math.hypot(point.x - last.x, point.y - last.y) >= 2) points.push(point);
+      const distance = lastPoint ? Math.hypot(point.x - lastPoint.x, point.y - lastPoint.y) : 0;
+      const steps = lastPoint ? Math.min(18, Math.max(1, Math.ceil(distance / 6))) : 1;
+      for (let index = 1; index <= steps; index += 1) {
+        const progress = index / steps;
+        seed += 1;
+        const baseX = lastPoint ? lastPoint.x + (point.x - lastPoint.x) * progress : point.x;
+        const baseY = lastPoint ? lastPoint.y + (point.y - lastPoint.y) * progress : point.y;
+        const wave = Math.sin(seed * 1.73) * 1.4;
+        const size = .65 + ((seed * 37) % 11) / 10;
+        particles.push({
+          x: baseX + Math.cos(seed * .91) * wave,
+          y: baseY + Math.sin(seed * 1.17) * wave,
+          time: point.time - (steps - index) * 2,
+          size,
+          glow: .55 + ((seed * 19) % 7) / 14,
+        });
+      }
+      lastPoint = point;
+      if (particles.length > 140) particles.splice(0, particles.length - 140);
       schedule();
     };
+    const onLeave = () => { lastPoint = null; };
 
     const observer = new ResizeObserver(resize);
     observer.observe(section);
     resize();
     section.addEventListener("pointermove", onMove, { passive: true });
+    section.addEventListener("pointerleave", onLeave);
     return () => {
       observer.disconnect();
       section.removeEventListener("pointermove", onMove);
+      section.removeEventListener("pointerleave", onLeave);
       if (frame) cancelAnimationFrame(frame);
     };
   }, []);

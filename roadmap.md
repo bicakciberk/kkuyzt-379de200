@@ -34,3 +34,4 @@
 - [x] Kod Kırıcı harf kutuları, sanal klavye, renk açıklaması ve paylaşım ızgarasını standart Wordle yeşil/sarı/gri diline geçir.
 - [x] Başkan Yardımcısı rolünü panele ekle; Takımımız'da başkanla bağlantılı, çok üyeli Yönetim alanında göster ve değişiklikleri aktiviteye kaydet.
 - [x] Hero nokta ağını kaldır; yalnız masaüstünde çalışan tek parçalı, düşük opaklıklı mavi fare izi ekle.
+- [x] Hero fare izini gecikmesiz oluşan, kısa ömürlü ve değişken boyutlu mavi ışık parçacıkları akışına dönüştür.
