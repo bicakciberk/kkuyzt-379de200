@@ -328,6 +328,7 @@ export type Database = {
       }
       team_members: {
         Row: {
+          class_year: string
           created_at: string
           department: string
           id: string
@@ -339,6 +340,7 @@ export type Database = {
           sort_order: number
         }
         Insert: {
+          class_year?: string
           created_at?: string
           department: string
           id?: string
@@ -350,6 +352,7 @@ export type Database = {
           sort_order?: number
         }
         Update: {
+          class_year?: string
           created_at?: string
           department?: string
           id?: string
