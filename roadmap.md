@@ -35,3 +35,4 @@
 - [x] Başkan Yardımcısı rolünü panele ekle; Takımımız'da başkanla bağlantılı, çok üyeli Yönetim alanında göster ve değişiklikleri aktiviteye kaydet.
 - [x] Hero nokta ağını kaldır; yalnız masaüstünde çalışan tek parçalı, düşük opaklıklı mavi fare izi ekle.
 - [x] Hero fare izini gecikmesiz oluşan, kısa ömürlü ve değişken boyutlu mavi ışık parçacıkları akışına dönüştür.
+- [x] Ana sayfaya oturumda bir kez oynayan perde açılışı, daktilo sloganı ve ardından içerik belirme akışı ekle.
