@@ -29,3 +29,4 @@
 - [x] Günün Bilgisi: 40 başlangıç bilgisi, İstanbul tarihine göre günlük gösterim ve panelden yönetim.
 - [x] Hakkımızda Hikâyemiz fotoğrafını Sayfa Metinleri bölümünden yükleme/değiştirme/kaldırma.
 - [x] Zaman Tüneli kayıtlarını veritabanından göster; panelde ekleme, düzenleme, silme ve sıralama sağla.
+- [x] İş Ortakları panel sekmesi
