@@ -16,7 +16,7 @@ export function ScrollReveal() {
           if (!entry.isIntersecting) continue;
           const el = entry.target as HTMLElement;
           io.unobserve(el);
-          el.dataset.sr = "in";
+          el.dataset["sr"] = "in";
           window.setTimeout(() => {
             el.removeAttribute("data-sr");
             el.querySelectorAll<HTMLElement>("[data-sr-item]").forEach((item) => {
@@ -36,11 +36,11 @@ export function ScrollReveal() {
         if (section.parentElement?.closest("main section")) return;
         // Zaten görünür olan (ör. hero) bölümleri gizleme
         if (section.getBoundingClientRect().top < window.innerHeight * 0.9) return;
-        section.dataset.sr = "pending";
+        section.dataset["sr"] = "pending";
         section.querySelectorAll<HTMLElement>(".grid").forEach((grid) => {
           Array.from(grid.children).forEach((child, i) => {
             const c = child as HTMLElement;
-            c.dataset.srItem = "";
+            c.dataset["srItem"] = "";
             c.style.setProperty("--sr-delay", `${Math.min(i, 7) * 70}ms`);
           });
         });
