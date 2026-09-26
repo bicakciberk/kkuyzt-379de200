@@ -36,3 +36,6 @@
 - [x] Hero nokta ağını kaldır; yalnız masaüstünde çalışan tek parçalı, düşük opaklıklı mavi fare izi ekle.
 - [x] Hero fare izini gecikmesiz oluşan, kısa ömürlü ve değişken boyutlu mavi ışık parçacıkları akışına dönüştür.
 - [x] Ana sayfaya oturumda bir kez oynayan perde açılışı, daktilo sloganı ve ardından içerik belirme akışı ekle.
+
+- [x] Manyetik butonlar (Bize Katıl + hero butonları, yalnız masaüstü)
+- [x] Kart yüzeyinde fareyi takip eden ipeksi ışık (etkinlik + takım kartları)

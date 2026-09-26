@@ -48,13 +48,19 @@ export function ScrollReveal() {
       });
     };
 
-    const raf = requestAnimationFrame(scan);
-    const mo = new MutationObserver(() => scan());
+    // Hidrasyon bitene kadar DOM'a dokunmuyoruz: içerik 600 ms boyunca sabit kalınca tarıyoruz
+    let timer = 0;
+    const queueScan = () => {
+      window.clearTimeout(timer);
+      timer = window.setTimeout(scan, 600);
+    };
+    queueScan();
+    const mo = new MutationObserver(queueScan);
     const main = document.querySelector("main");
     if (main) mo.observe(main, { childList: true, subtree: true });
 
     return () => {
-      cancelAnimationFrame(raf);
+      window.clearTimeout(timer);
       mo.disconnect();
       io.disconnect();
       document.querySelectorAll("[data-sr]").forEach((el) => el.removeAttribute("data-sr"));
