@@ -14,7 +14,108 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      events: {
+        Row: {
+          category: string
+          created_at: string
+          description: string
+          event_date: string
+          event_time: string
+          id: string
+          image_url: string | null
+          is_next: boolean
+          location: string
+          title: string
+        }
+        Insert: {
+          category?: string
+          created_at?: string
+          description?: string
+          event_date: string
+          event_time?: string
+          id?: string
+          image_url?: string | null
+          is_next?: boolean
+          location?: string
+          title: string
+        }
+        Update: {
+          category?: string
+          created_at?: string
+          description?: string
+          event_date?: string
+          event_time?: string
+          id?: string
+          image_url?: string | null
+          is_next?: boolean
+          location?: string
+          title?: string
+        }
+        Relationships: []
+      }
+      social_posts: {
+        Row: {
+          caption: string
+          created_at: string
+          id: string
+          image_url: string
+          link_url: string | null
+          post_date: string
+          sort_order: number
+        }
+        Insert: {
+          caption?: string
+          created_at?: string
+          id?: string
+          image_url: string
+          link_url?: string | null
+          post_date?: string
+          sort_order?: number
+        }
+        Update: {
+          caption?: string
+          created_at?: string
+          id?: string
+          image_url?: string
+          link_url?: string | null
+          post_date?: string
+          sort_order?: number
+        }
+        Relationships: []
+      }
+      team_members: {
+        Row: {
+          created_at: string
+          department: string
+          id: string
+          name: string
+          photo_url: string | null
+          program: string
+          role: string
+          sort_order: number
+        }
+        Insert: {
+          created_at?: string
+          department: string
+          id?: string
+          name: string
+          photo_url?: string | null
+          program?: string
+          role?: string
+          sort_order?: number
+        }
+        Update: {
+          created_at?: string
+          department?: string
+          id?: string
+          name?: string
+          photo_url?: string | null
+          program?: string
+          role?: string
+          sort_order?: number
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
