@@ -237,7 +237,7 @@ function TeamTab({ team, departments }: { team: Mem[]; departments: Dept[] }) {
     <DepartmentsPanel departments={departments} team={team} />
     {orphans.length > 0 && <p className="mt-4 text-sm text-destructive">Departmanı bulunamayan üyeler: {orphans.map((m) => m.name).join(", ")}</p>}
     {TEAM_GROUPS.map((g) => { const list = team.filter((m) => m.department === g); return <div key={g} className="mt-6">
-      <h3 className="text-xs font-bold uppercase tracking-wider text-brand-dark">{g === "Topluluk" ? "Topluluk Başkanı" : g} · {list.length}</h3>
+      <h3 className="text-xs font-bold uppercase tracking-wider text-brand-dark">{g === "Topluluk" ? "Yönetim (Başkan / Başkan Yardımcıları)" : g} · {list.length}</h3>
       <ul className="mt-2 divide-y divide-border border border-foreground bg-background">
         {list.map((m) => <li key={m.id} className="flex items-center gap-4 p-3">
           <div className="size-12 shrink-0 overflow-hidden border border-input bg-muted">{m.photo_url && <img src={m.photo_url} alt="" className="size-full object-cover" />}</div>
@@ -269,7 +269,7 @@ function MemberDialog({ groups, item, nextOrder, onClose }: { groups: string[]; 
   return <FormDialog title={item ? "Üyeyi düzenle" : "Yeni üye"} onClose={onClose} onSubmit={submit} busy={s.busy} error={s.error}>
     <Field label="Ad soyad *"><input name="name" defaultValue={item?.name} className={field} maxLength={100} /></Field>
     <div className="grid gap-4 sm:grid-cols-2">
-      <Field label="Departman" hint="Topluluk başkanı için “Topluluk” seç."><select name="department" defaultValue={item?.department ?? groups[1] ?? "Topluluk"} className={field}>{groups.map((d) => <option key={d}>{d}</option>)}</select></Field>
+       <Field label="Departman" hint="Başkan ve başkan yardımcıları için “Topluluk” seç."><select name="department" defaultValue={item?.department ?? groups[1] ?? "Topluluk"} className={field}>{groups.map((d) => <option key={d}>{d}</option>)}</select></Field>
       <Field label="Rol"><select name="role" defaultValue={item?.role === "Üye" ? "Yönetim Kurulu" : item?.role ?? "Yönetim Kurulu"} className={field}>{ROLES.map((r) => <option key={r}>{r}</option>)}</select></Field>
       <Field label="Bölüm"><input name="program" defaultValue={item?.program ?? "Endüstri Mühendisliği"} className={field} maxLength={120} /></Field>
       <Field label="Sınıf" hint="Opsiyonel — boş bırakılabilir."><select name="class_year" defaultValue={item?.class_year ?? ""} className={field}>{["", "Hazırlık", "1. Sınıf", "2. Sınıf", "3. Sınıf", "4. Sınıf", "Mezun"].map((c) => <option key={c} value={c}>{c || "—"}</option>)}</select></Field>
