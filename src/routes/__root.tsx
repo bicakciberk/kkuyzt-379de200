@@ -11,18 +11,27 @@ import { useEffect, type ReactNode } from "react";
 import { SiteFooter, SiteHeader } from "@/components/site";
 import { JoinConfettiLayer } from "@/components/join-confetti";
 import { TiltLayer } from "@/components/premium-interactions";
+import { PageLoadingBar, ScrollTopButton, themeInitScript } from "@/components/site-extras";
 
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 
 function NotFoundComponent() {
   return (
-    <div className="flex min-h-screen items-center bg-foreground px-5 pt-20 text-background">
-      <div className="mx-auto w-full max-w-7xl py-20">
-        <p className="eyebrow">404 · Sayfa bulunamadı</p>
-        <h1 className="mt-6 max-w-4xl font-display text-6xl leading-none sm:text-8xl">Bazen iyi soruların da cevabı yoktur.</h1>
-        <p className="mt-7 max-w-lg leading-7 text-background/60">Aradığın sayfa taşınmış veya hiç var olmamış olabilir. Ana sayfadan yeniden başlayabilirsin.</p>
-        <div className="mt-8"><Link to="/" className="inline-flex h-12 items-center bg-primary px-6 text-sm font-bold text-primary-foreground">Ana sayfaya dön</Link></div>
+    <div className="relative flex min-h-screen items-center overflow-hidden bg-background px-5 pt-20">
+      <div className="mx-auto grid w-full max-w-7xl gap-12 py-20 lg:grid-cols-[1.4fr_1fr] lg:items-center">
+        <div>
+          <p className="eyebrow">404 · Sayfa bulunamadı</p>
+          <h1 className="mt-6 max-w-4xl font-display text-6xl leading-none sm:text-8xl">Bu sayfa henüz keşfedilmedi.</h1>
+          <p className="mt-7 max-w-lg leading-7 text-muted-foreground">Modelimiz bu adresi eğitim verisinde hiç görmemiş. Belki taşındı, belki hiç var olmadı — ana sayfadan yeniden başlayabilirsin.</p>
+          <div className="mt-8"><Link to="/" className="inline-flex h-12 items-center bg-primary px-6 text-sm font-bold text-primary-foreground transition-colors hover:bg-primary-hover">Ana sayfaya dön</Link></div>
+        </div>
+        <div aria-hidden="true" className="relative mx-auto h-72 w-72">
+          <div className="absolute inset-0 rotate-3 border border-foreground bg-poster shadow-[10px_10px_0_var(--brand-light)]" />
+          <span className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 font-display text-9xl text-primary-foreground">404</span>
+          <span className="absolute -left-4 top-6 -rotate-6 bg-brand-pale px-3 py-1 text-xs font-bold uppercase text-accent-foreground">Rota yok</span>
+          <span className="absolute -right-3 bottom-8 rotate-6 bg-background px-3 py-1 text-xs font-bold uppercase text-foreground border border-foreground">Kayıp · 01</span>
+        </div>
       </div>
     </div>
   );
@@ -74,8 +83,8 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { title: "YZT — Kırıkkale Üniversitesi Yapay Zeka Topluluğu" },
       { name: "description", content: "Kırıkkale Üniversitesi Yapay Zeka Topluluğu resmi web sitesi." },
       { name: "author", content: "YZT" },
-      { property: "og:title", content: "YZT — Kırıkkale Üniversitesi" },
-      { property: "og:description", content: "Merak eden, üreten ve paylaşan öğrenciler." },
+      { property: "og:title", content: "YZT — Yapay Zeka Topluluğu" },
+      { property: "og:description", content: "Kırıkkale Üniversitesi Yapay Zeka Topluluğu" },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
       { name: "theme-color", content: "#faf8f5" },
@@ -85,7 +94,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
         rel: "stylesheet",
         href: appCss,
       },
-      { rel: "icon", href: "/favicon.ico", type: "image/x-icon" },
+      { rel: "icon", href: "/favicon.svg", type: "image/svg+xml" },
       { rel: "preconnect", href: "https://fonts.googleapis.com" },
       { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
       { rel: "stylesheet", href: "https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Manrope:wght@400;500;600;700;800&display=swap" },
@@ -99,8 +108,9 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
 
 function RootShell({ children }: { children: ReactNode }) {
   return (
-    <html lang="en">
+    <html lang="tr" suppressHydrationWarning>
       <head>
+        <script dangerouslySetInnerHTML={{ __html: themeInitScript }} />
         <HeadContent />
       </head>
       <body>
@@ -116,11 +126,13 @@ function RootComponent() {
 
   return (
     <QueryClientProvider client={queryClient}>
+      <PageLoadingBar />
       <SiteHeader />
       <main><Outlet /></main>
       <SiteFooter />
       <JoinConfettiLayer />
       <TiltLayer />
+      <ScrollTopButton />
     </QueryClientProvider>
   );
 }
