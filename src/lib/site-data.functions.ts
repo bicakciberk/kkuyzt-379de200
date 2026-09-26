@@ -21,12 +21,13 @@ export const getSiteData = createServerFn({ method: "GET" }).handler(async () =>
       },
     },
   });
-  const [ev, tm, ps, hp, tx] = await Promise.all([
+  const [ev, tm, ps, hp, tx, factsResult] = await Promise.all([
     sb.from("events").select("*").order("event_date", { ascending: false }),
     sb.from("team_members").select("*").order("sort_order").order("created_at"),
     sb.from("social_posts").select("*").order("sort_order").order("post_date", { ascending: false }),
     sb.from("hero_poster").select("*").eq("id", 1).maybeSingle(),
     sb.from("site_content").select("key, value"),
+    sb.from("daily_facts").select("*").order("sort_order").order("created_at").order("id"),
   ]);
   if (ev.error || tm.error || ps.error) console.error("site data", ev.error ?? tm.error ?? ps.error);
   const events = ev.data ?? [];
@@ -48,6 +49,7 @@ export const getSiteData = createServerFn({ method: "GET" }).handler(async () =>
     posts: posts.map((p) => ({ ...p, image_url: resolve(p.image_url) ?? "" })).filter((p) => p.image_url),
     poster: hp.data ?? null,
     texts: Object.fromEntries((tx.data ?? []).map((r) => [r.key, r.value])) as Record<string, string>,
+    facts: factsResult.data ?? [],
     ok: !ev.error && !tm.error && !ps.error,
   };
 });

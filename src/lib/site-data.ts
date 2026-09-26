@@ -4,6 +4,17 @@ import type { EventRow, TeamRow } from "./site-data.functions";
 
 export const siteDataQuery = queryOptions({ queryKey: ["site-data"], queryFn: () => getSiteData() });
 
+export function dailyFactIndex(dateKey: string, count: number) {
+  if (count === 0) return -1;
+  const [year, month, day] = dateKey.split("-").map(Number);
+  const ordinal = Math.floor(Date.UTC(year ?? 2026, (month ?? 1) - 1, day ?? 1) / 86400000);
+  return ((ordinal % count) + count) % count;
+}
+
+export function istanbulDateKey(date = new Date()) {
+  return new Intl.DateTimeFormat("en-CA", { timeZone: "Europe/Istanbul", year: "numeric", month: "2-digit", day: "2-digit" }).format(date);
+}
+
 export const EVENT_CATEGORIES = ["Seminer", "Atölye", "Teknik Gezi", "Söyleşi", "Topluluk"] as const;
 export const DEPARTMENTS = ["Organizasyon", "Dış İlişkiler", "Sosyal Medya", "Tanıtım"] as const;
 export const ROLES = ["Topluluk Başkanı", "Departman Başkanı", "Üye"] as const;

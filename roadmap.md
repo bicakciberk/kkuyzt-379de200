@@ -26,3 +26,4 @@
 - [x] Koyu mod, 404, yukarı çık, favicon, paylaşım görseli, yükleme çubuğu
 - [x] Kaynaklar sayfası, SSS (ana sayfa + sayfa + üyelik), Hakkımızda zaman tüneli, Destek Ol sayfası + ana sayfa çağrısı, "Daha Fazla" menüsü
 - [x] Yönetim paneli: veritabanı, giriş, etkinlik/takım/sosyal medya yönetimi
+- [x] Günün Bilgisi: 40 başlangıç bilgisi, İstanbul tarihine göre günlük gösterim ve panelden yönetim.
