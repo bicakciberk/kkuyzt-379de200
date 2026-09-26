@@ -3,6 +3,8 @@ import { CalendarDays, Check, Copy, CornerDownLeft, Delete } from "lucide-react"
 import { useCallback, useEffect, useMemo, useState, type CSSProperties } from "react";
 import { Button } from "@/components/ui/button";
 import { AiEvolution } from "@/components/ai-evolution";
+import { TuringArena } from "@/components/turing-arena";
+
 import { DecorativeMotif } from "@/components/site";
 import { cn } from "@/lib/utils";
 
@@ -23,12 +25,13 @@ type SavedGames = { records:Record<string,DailyRecord> };
 
 export const Route = createFileRoute("/games")({
   head:()=>({meta:[
-    {title:"Mini Oyunlar — Kod Kırıcı ve AI Evrimi | YZT"},
-    {name:"description",content:"YZT'nin mini oyunları: her gün yenilenen kelime oyunu Kod Kırıcı ve yapay zekâ tarihini birleştirdiğin AI Evrimi."},
-    {property:"og:title",content:"Mini Oyunlar — Kod Kırıcı ve AI Evrimi | YZT"},
-    {property:"og:description",content:"Altı tahminde günün teknoloji kelimesini bul ya da Perceptron'dan AGI'ye ilerle."},
+    {title:"Mini Oyunlar — Kod Kırıcı, AI Evrimi ve Turing Arenası | YZT"},
+    {name:"description",content:"YZT'nin mini oyunları: günlük kelime oyunu Kod Kırıcı, yapay zekâ tarihini birleştirdiğin AI Evrimi ve metinlerin kime ait olduğunu tahmin ettiğin İnsan mı, Yapay Zekâ mı?"},
+    {property:"og:title",content:"Mini Oyunlar — Kod Kırıcı, AI Evrimi ve Turing Arenası | YZT"},
+    {property:"og:description",content:"Günün kelimesini bul, Perceptron'dan AGI'ye ilerle ya da metni insanın mı yapay zekânın mı yazdığını tahmin et."},
     {property:"og:type",content:"website"},
     {name:"twitter:card",content:"summary_large_image"},
+
   ]}),
   component:Games,
 });
@@ -177,7 +180,9 @@ function CodeBreaker(){
 const GAMES = [
   { id: "kod-kirici", label: "Kod Kırıcı", title: "Kod Kırıcı", intro: "Günün teknoloji kelimesini altı tahminde çöz. Her gün tek kelime, tek hak." },
   { id: "ai-evrimi", label: "AI Evrimi", title: "AI Evrimi", intro: "Aynı modelleri birleştir: Perceptron'dan başla, 2048'de yapay genel zekâya ulaş." },
+  { id: "turing", label: "İnsan mı, AI mı?", title: "İnsan mı, Yapay Zekâ mı?", intro: "Beş metin, iki seçenek. Kimin yazdığını bilebilecek misin?" },
 ] as const;
+
 
 function Games(){
   const [active,setActive]=useState<(typeof GAMES)[number]["id"]>("kod-kirici");
@@ -196,7 +201,7 @@ function Games(){
       </div>
     </section>
     <section className="mx-auto max-w-7xl px-5 py-12 lg:px-8 lg:py-20">
-      {active==="kod-kirici"?<CodeBreaker/>:<AiEvolution/>}
+      {active==="kod-kirici"?<CodeBreaker/>:active==="ai-evrimi"?<AiEvolution/>:<TuringArena/>}
     </section>
   </>;
 }
