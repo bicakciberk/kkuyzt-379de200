@@ -6,7 +6,7 @@ import { submitForm } from "@/lib/forms";
 type Field = { name: string; label: string; type?: string; placeholder: string; required?: boolean; max: number };
 const base = "mt-2 w-full border border-input bg-background px-4 py-3 text-sm outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/20";
 
-export function ContactForm({ membership = false }: { membership?: boolean }) {
+export function ContactForm({ membership = false, defaultSubject }: { membership?: boolean; defaultSubject?: string }) {
   const send = (args: { data: Parameters<typeof submitForm>[0] }) => submitForm(args.data);
   const [sent, setSent] = useState(false);
   const [busy, setBusy] = useState(false);
@@ -64,7 +64,7 @@ export function ContactForm({ membership = false }: { membership?: boolean }) {
       <div className="grid gap-5 sm:grid-cols-2">
         {fields.map((f) => (
           <label key={f.name} className="text-sm font-semibold">{f.label}
-            <input name={f.name} type={f.type || "text"} maxLength={f.max} placeholder={f.placeholder} className={base} aria-invalid={!!errors[f.name]} aria-describedby={`${f.name}-error`} />
+            <input name={f.name} type={f.type || "text"} maxLength={f.max} placeholder={f.placeholder} defaultValue={f.name === "subject" ? defaultSubject : undefined} className={base} aria-invalid={!!errors[f.name]} aria-describedby={`${f.name}-error`} />
             {errors[f.name] && <span id={`${f.name}-error`} className="mt-1 block text-xs text-destructive">{errors[f.name]}</span>}
           </label>
         ))}
