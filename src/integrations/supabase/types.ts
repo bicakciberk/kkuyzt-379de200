@@ -365,6 +365,39 @@ export type Database = {
         }
         Relationships: []
       }
+      yzt_card_applications: {
+        Row: {
+          created_at: string
+          department: string
+          email: string
+          id: string
+          name: string
+          phone: string
+          status: string
+          student_no: string
+        }
+        Insert: {
+          created_at?: string
+          department: string
+          email: string
+          id?: string
+          name: string
+          phone: string
+          status?: string
+          student_no: string
+        }
+        Update: {
+          created_at?: string
+          department?: string
+          email?: string
+          id?: string
+          name?: string
+          phone?: string
+          status?: string
+          student_no?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
