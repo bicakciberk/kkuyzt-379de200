@@ -44,7 +44,7 @@ export function SiteHeader() {
       </Link>
       <nav className="hidden items-center gap-5 xl:gap-7 lg:flex" aria-label="Ana menü">{mainNav.map(([to,label]) => <Link key={to} to={to} className={cn("text-sm font-medium transition-colors hover:text-primary", pathname===to ? "text-primary" : "text-foreground")}>{label}</Link>)}<MoreMenu pathname={pathname}/></nav>
       <div className="flex items-center gap-2">
-        <Button asChild className="hidden sm:inline-flex"><Link to="/join" onClick={(event) => launchJoinConfetti(event.currentTarget)}>Bize Katıl <ArrowRight/></Link></Button>
+        <Button asChild className="magnetic hidden sm:inline-flex" data-magnetic=""><Link to="/join" onClick={(event) => launchJoinConfetti(event.currentTarget)}>Bize Katıl <ArrowRight/></Link></Button>
         <Button variant="ghost" size="icon" className="lg:hidden" onClick={() => setOpen(!open)} aria-expanded={open} aria-controls="mobile-menu" aria-label={open ? "Menüyü kapat" : "Menüyü aç"}>{open ? <X/> : <Menu/>}</Button>
       </div>
     </div>
