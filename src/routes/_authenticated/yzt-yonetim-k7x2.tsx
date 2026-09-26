@@ -206,6 +206,7 @@ function MemberDialog({ item, nextOrder, onClose }: { item: Mem | null; nextOrde
     e.preventDefault();
     const f = new FormData(e.currentTarget); const v = (k: string) => String(f.get(k) ?? "").trim();
     if (!v("name")) { alert("Ad soyad zorunlu."); return; }
+    if (v("linkedin_url") && !/^https:\/\/([a-z0-9-]+\.)?linkedin\.com\/.+/i.test(v("linkedin_url"))) { alert("LinkedIn adresi https://www.linkedin.com/in/... biçiminde olmalı."); return; }
     s.run(async () => {
       const row: Record<string, unknown> = { name: v("name"), department: v("department"), role: v("role"), program: v("program"), linkedin_url: v("linkedin_url") || null, sort_order: Number(v("sort_order")) || 0 };
       if (file) row["photo_url"] = await uploadImage(file, "team"); else if (removed) row["photo_url"] = null;
@@ -220,6 +221,7 @@ function MemberDialog({ item, nextOrder, onClose }: { item: Mem | null; nextOrde
       <Field label="Rol"><select name="role" defaultValue={item?.role === "Üye" ? "Yönetim Kurulu" : item?.role ?? "Yönetim Kurulu"} className={field}>{ROLES.map((r) => <option key={r}>{r}</option>)}</select></Field>
       <Field label="Bölüm"><input name="program" defaultValue={item?.program ?? "Endüstri Mühendisliği"} className={field} maxLength={120} /></Field>
       <Field label="Sıra" hint="Küçük sayı önce gösterilir."><input name="sort_order" type="number" defaultValue={item?.sort_order ?? nextOrder} className={field} /></Field>
+      <Field label="LinkedIn URL" hint="Opsiyonel — boş bırakılırsa ikon görünmez."><input name="linkedin_url" type="url" defaultValue={item?.linkedin_url ?? ""} placeholder="https://www.linkedin.com/in/..." className={field} maxLength={300} /></Field>
     </div>
     <ImageField current={item?.photo_url ?? null} onFile={(f) => { setFile(f); setRemoved(false); }} onRemove={() => { setFile(null); setRemoved(true); }} />
   </FormDialog>;
