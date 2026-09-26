@@ -200,7 +200,7 @@ function Games(){
       </div>
     </section>
     <section className="mx-auto max-w-7xl px-5 py-12 lg:px-8 lg:py-20">
-      {active==="kod-kirici"?<CodeBreaker/>:<AiEvolution/>}
+      {active==="kod-kirici"?<CodeBreaker/>:active==="ai-evrimi"?<AiEvolution/>:<TuringArena/>}
     </section>
   </>;
 }
