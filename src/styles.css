@@ -63,6 +63,15 @@
 .evo-score{min-width:6rem;border:1px solid var(--color-foreground);background:var(--color-brand-dark);padding:.7rem 1rem;color:var(--color-background);box-shadow:4px 4px 0 var(--color-brand-light)}.evo-score strong{display:block;font-family:var(--font-display);font-size:1.75rem;line-height:1}.evo-score span{display:block;margin-top:.3rem;font-size:.55rem;font-weight:800;text-transform:uppercase;letter-spacing:.08em}.evo-score-alt{background:var(--color-brand-pale);color:var(--color-brand-dark);box-shadow:4px 4px 0 var(--color-brand-mid)}
 .evo-legend{display:grid;grid-template-columns:3.2rem 1fr auto;align-items:center;gap:.6rem;border-bottom:1px solid var(--color-border);padding-bottom:.4rem;opacity:.5}.evo-legend-reached{opacity:1;border-color:var(--color-brand-mid)}
 .game-tab{border:1px solid var(--color-foreground);background:var(--color-background);padding:.65rem 1.25rem;font-size:.7rem;font-weight:800;text-transform:uppercase;letter-spacing:.08em;box-shadow:3px 3px 0 var(--color-border)}.game-tab-active{background:var(--color-brand-dark);color:var(--color-background);box-shadow:3px 3px 0 var(--color-brand-light)}
+.turing-quote{box-shadow:6px 6px 0 var(--color-brand-pale)}
+.turing-choice{display:block;width:100%;border:1px solid var(--color-foreground);background:var(--color-background);padding:1.5rem;text-align:left;box-shadow:4px 4px 0 var(--color-border);transition:transform .16s ease-out,box-shadow .16s ease-out,background-color .16s ease-out}
+.turing-choice:hover{transform:translate(-2px,-2px);box-shadow:7px 7px 0 var(--color-brand-light);background:var(--color-brand-pale)}
+.turing-choice:focus-visible{outline:2px solid var(--color-brand-mid);outline-offset:3px}
+.turing-pip{display:block;width:1.1rem;height:1.1rem;border:1px solid var(--color-foreground)}
+.turing-pip-idle{background:var(--color-background)}.turing-pip-hit{background:var(--color-brand-mid)}.turing-pip-miss{background:var(--color-brand-pale)}
+.turing-mark{display:inline-flex;align-items:center;justify-content:center;width:1.75rem;height:1.75rem;border:1px solid var(--color-foreground)}
+.turing-mark-hit{background:var(--color-brand-mid);color:var(--color-background)}.turing-mark-miss{background:var(--color-brand-pale);color:var(--color-brand-dark)}
+
 @media(max-width:639px){.game-board{gap:.38rem}.game-tile{box-shadow:3px 3px 0 var(--color-border)}.game-keyboard-row{gap:.18rem}.game-key{height:3rem;flex-basis:2.25rem;font-size:.68rem}.game-key-wide{flex-basis:3.1rem}.game-message{margin-top:1rem}.evo-board{gap:.35rem}.evo-tile{box-shadow:3px 3px 0 var(--color-border)}}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.reveal,.join-confetti-piece,.countdown-digit,::view-transition-old(root),::view-transition-new(root){animation:none}*{transition-duration:.01ms!important}.event-collage,.event-collage-title,.event-collage-mark,.event-sticker{transform:none!important}.decorative-motif{will-change:auto;transform:rotate(var(--motif-rotate,0deg))}}
 
