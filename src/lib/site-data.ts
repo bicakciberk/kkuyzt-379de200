@@ -17,7 +17,7 @@ export function istanbulDateKey(date = new Date()) {
 
 export const EVENT_CATEGORIES = ["Seminer", "Atölye", "Teknik Gezi", "Söyleşi", "Topluluk"] as const;
 export const DEPARTMENTS = ["Organizasyon", "Dış İlişkiler", "Sosyal Medya", "Tanıtım"] as const;
-export const ROLES = ["Topluluk Başkanı", "Departman Başkanı", "Yönetim Kurulu"] as const;
+export const ROLES = ["Topluluk Başkanı", "Başkan Yardımcısı", "Departman Başkanı", "Yönetim Kurulu"] as const;
 
 export function formatTrDate(iso: string) {
   const [y, m, d] = iso.split("-").map(Number);
@@ -41,8 +41,9 @@ export function nextEvent(events: UiEvent[]) {
 export type UiMember = { id: string; name: string; role: string; program: string; classYear: string; photo: string | null; linkedin: string | null };
 export function toTeam(rows: TeamRow[], departments: readonly { name: string }[] = DEPARTMENTS.map((name) => ({ name }))) {
   const map = (t: TeamRow): UiMember => ({ id: t.id, name: t.name, role: t.role === "Üye" ? "Yönetim Kurulu" : t.role, program: t.program, classYear: t.class_year, photo: t.photo_url, linkedin: t.linkedin_url });
-  const leaders = rows.filter((t) => t.department === "Topluluk" || t.role === "Topluluk Başkanı").map(map);
-  const groups = departments.map(({ name: group }) => ({ group, members: rows.filter((t) => t.department === group && t.role !== "Topluluk Başkanı").map(map) })).filter((g) => g.members.length);
-  return { leaders, groups };
+  const leaders = rows.filter((t) => t.role === "Topluluk Başkanı" || (t.department === "Topluluk" && t.role !== "Başkan Yardımcısı")).map(map);
+  const deputies = rows.filter((t) => t.role === "Başkan Yardımcısı").map(map);
+  const groups = departments.map(({ name: group }) => ({ group, members: rows.filter((t) => t.department === group && t.role !== "Topluluk Başkanı" && t.role !== "Başkan Yardımcısı").map(map) })).filter((g) => g.members.length);
+  return { leaders, deputies, groups };
 }
 export const PANEL_PATH = "/yzt-yonetim-k7x2" as const;

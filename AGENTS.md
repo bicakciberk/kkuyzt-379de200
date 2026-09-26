@@ -17,3 +17,4 @@
 - Daily AI facts live in `daily_facts`, rotate by the Europe/Istanbul calendar day and ordered pool index, and log panel edits via a database trigger; why: every visitor sees the same daily fact and editors can maintain the pool.
 - Hakkımızda timeline milestones live in `timeline_milestones`, read through `getSiteData` and logged by a database trigger; why: editors can reorder and maintain the public history without code changes.
 - Partners live in `partners` table via getSiteData, logged by DB trigger; why: editable from panel.
+- Team leadership groups by role in `toTeam`; why: deputies appear once, next to the president.
