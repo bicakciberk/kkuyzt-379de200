@@ -55,7 +55,7 @@ function useSaver() {
   const [error, setError] = useState("");
   async function run(fn: () => Promise<unknown>, done?: () => void) {
     setBusy(true); setError("");
-    try { await fn(); await qc.invalidateQueries({ queryKey: siteDataQuery.queryKey }); done?.(); }
+    try { await fn(); await qc.invalidateQueries({ queryKey: siteDataQuery.queryKey }); await qc.invalidateQueries({ queryKey: ["panel"] }); done?.(); }
     catch (e) { setError(e instanceof Error && e.message.startsWith("Görsel") ? e.message : "Kaydedilemedi. Lütfen alanları kontrol edip tekrar dene."); }
     finally { setBusy(false); }
   }
@@ -80,10 +80,14 @@ function Panel() {
             <TabsTrigger value="events" className="rounded-none px-5 py-2 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">Etkinlikler ({data.events.length})</TabsTrigger>
             <TabsTrigger value="team" className="rounded-none px-5 py-2 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">Takım ({data.team.length})</TabsTrigger>
             <TabsTrigger value="social" className="rounded-none px-5 py-2 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">Sosyal Medya ({data.posts.length})</TabsTrigger>
+            <TabsTrigger value="inbox" className="rounded-none px-5 py-2 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">Başvurular / Mesajlar</TabsTrigger>
+            <TabsTrigger value="log" className="rounded-none px-5 py-2 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">Aktivite Geçmişi</TabsTrigger>
           </TabsList>
           <TabsContent value="events"><EventsTab events={data.events} /></TabsContent>
           <TabsContent value="team"><TeamTab team={data.team} /></TabsContent>
           <TabsContent value="social"><SocialTab posts={data.posts} /></TabsContent>
+          <TabsContent value="inbox"><InboxTab /></TabsContent>
+          <TabsContent value="log"><LogTab /></TabsContent>
         </Tabs>}
     </div>
   </section>;
@@ -258,4 +262,65 @@ function FormDialog({ title, children, onClose, onSubmit, busy, error }: { title
       </form>
     </DialogContent>
   </Dialog>;
+}
+
+/* ---------- Başvurular / Mesajlar ---------- */
+const STATUSES = ["Bekliyor", "İncelendi", "Yanıtlandı"] as const;
+const statusClass: Record<string, string> = { "Bekliyor": "bg-primary text-primary-foreground", "İncelendi": "bg-brand-pale text-foreground", "Yanıtlandı": "bg-muted text-muted-foreground" };
+const fmtDateTime = (d: string) => new Date(d).toLocaleString("tr-TR", { day: "numeric", month: "long", year: "numeric", hour: "2-digit", minute: "2-digit", timeZone: "Europe/Istanbul" });
+
+function InboxTab() {
+  const [view, setView] = useState<"applications" | "contact_messages">("applications");
+  const apps = useQuery({ queryKey: ["panel", "applications"], queryFn: async () => check(await supabase.from("applications").select("*").order("created_at", { ascending: false })) ?? [] });
+  const msgs = useQuery({ queryKey: ["panel", "contact_messages"], queryFn: async () => check(await supabase.from("contact_messages").select("*").order("created_at", { ascending: false })) ?? [] });
+  const s = useSaver();
+  const setStatus = (id: string, status: string) => s.run(async () => check(await supabase.from(view).update({ status }).eq("id", id)));
+  const remove = (id: string, name: string) => { if (window.confirm(`“${name}” kaydı silinsin mi? Bu işlem geri alınamaz.`)) s.run(async () => check(await supabase.from(view).delete().eq("id", id))); };
+  const q = view === "applications" ? apps : msgs;
+  const btn = (v: typeof view, label: string, n?: number) => <Button variant={view === v ? "default" : "outline"} onClick={() => setView(v)}>{label}{n !== undefined && ` (${n})`}</Button>;
+  const Status = ({ id, value }: { id: string; value: string }) => <select aria-label="Durum" value={value} onChange={(e) => setStatus(id, e.target.value)} className={`border-0 px-2 py-1 text-xs font-bold ${statusClass[value] ?? ""}`}>{STATUSES.map((x) => <option key={x} value={x}>{x}</option>)}</select>;
+  return <>
+    <div className="mt-6 flex flex-wrap gap-2">{btn("applications", "Üyelik Başvuruları", apps.data?.length)}{btn("contact_messages", "İletişim Mesajları", msgs.data?.length)}</div>
+    {s.error && <p className="mt-3 text-sm text-destructive">{s.error}</p>}
+    {q.isLoading ? <div className="grid place-items-center py-16"><Loader2 className="animate-spin" /></div> :
+    <ul className="mt-4 divide-y divide-border border border-foreground bg-background">
+      {view === "applications" ? (apps.data ?? []).map((a) => <li key={a.id} className="p-4">
+        <div className="flex flex-wrap items-start justify-between gap-3">
+          <div><p className="font-semibold">{a.name}</p><p className="text-xs text-muted-foreground">{fmtDateTime(a.created_at)}</p></div>
+          <div className="flex items-center gap-2"><Status id={a.id} value={a.status} /><Button size="icon" variant="ghost" aria-label="Sil" onClick={() => remove(a.id, a.name)}><Trash2 /></Button></div>
+        </div>
+        <dl className="mt-3 grid gap-x-6 gap-y-1 text-sm sm:grid-cols-2">
+          <div><dt className="inline text-muted-foreground">Bölüm: </dt><dd className="inline">{a.department}</dd></div>
+          <div><dt className="inline text-muted-foreground">Öğrenci no: </dt><dd className="inline">{a.student_no || "—"}</dd></div>
+          <div><dt className="inline text-muted-foreground">E-posta: </dt><dd className="inline"><a className="underline" href={`mailto:${a.email}`}>{a.email}</a></dd></div>
+          <div><dt className="inline text-muted-foreground">Telefon: </dt><dd className="inline">{a.phone || "—"}</dd></div>
+        </dl>
+        <p className="mt-3 whitespace-pre-wrap border-l-2 border-primary pl-3 text-sm"><span className="block text-xs font-semibold text-muted-foreground">Neden katılmak istiyor?</span>{a.message}</p>
+      </li>) : (msgs.data ?? []).map((m) => <li key={m.id} className="p-4">
+        <div className="flex flex-wrap items-start justify-between gap-3">
+          <div><p className="font-semibold">{m.subject}</p><p className="text-xs text-muted-foreground">{m.name} · <a className="underline" href={`mailto:${m.email}`}>{m.email}</a> · {fmtDateTime(m.created_at)}</p></div>
+          <div className="flex items-center gap-2"><Status id={m.id} value={m.status} /><Button size="icon" variant="ghost" aria-label="Sil" onClick={() => remove(m.id, m.subject)}><Trash2 /></Button></div>
+        </div>
+        <p className="mt-3 whitespace-pre-wrap border-l-2 border-primary pl-3 text-sm">{m.message}</p>
+      </li>)}
+      {!(q.data ?? []).length && <li className="p-6 text-sm text-muted-foreground">Henüz kayıt yok.</li>}
+    </ul>}
+  </>;
+}
+
+/* ---------- Aktivite Geçmişi ---------- */
+function LogTab() {
+  const q = useQuery({ queryKey: ["panel", "activity_log"], queryFn: async () => check(await supabase.from("activity_log").select("*").order("created_at", { ascending: false }).limit(300)) ?? [] });
+  return <>
+    <div className="mt-6"><h2 className="font-display text-2xl">Aktivite Geçmişi</h2><p className="mt-2 text-sm text-muted-foreground">Paneldeki işlemler otomatik kaydedilir. Bu kayıtlar silinemez ve değiştirilemez; son 300 işlem gösterilir.</p></div>
+    {q.isLoading ? <div className="grid place-items-center py-16"><Loader2 className="animate-spin" /></div> :
+    <ul className="mt-4 divide-y divide-border border border-foreground bg-background">
+      {(q.data ?? []).map((l) => <li key={l.id} className="flex flex-wrap items-baseline gap-x-3 gap-y-1 p-4 text-sm">
+        <span className="w-44 shrink-0 text-xs text-muted-foreground">{fmtDateTime(l.created_at)}</span>
+        <span className="bg-brand-pale px-2 py-0.5 text-[10px] font-bold uppercase">{l.section}</span>
+        <span className="min-w-0 flex-1"><strong>{l.actor_email.split("@")[0] || "Bilinmeyen"}</strong> — {l.summary}</span>
+      </li>)}
+      {!(q.data ?? []).length && <li className="p-6 text-sm text-muted-foreground">Henüz kayıtlı işlem yok.</li>}
+    </ul>}
+  </>;
 }
