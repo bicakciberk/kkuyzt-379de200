@@ -76,7 +76,7 @@
 .turing-mark-hit{background:var(--color-brand-mid);color:var(--color-background)}.turing-mark-miss{background:var(--color-brand-pale);color:var(--color-brand-dark)}
 
 @media(max-width:639px){.game-board{gap:.38rem}.game-tile{box-shadow:3px 3px 0 var(--color-border)}.game-keyboard-row{gap:.18rem}.game-key{height:3rem;flex-basis:2.25rem;font-size:.68rem}.game-key-wide{flex-basis:3.1rem}.game-message{margin-top:1rem}.evo-board{gap:.35rem}.evo-tile{box-shadow:3px 3px 0 var(--color-border)}}
-@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.reveal,.join-confetti-piece,.countdown-digit,::view-transition-old(root),::view-transition-new(root){animation:none}*{transition-duration:.01ms!important}.event-collage,.event-collage-title,.event-collage-mark,.event-sticker{transform:none!important}.decorative-motif{will-change:auto;transform:rotate(var(--motif-rotate,0deg))}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.reveal,.join-confetti-piece,.countdown-digit,.hero-intro-poster.is-visible .event-sticker-time,::view-transition-old(root),::view-transition-new(root){animation:none}*{transition-duration:.01ms!important}.event-collage,.event-collage-title,.event-collage-mark,.event-sticker{transform:none!important}.heading-rule{transform:scaleX(1)!important}.decorative-motif{will-change:auto;transform:rotate(var(--motif-rotate,0deg))}}
 
 /* Desktop pointer interactions */
 .hero-content{position:relative;z-index:1}
