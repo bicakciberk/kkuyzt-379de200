@@ -82,7 +82,7 @@ export function ContactForm({ membership = false, defaultSubject }: { membership
   );
 }
 
-export function YztCardForm() {
+export function YztCardForm({ onNameChange }: { onNameChange?: (value: string) => void } = {}) {
   const [sent, setSent] = useState(false);
   const [busy, setBusy] = useState(false);
   const [formError, setFormError] = useState("");
