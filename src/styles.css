@@ -138,3 +138,17 @@
 [data-sr] [data-sr-item]{transition:opacity .45s ease-out,transform .45s cubic-bezier(.22,.61,.36,1);transition-delay:var(--sr-delay,0ms)}
 [data-sr=pending] [data-sr-item]{opacity:0;transform:translateY(16px)}
 @media(prefers-reduced-motion:reduce){[data-sr],[data-sr] [data-sr-item]{opacity:1!important;transform:none!important;transition:none!important}}
+
+/* Etkinlik kartlarında "Takvime ekle" */
+.calendar-add { margin-top: 1.25rem; border-top: 1px solid var(--color-border); padding-top: .75rem; }
+.calendar-add-label { display: inline-flex; align-items: center; gap: .4rem; font-size: .65rem; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; color: var(--color-brand-mid); }
+.calendar-add-actions { margin-top: .55rem; display: flex; flex-wrap: wrap; gap: .5rem; }
+.calendar-add-btn { display: inline-flex; align-items: center; gap: .35rem; border: 1px solid var(--color-foreground); padding: .4rem .7rem; font-size: .7rem; font-weight: 700; text-transform: uppercase; letter-spacing: .04em; transition: background-color .18s ease, color .18s ease, transform .18s ease; }
+.calendar-add-btn:hover { background: var(--color-brand-dark); color: var(--color-background); transform: translateY(-1px); }
+.calendar-add-compact { margin-top: .9rem; }
+
+/* YZT Kart üzerindeki canlı isim */
+.yzt-card-name { display: inline-block; letter-spacing: .06em; }
+.yzt-card-name.is-filled { animation: yzt-card-name-in .34s cubic-bezier(.22,.7,.2,1) both; color: var(--color-poster-accent); letter-spacing: .1em; }
+@keyframes yzt-card-name-in { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: none; } }
+@media (prefers-reduced-motion: reduce) { .yzt-card-name.is-filled { animation: none; } .calendar-add-btn:hover { transform: none; } }
