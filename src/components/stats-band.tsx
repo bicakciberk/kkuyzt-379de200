@@ -5,11 +5,12 @@ type Stat = { value: string; label: string; note: string };
 /** Splits "450+" into prefix "", number 450, suffix "+" so the digits can count up. */
 function parse(value: string) {
   const m = value.match(/^(\D*?)(\d[\d.,]*)(\D*)$/);
-  if (!m) return null;
+  if (!m || !m[2]) return null;
   const digits = m[2].replace(/[.,]/g, "");
   const target = Number(digits);
   if (!Number.isFinite(target)) return null;
-  return { prefix: m[1], target, suffix: m[3] };
+  return { prefix: m[1] ?? "", target, suffix: m[3] ?? "" };
+
 }
 
 function Counter({ value, run }: { value: string; run: boolean }) {
