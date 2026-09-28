@@ -8,9 +8,16 @@ type Pulse = { text: string; when: string; link: string; image: string | null };
 function cleanCaption(raw: string): string {
   const firstLine = raw
     .split("\n")
-    .map(line => line.replace(/\*\*/g, "").replace(/#[^\s#]+/g, "").trim())
+    .map(line =>
+      line
+        .replace(/\*\*/g, "")
+        .replace(/#[^\s#]+/g, "")
+        .replace(/[\u{1F000}-\u{1FAFF}\u{2190}-\u{27BF}\u{FE0F}\u{2B00}-\u{2BFF}]/gu, "")
+        .trim(),
+    )
     .find(line => line.length > 12);
   const text = (firstLine ?? raw.replace(/\*\*/g, "").trim()).replace(/\s+/g, " ");
+
   return text.length > 96 ? `${text.slice(0, 95).trimEnd()}…` : text;
 }
 
