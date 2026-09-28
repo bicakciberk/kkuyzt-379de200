@@ -152,3 +152,18 @@
 .yzt-card-name.is-filled { animation: yzt-card-name-in .34s cubic-bezier(.22,.7,.2,1) both; color: var(--color-poster-accent); letter-spacing: .1em; }
 @keyframes yzt-card-name-in { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: none; } }
 @media (prefers-reduced-motion: reduce) { .yzt-card-name.is-filled { animation: none; } .calendar-add-btn:hover { transform: none; } }
+
+/* Instagram canlı nabız bandı */
+.insta-pulse { display: flex; align-items: center; gap: .7rem; border-top: 1px solid var(--color-foreground); border-bottom: 1px solid var(--color-border); padding: .6rem .1rem; text-decoration: none; animation: insta-pulse-in .5s cubic-bezier(.22,.7,.2,1) both; transition: background-color .2s ease; }
+.insta-pulse:hover { background: var(--color-muted); }
+.insta-pulse-live { display: inline-flex; align-items: center; gap: .4rem; flex-shrink: 0; font-size: .6rem; font-weight: 800; text-transform: uppercase; letter-spacing: .14em; color: var(--color-brand-dark); }
+.insta-pulse-dot { width: .42rem; height: .42rem; border-radius: 999px; background: var(--color-brand-mid); animation: insta-pulse-beat 1.9s ease-in-out infinite; }
+.insta-pulse-thumb { width: 1.6rem; height: 1.6rem; flex-shrink: 0; border: 1px solid var(--color-foreground); object-fit: cover; }
+.insta-pulse-when { flex-shrink: 0; font-size: .65rem; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; color: var(--color-brand-mid); }
+.insta-pulse-text { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: .8rem; line-height: 1.4; color: var(--color-foreground); }
+.insta-pulse-cta { display: inline-flex; align-items: center; gap: .3rem; flex-shrink: 0; font-size: .65rem; font-weight: 800; text-transform: uppercase; letter-spacing: .08em; color: var(--color-brand-dark); }
+@media (max-width: 639px) { .insta-pulse-when { display: none; } }
+@keyframes insta-pulse-in { from { opacity: 0; transform: translateY(-6px); } to { opacity: 1; transform: none; } }
+@keyframes insta-pulse-beat { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: .35; transform: scale(.72); } }
+@media (prefers-reduced-motion: reduce) { .insta-pulse { animation: none; } .insta-pulse-dot { animation: none; } }
+
