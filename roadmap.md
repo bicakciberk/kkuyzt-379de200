@@ -39,3 +39,4 @@
 
 - [x] Manyetik butonlar (Bize Katıl + hero butonları, yalnız masaüstü)
 - [x] Kart yüzeyinde fareyi takip eden ipeksi ışık (etkinlik + takım kartları)
+tail -3 roadmap.md
