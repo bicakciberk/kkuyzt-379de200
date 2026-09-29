@@ -18,6 +18,7 @@ import { Route as EventsRouteImport } from './routes/events'
 import { Route as FaqRouteImport } from './routes/faq'
 import { Route as GamesRouteImport } from './routes/games'
 import { Route as JoinRouteImport } from './routes/join'
+import { Route as ManifestoRouteImport } from './routes/manifesto'
 import { Route as PartnersRouteImport } from './routes/partners'
 import { Route as ResourcesRouteImport } from './routes/resources'
 import { Route as SponsorRouteImport } from './routes/sponsor'
@@ -70,6 +71,11 @@ const JoinRoute = JoinRouteImport.update({
   path: '/join',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ManifestoRoute = ManifestoRouteImport.update({
+  id: '/manifesto',
+  path: '/manifesto',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const PartnersRoute = PartnersRouteImport.update({
   id: '/partners',
   path: '/partners',
@@ -117,6 +123,7 @@ export interface FileRoutesByFullPath {
   '/faq': typeof FaqRoute
   '/games': typeof GamesRoute
   '/join': typeof JoinRoute
+  '/manifesto': typeof ManifestoRoute
   '/partners': typeof PartnersRoute
   '/resources': typeof ResourcesRoute
   '/sponsor': typeof SponsorRoute
@@ -134,6 +141,7 @@ export interface FileRoutesByTo {
   '/faq': typeof FaqRoute
   '/games': typeof GamesRoute
   '/join': typeof JoinRoute
+  '/manifesto': typeof ManifestoRoute
   '/partners': typeof PartnersRoute
   '/resources': typeof ResourcesRoute
   '/sponsor': typeof SponsorRoute
@@ -153,6 +161,7 @@ export interface FileRoutesById {
   '/faq': typeof FaqRoute
   '/games': typeof GamesRoute
   '/join': typeof JoinRoute
+  '/manifesto': typeof ManifestoRoute
   '/partners': typeof PartnersRoute
   '/resources': typeof ResourcesRoute
   '/sponsor': typeof SponsorRoute
@@ -172,6 +181,7 @@ export interface FileRouteTypes {
     | '/faq'
     | '/games'
     | '/join'
+    | '/manifesto'
     | '/partners'
     | '/resources'
     | '/sponsor'
@@ -189,6 +199,7 @@ export interface FileRouteTypes {
     | '/faq'
     | '/games'
     | '/join'
+    | '/manifesto'
     | '/partners'
     | '/resources'
     | '/sponsor'
@@ -207,6 +218,7 @@ export interface FileRouteTypes {
     | '/faq'
     | '/games'
     | '/join'
+    | '/manifesto'
     | '/partners'
     | '/resources'
     | '/sponsor'
@@ -226,6 +238,7 @@ export interface RootRouteChildren {
   FaqRoute: typeof FaqRoute
   GamesRoute: typeof GamesRoute
   JoinRoute: typeof JoinRoute
+  ManifestoRoute: typeof ManifestoRoute
   PartnersRoute: typeof PartnersRoute
   ResourcesRoute: typeof ResourcesRoute
   SponsorRoute: typeof SponsorRoute
@@ -297,6 +310,13 @@ declare module '@tanstack/react-router' {
       path: '/join'
       fullPath: '/join'
       preLoaderRoute: typeof JoinRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/manifesto': {
+      id: '/manifesto'
+      path: '/manifesto'
+      fullPath: '/manifesto'
+      preLoaderRoute: typeof ManifestoRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/partners': {
@@ -372,6 +392,7 @@ const rootRouteChildren: RootRouteChildren = {
   FaqRoute: FaqRoute,
   GamesRoute: GamesRoute,
   JoinRoute: JoinRoute,
+  ManifestoRoute: ManifestoRoute,
   PartnersRoute: PartnersRoute,
   ResourcesRoute: ResourcesRoute,
   SponsorRoute: SponsorRoute,
