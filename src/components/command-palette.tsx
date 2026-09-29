@@ -12,6 +12,8 @@ type Dest =
   | "/games"
   | "/partners"
   | "/yzt-card"
+  | "/manifesto"
+
   | "/sponsor"
   | "/faq"
   | "/join"
