@@ -42,3 +42,5 @@
 tail -3 roadmap.md
 
 - [x] Canlı akış şeridi hesap profiline yönlendirir (reel/post linki değil)
+
+- [x] Komut paleti / YZT Terminal (Ctrl+K): sayfa arama + gizli komutlar (help, yzt, turing, matrix, saat, clear)
