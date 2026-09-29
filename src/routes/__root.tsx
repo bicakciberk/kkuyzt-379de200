@@ -135,6 +135,7 @@ function RootComponent() {
       <TiltLayer />
       <ScrollReveal />
       <ScrollTopButton />
+      <CommandPalette />
     </QueryClientProvider>
   );
 }
