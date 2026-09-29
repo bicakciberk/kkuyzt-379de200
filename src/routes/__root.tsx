@@ -13,6 +13,7 @@ import { JoinConfettiLayer } from "@/components/join-confetti";
 import { TiltLayer } from "@/components/premium-interactions";
 import { ScrollReveal } from "@/components/scroll-reveal";
 import { PageLoadingBar, ScrollTopButton } from "@/components/site-extras";
+import { CommandPalette } from "@/components/command-palette";
 
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";

@@ -167,3 +167,34 @@
 @keyframes insta-pulse-beat { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: .35; transform: scale(.72); } }
 @media (prefers-reduced-motion: reduce) { .insta-pulse { animation: none; } .insta-pulse-dot { animation: none; } }
 
+/* Komut paleti · YZT Terminal */
+.cmdk-trigger { position: fixed; bottom: 1.25rem; left: 1.25rem; z-index: 40; display: inline-flex; align-items: center; gap: .45rem; border: 1px solid var(--color-foreground); background: var(--color-background); padding: .5rem .7rem; color: var(--color-brand-dark); box-shadow: 4px 4px 0 var(--color-brand-pale); transition: transform .18s ease, box-shadow .18s ease, background-color .18s ease; }
+.cmdk-trigger:hover { transform: translate(-2px, -2px); background: var(--color-brand-dark); color: var(--color-background); box-shadow: 6px 6px 0 var(--color-brand-light); }
+.cmdk-trigger-keys { font-family: ui-monospace, "SFMono-Regular", Menlo, monospace; font-size: .65rem; font-weight: 800; letter-spacing: .08em; }
+@media (max-width: 639px) { .cmdk-trigger { bottom: 1.25rem; left: 1rem; padding: .45rem .55rem; } .cmdk-trigger-keys { display: none; } }
+
+.cmdk-overlay { position: fixed; inset: 0; z-index: 210; display: flex; align-items: flex-start; justify-content: center; padding: 1rem; }
+.cmdk-backdrop { position: absolute; inset: 0; background: color-mix(in oklab, var(--color-brand-dark) 55%, transparent); backdrop-filter: blur(3px); animation: cmdk-fade .2s ease-out both; }
+.cmdk-panel { position: relative; margin-top: clamp(2rem, 9vh, 6rem); width: min(100%, 39rem); border: 1px solid var(--color-foreground); background: var(--color-background); box-shadow: 12px 12px 0 var(--color-brand-dark); animation: cmdk-in .24s cubic-bezier(.2,.8,.24,1) both; }
+.cmdk-head { display: flex; align-items: center; gap: .6rem; border-bottom: 1px solid var(--color-foreground); background: var(--color-brand-dark); padding: .6rem .9rem; color: var(--color-background); font-size: .62rem; font-weight: 800; text-transform: uppercase; letter-spacing: .14em; }
+.cmdk-head-dot { width: .5rem; height: .5rem; border-radius: 999px; background: var(--color-poster-accent); }
+.cmdk-head-hint { margin-left: auto; opacity: .6; letter-spacing: .08em; }
+.cmdk-input-row { display: flex; align-items: center; gap: .6rem; border-bottom: 1px solid var(--color-border); padding: .9rem 1rem; }
+.cmdk-prompt { font-family: ui-monospace, "SFMono-Regular", Menlo, monospace; font-size: .78rem; font-weight: 700; color: var(--color-brand-mid); }
+.cmdk-input { flex: 1; min-width: 0; border: 0; background: transparent; font-family: ui-monospace, "SFMono-Regular", Menlo, monospace; font-size: .9rem; color: var(--color-foreground); outline: none; }
+.cmdk-log { max-height: 11rem; overflow-y: auto; border-bottom: 1px solid var(--color-border); background: var(--color-muted); padding: .75rem 1rem; }
+.cmdk-log-block { margin: 0 0 .6rem; font-family: ui-monospace, "SFMono-Regular", Menlo, monospace; font-size: .7rem; line-height: 1.5; white-space: pre-wrap; color: var(--color-brand-dark); }
+.cmdk-log-block:last-child { margin-bottom: 0; }
+.cmdk-list { max-height: min(46vh, 22rem); overflow-y: auto; }
+.cmdk-item { display: flex; width: 100%; align-items: center; gap: .85rem; border-bottom: 1px solid var(--color-border); padding: .7rem 1rem; text-align: left; color: var(--color-foreground); }
+.cmdk-item-index { font-family: ui-monospace, monospace; font-size: .62rem; font-weight: 800; color: var(--color-brand-light); }
+.cmdk-item-main { display: flex; min-width: 0; flex-direction: column; }
+.cmdk-item-main strong { font-size: .9rem; font-weight: 700; }
+.cmdk-item-main small { font-size: .68rem; color: var(--color-muted-foreground); }
+.cmdk-item.is-active { background: var(--color-brand-pale); color: var(--color-brand-dark); }
+.cmdk-empty { padding: 1.1rem 1rem; font-size: .8rem; color: var(--color-muted-foreground); }
+.cmdk-foot { display: flex; flex-wrap: wrap; justify-content: space-between; gap: .4rem; border-top: 1px solid var(--color-foreground); padding: .55rem 1rem; font-size: .6rem; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; color: var(--color-muted-foreground); }
+@keyframes cmdk-fade { from { opacity: 0; } to { opacity: 1; } }
+@keyframes cmdk-in { from { opacity: 0; transform: translateY(-10px) scale(.985); } to { opacity: 1; transform: none; } }
+@media (prefers-reduced-motion: reduce) { .cmdk-panel, .cmdk-backdrop { animation: none; } .cmdk-trigger:hover { transform: none; } }
+
