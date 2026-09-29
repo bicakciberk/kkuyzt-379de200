@@ -47,7 +47,7 @@ export function InstaPulse() {
         setPulse({
           text: caption ? cleanCaption(caption) : "Toplulukta yeni bir paylaşım var.",
           when: relativeTr(post.timestamp ?? ""),
-          link: "https://www.instagram.com/kku_yzt/",
+          link: post.permalink ?? "https://www.instagram.com/kku_yzt/",
           image: post.sizes?.small?.mediaUrl ?? post.thumbnailUrl ?? (post.mediaType === "IMAGE" ? post.mediaUrl ?? null : null),
         });
       })
