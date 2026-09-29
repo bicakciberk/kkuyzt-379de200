@@ -44,3 +44,5 @@ tail -3 roadmap.md
 - [x] Canlı akış şeridi hesap profiline yönlendirir (reel/post linki değil)
 
 - [x] Komut paleti / YZT Terminal (Ctrl+K): sayfa arama + gizli komutlar (help, yzt, turing, matrix, saat, clear)
+- [x] YZT Manifestosu sayfası (/manifesto): beş cümle, kaydırdıkça açılan büyük puntolu satırlar; menüde "Daha Fazla" altında ve komut paletinde
+- [x] Bugünün Sorusu: ana sayfa Keşfet bölümünde, Istanbul gününe göre havuzdan dönen soru, 3 seçenek + kısa yanıt, localStorage (yzt-gunun-sorusu-v1)

@@ -12,6 +12,8 @@ type Dest =
   | "/games"
   | "/partners"
   | "/yzt-card"
+  | "/manifesto"
+
   | "/sponsor"
   | "/faq"
   | "/join"
@@ -24,6 +26,7 @@ const PAGES: ReadonlyArray<{ to: Dest; label: string; hint: string; keywords: st
   { to: "/events", label: "Etkinlikler", hint: "Atölye · Seminer · Gezi", keywords: "etkinlik event takvim atolye seminer" },
   { to: "/games", label: "Mini Oyunlar", hint: "Kod Kırıcı · AI Evrimi · Turing", keywords: "oyun games kod kirici evrim turing wordle" },
   { to: "/yzt-card", label: "YZT Kart", hint: "Üye kartı başvurusu", keywords: "kart card uyelik" },
+  { to: "/manifesto", label: "Manifesto", hint: "Beş cümlede duruşumuz", keywords: "manifesto duris ilke deger" },
   { to: "/resources", label: "Kaynaklar", hint: "Başlangıç · Orta · İleri", keywords: "kaynak resources egitim ogren" },
   { to: "/partners", label: "İş Ortakları", hint: "Destekçiler", keywords: "ortak partner sponsor" },
   { to: "/sponsor", label: "Destek Ol", hint: "Sponsorluk", keywords: "destek sponsor bagis" },
