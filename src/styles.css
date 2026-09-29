@@ -198,3 +198,37 @@
 @keyframes cmdk-in { from { opacity: 0; transform: translateY(-10px) scale(.985); } to { opacity: 1; transform: none; } }
 @media (prefers-reduced-motion: reduce) { .cmdk-panel, .cmdk-backdrop { animation: none; } .cmdk-trigger:hover { transform: none; } }
 
+/* Manifesto */
+.manifesto-line { position: relative; padding: 2.6rem 0 2.6rem 0; border-top: 1px solid var(--color-border); opacity: 0; transform: translateY(26px); transition: opacity .6s cubic-bezier(.22,.7,.2,1), transform .6s cubic-bezier(.22,.7,.2,1); }
+.manifesto-line.is-seen { opacity: 1; transform: none; }
+.manifesto-line:last-child { border-bottom: 1px solid var(--color-border); }
+.manifesto-no { font-family: ui-monospace, monospace; font-size: .68rem; font-weight: 800; letter-spacing: .18em; color: var(--color-brand-light); }
+.manifesto-word { margin-top: .6rem; font-size: clamp(2.5rem, 9vw, 5.5rem); line-height: .96; color: var(--color-brand-dark); }
+.manifesto-text { margin-top: 1.1rem; max-width: 34rem; font-size: 1rem; line-height: 1.8; color: var(--color-muted-foreground); }
+.manifesto-line-alt { padding-left: 0; }
+.manifesto-line-alt .manifesto-word, .manifesto-line-alt .manifesto-text { margin-left: auto; }
+.manifesto-line-alt { text-align: right; }
+.manifesto-rule { display: block; margin-top: 1.6rem; height: 2px; width: 100%; transform: scaleX(0); transform-origin: left center; background: var(--color-brand-mid); transition: transform .8s cubic-bezier(.22,.7,.2,1) .15s; }
+.manifesto-line-alt .manifesto-rule { transform-origin: right center; }
+.manifesto-line.is-seen .manifesto-rule { transform: scaleX(1); }
+@media (prefers-reduced-motion: reduce) { .manifesto-line { opacity: 1; transform: none; } .manifesto-rule { transform: scaleX(1); } }
+
+/* Bugünün sorusu */
+.daily-question { border: 2px solid var(--color-foreground); background: var(--color-background); padding: 1.6rem; }
+@media (min-width: 768px) { .daily-question { padding: 2.1rem 2.4rem; } }
+.daily-question-head { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: .6rem; }
+.daily-question-badge { display: inline-flex; align-items: center; gap: .45rem; background: var(--color-brand-pale); padding: .3rem .6rem; font-size: .62rem; font-weight: 800; text-transform: uppercase; letter-spacing: .14em; color: var(--color-brand-dark); }
+.daily-question-hint { font-size: .62rem; font-weight: 700; text-transform: uppercase; letter-spacing: .12em; color: var(--color-muted-foreground); }
+.daily-question-title { margin-top: 1.1rem; font-size: clamp(1.6rem, 4.6vw, 2.4rem); line-height: 1.12; }
+.daily-question-options { margin-top: 1.4rem; display: grid; gap: .6rem; }
+.daily-question-option { display: flex; align-items: center; gap: .85rem; border: 1px solid var(--color-foreground); background: var(--color-background); padding: .85rem 1rem; text-align: left; font-size: .9rem; line-height: 1.45; color: var(--color-foreground); transition: background-color .2s, color .2s, transform .2s; }
+.daily-question-option:hover { background: var(--color-foreground); color: var(--color-background); transform: translateX(3px); }
+.daily-question-option-no { font-family: ui-monospace, monospace; font-size: .62rem; font-weight: 800; color: var(--color-brand-light); }
+.daily-question-option:hover .daily-question-option-no { color: var(--color-brand-pale); }
+.daily-question-answer { margin-top: 1.3rem; border-left: 3px solid var(--color-brand-mid); padding-left: 1.1rem; }
+.daily-question-picked { font-size: .78rem; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; color: var(--color-brand-dark); }
+.daily-question-reply { margin-top: .7rem; font-size: .95rem; line-height: 1.75; color: var(--color-muted-foreground); }
+.daily-question-again { margin-top: 1.1rem; display: inline-flex; align-items: center; gap: .4rem; border-bottom: 1px solid var(--color-brand-light); font-size: .74rem; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; color: var(--color-brand-dark); }
+@media (prefers-reduced-motion: reduce) { .daily-question-option:hover { transform: none; } }
+
+
