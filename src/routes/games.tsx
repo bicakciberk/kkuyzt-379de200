@@ -25,10 +25,10 @@ type SavedGames = { records:Record<string,DailyRecord> };
 
 export const Route = createFileRoute("/games")({
   head:()=>({meta:[
-    {title:"Mini Oyunlar — Kod Kırıcı, AI Evrimi, Turing Arenası ve GTA Vice City | YZT"},
-    {name:"description",content:"YZT'nin mini oyunları: günlük kelime oyunu Kod Kırıcı, yapay zekâ tarihini birleştirdiğin AI Evrimi, metinlerin kime ait olduğunu tahmin ettiğin İnsan mı, Yapay Zekâ mı? ve tarayıcıda oynanan GTA Vice City."},
-    {property:"og:title",content:"Mini Oyunlar — Kod Kırıcı, AI Evrimi, Turing Arenası ve GTA Vice City | YZT"},
-    {property:"og:description",content:"Günün kelimesini bul, Perceptron'dan AGI'ye ilerle, metnin yazarını tahmin et ya da tarayıcıda GTA Vice City oyna."},
+    {title:"Mini Oyunlar — Kod Kırıcı, AI Evrimi ve Turing Arenası | YZT"},
+    {name:"description",content:"YZT'nin mini oyunları: günlük kelime oyunu Kod Kırıcı, yapay zekâ tarihini birleştirdiğin AI Evrimi ve metinlerin kime ait olduğunu tahmin ettiğin İnsan mı, Yapay Zekâ mı?"},
+    {property:"og:title",content:"Mini Oyunlar — Kod Kırıcı, AI Evrimi ve Turing Arenası | YZT"},
+    {property:"og:description",content:"Günün kelimesini bul, Perceptron'dan AGI'ye ilerle, metnin yazarını tahmin et."},
     {property:"og:type",content:"website"},
     {name:"twitter:card",content:"summary_large_image"},
 
@@ -181,7 +181,6 @@ const GAMES = [
   { id: "kod-kirici", label: "Kod Kırıcı", title: "Kod Kırıcı", intro: "Günün teknoloji kelimesini altı tahminde çöz. Her gün tek kelime, tek hak." },
   { id: "ai-evrimi", label: "AI Evrimi", title: "AI Evrimi", intro: "Aynı modelleri birleştir: Perceptron'dan başla, 2048'de yapay genel zekâya ulaş." },
   { id: "turing", label: "İnsan mı, AI mı?", title: "İnsan mı, Yapay Zekâ mı?", intro: "Beş metin, iki seçenek. Kimin yazdığını bilebilecek misin?" },
-  { id: "vice-city", label: "GTA Vice City", title: "GTA Vice City", intro: "Klasik açık dünya atmosferini tarayıcıda yaşa. Yükleme yok, kurulum yok — doğrudan oyna." },
 ] as const;
 
 function ViceCityGame(){
@@ -216,7 +215,7 @@ function Games(){
       </div>
     </section>
     <section className="mx-auto max-w-7xl px-5 py-12 lg:px-8 lg:py-20">
-      {active==="kod-kirici"?<CodeBreaker/>:active==="ai-evrimi"?<AiEvolution/>:active==="turing"?<TuringArena/>:<ViceCityGame/>}
+      {active==="kod-kirici"?<CodeBreaker/>:active==="ai-evrimi"?<AiEvolution/>:<TuringArena/>}
     </section>
   </>;
 }
