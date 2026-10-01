@@ -13,8 +13,8 @@ export function Marquee() { const t=useSiteText(); const marqueeItems=["Merak","
 export function SloganMark() { const {slogan:SLOGAN}=useSiteText(); return <div className="border-t border-border bg-background"><p className="mx-auto max-w-7xl px-5 py-7 text-center font-display text-sm italic text-muted-foreground lg:px-8">&ldquo;{SLOGAN}&rdquo;</p></div> }
 
 const mainNav = [["/about", "Hakkımızda"], ["/team", "Takımımız"], ["/events", "Etkinlikler"], ["/resources", "Kaynaklar"], ["/contact", "İletişim"]] as const;
-const moreNav = [["/games", "Mini Oyunlar"], ["/partners", "İş Ortakları"], ["/yzt-card", "YZT Kart"], ["/manifesto", "Manifesto"], ["/sponsor", "Destek Ol"], ["/faq", "SSS"]] as const;
-const nav = [...mainNav.slice(0, 3), moreNav[0], mainNav[3], moreNav[1], moreNav[2], moreNav[3], moreNav[4], moreNav[5], mainNav[4]] as const;
+const moreNav = [["/games", "Mini Oyunlar"], ["/roadmaps", "Yol Haritaları"], ["/toolbox", "Araç Çantası"], ["/partners", "İş Ortakları"], ["/yzt-card", "YZT Kart"], ["/manifesto", "Manifesto"], ["/sponsor", "Destek Ol"], ["/faq", "SSS"]] as const;
+const nav = [...mainNav.slice(0, 3), moreNav[0], mainNav[3], moreNav[1], moreNav[2], moreNav[3], moreNav[4], moreNav[5], moreNav[6], moreNav[7], mainNav[4]] as const;
 
 function MoreMenu({ pathname }: { pathname: string }) {
   const [open, setOpen] = useState(false);
