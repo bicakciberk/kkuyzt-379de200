@@ -9,6 +9,8 @@ type Dest =
   | "/team"
   | "/events"
   | "/resources"
+  | "/roadmaps"
+  | "/toolbox"
   | "/games"
   | "/partners"
   | "/yzt-card"
@@ -28,6 +30,8 @@ const PAGES: ReadonlyArray<{ to: Dest; label: string; hint: string; keywords: st
   { to: "/yzt-card", label: "YZT Kart", hint: "Üye kartı başvurusu", keywords: "kart card uyelik" },
   { to: "/manifesto", label: "Manifesto", hint: "Beş cümlede duruşumuz", keywords: "manifesto duris ilke deger" },
   { to: "/resources", label: "Kaynaklar", hint: "Başlangıç · Orta · İleri", keywords: "kaynak resources egitim ogren" },
+  { to: "/roadmaps", label: "Yol Haritaları", hint: "NLP · Görü · Veri bilimi", keywords: "yol harita roadmap patika ilerleme" },
+  { to: "/toolbox", label: "Araç Çantası", hint: "GPU · Editör · Öğrenci fırsatları", keywords: "arac canta toolbox colab gpu github" },
   { to: "/partners", label: "İş Ortakları", hint: "Destekçiler", keywords: "ortak partner sponsor" },
   { to: "/sponsor", label: "Destek Ol", hint: "Sponsorluk", keywords: "destek sponsor bagis" },
   { to: "/faq", label: "SSS", hint: "Sık sorulan sorular", keywords: "sss soru faq yardim" },
