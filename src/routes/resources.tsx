@@ -18,7 +18,7 @@ const typeClass = { Kurs: "bg-brand-dark text-background", Makale: "bg-brand-pal
 
 function Resources() {
   return <>
-    <PageIntro eyebrow="Kaynaklar · 01" title="Nereden başlasam?"><p>Topluluk olarak denediğimiz, sevdiğimiz ve arkadaşlarımıza önerdiğimiz kaynaklar. Seviyeni seç, sırayla ilerle.</p></PageIntro>
+    <PageIntro eyebrow="Kaynaklar" title="Nereden başlasam?"><p>Topluluk olarak denediğimiz, sevdiğimiz ve arkadaşlarımıza önerdiğimiz kaynaklar. Seviyeni seç, sırayla ilerle.</p></PageIntro>
     {resourceLevels.map((lvl, li) => <section key={lvl.level} className={li % 2 ? "bg-muted" : "bg-background"}>
       <div className="mx-auto max-w-7xl px-5 py-16 lg:px-8 lg:py-24">
         <div className={`flex flex-col gap-4 border-b-2 border-foreground pb-6 md:flex-row md:items-end md:justify-between ${li === 1 ? "md:flex-row-reverse md:text-right" : ""}`}>

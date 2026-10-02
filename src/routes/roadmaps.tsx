@@ -24,7 +24,7 @@ function Roadmaps() {
   const save = (next: Record<string, boolean>) => { setDone(next); try { localStorage.setItem(KEY, JSON.stringify(next)); } catch { /* boş */ } };
 
   return <>
-    <PageIntro eyebrow="Yol Haritaları · 01" title="Hangi sırayla?"><p>Bir patika seç, adımları sırayla bitir, tamamladıklarını işaretle. İlerlemen bu tarayıcıda saklanır; döndüğünde kaldığın yerden devam edersin.</p></PageIntro>
+    <PageIntro eyebrow="Yol Haritaları" title="Hangi sırayla?"><p>Bir patika seç, adımları sırayla bitir, tamamladıklarını işaretle. İlerlemen bu tarayıcıda saklanır; döndüğünde kaldığın yerden devam edersin.</p></PageIntro>
     {roadmaps.map((rm, ri) => {
       const count = rm.steps.filter((s) => done[`${rm.id}:${s.id}`]).length;
       const pct = Math.round((count / rm.steps.length) * 100);
