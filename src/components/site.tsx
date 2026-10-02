@@ -53,13 +53,12 @@ export function SiteHeader() {
   </header>;
 }
 
-export function SiteFooter() { const t=useSiteText(); const SLOGAN=t.slogan; return <footer className="motif-section bg-foreground text-background">
-  <DecorativeMotif variant="arrow" tone="cream" position="footer" size="small" speed={0.08}/>
-  <div className="motif-content mx-auto grid max-w-7xl gap-12 px-5 py-16 md:grid-cols-[1.3fr_.7fr_.8fr] lg:px-8">
-    <div><span className="inline-grid size-12 place-items-center bg-primary font-display text-xl font-bold text-primary-foreground">YZT</span><h2 className="mt-5 max-w-sm font-display text-3xl">{t.footer_tagline}</h2><p className="mt-3 font-display text-lg italic text-primary">&ldquo;{SLOGAN}&rdquo;</p><p className="mt-4 max-w-md text-sm text-background/65">Kırıkkale Üniversitesi Yapay Zeka Topluluğu. Teknolojiyi birlikte anlamak ve dönüştürmek için.</p></div>
+export function SiteFooter() { const t=useSiteText(); return <footer className="bg-foreground text-background">
+  <div className="mx-auto grid max-w-7xl gap-12 px-5 py-14 md:grid-cols-[1.3fr_.7fr_.8fr] lg:px-8">
+    <div><span className="inline-grid size-12 place-items-center bg-primary text-xl font-bold text-primary-foreground">YZT</span><p className="mt-5 max-w-xs text-sm leading-6 text-background/65">Kırıkkale Üniversitesi Yapay Zeka Topluluğu</p></div>
     <div><p className="text-xs font-bold uppercase text-primary">Hızlı bağlantılar</p><div className="mt-5 flex flex-col gap-3 text-sm">{nav.map(([to,label])=><Link key={to} to={to} className="hover:text-primary">{label}</Link>)}<Link to="/join" className="hover:text-primary">Üyelik</Link></div></div>
     <div><p className="text-xs font-bold uppercase text-primary">Bize ulaş</p><div className="mt-5 space-y-4 text-sm text-background/70"><a className="flex items-center gap-3 hover:text-primary" href={`mailto:${t.contact_email}`}><Mail className="size-4"/><span className="break-all">{t.contact_email}</span></a><a className="flex items-center gap-3 hover:text-primary" href={t.instagramUrl} target="_blank" rel="noreferrer"><Instagram className="size-4"/>@{t.instagram_handle}</a><p className="flex gap-3"><MapPin className="mt-0.5 size-4 shrink-0"/>{t.address}</p></div></div>
-  </div><div className="motif-content border-t border-background/15"><div className="mx-auto flex max-w-7xl flex-col gap-2 px-5 py-5 text-xs text-background/50 sm:flex-row sm:justify-between lg:px-8"><p>© 2026 YZT. Tüm hakları saklıdır.</p><p>Öğrenciler tarafından, öğrenciler için.</p></div></div>
+  </div><div className="border-t border-background/15"><div className="mx-auto flex max-w-7xl flex-col gap-2 px-5 py-5 text-xs text-background/50 sm:flex-row sm:justify-between lg:px-8"><p>© 2026 YZT. Tüm hakları saklıdır.</p><p>Öğrenciler tarafından, öğrenciler için.</p></div></div>
 </footer> }
 
 export function SketchArrow({ className }: { className?:string }) { return <svg viewBox="0 0 36 18" fill="none" aria-hidden="true" className={cn("w-9",className)}><path d="M2 10c8-1 17-1 29-2M24 3c3 2 6 4 8 5-3 2-6 5-9 7" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"/><path d="M3 13c7-1 13-2 19-2" stroke="currentColor" strokeWidth=".8" strokeLinecap="round" opacity=".55"/></svg> }
@@ -91,6 +90,6 @@ export function SectionHeading({ eyebrow, title, copy, align="left", marker }: {
     io.observe(el);
     return ()=>io.disconnect();
   },[]);
-  return <div ref={box} className={cn("relative grid gap-5 pt-5 md:grid-cols-[.35fr_1fr]",align==="right"&&"md:grid-cols-[1fr_.35fr]")}><span aria-hidden="true" className={cn("heading-rule",align==="right"&&"heading-rule-mid",drawn&&"is-drawn")}/><p className={cn("eyebrow",align==="right"&&"md:order-2 md:text-right")}>{eyebrow}</p><div className={cn(align==="right"&&"md:order-1 md:ml-auto md:text-right")}><div className={cn("flex items-start gap-4",align==="right"&&"md:justify-end")}>{marker&&<span className="section-marker">{marker}</span>}<h2 className="max-w-3xl font-display text-4xl leading-tight font-semibold md:text-6xl">{title}</h2></div>{copy && <p className={cn("mt-5 max-w-2xl leading-7 text-muted-foreground",align==="right"&&"md:ml-auto")}>{copy}</p>}</div></div>;
+  return <div ref={box} className={cn("relative grid gap-5 pt-5 md:grid-cols-[.35fr_1fr]",align==="right"&&"md:grid-cols-[1fr_.35fr]")}><span aria-hidden="true" className={cn("heading-rule",align==="right"&&"heading-rule-mid",drawn&&"is-drawn")}/><p className={cn("section-kicker",align==="right"&&"md:order-2 md:text-right")}>{eyebrow}</p><div className={cn(align==="right"&&"md:order-1 md:ml-auto md:text-right")}><h2 className="max-w-3xl font-display text-4xl leading-tight font-medium md:text-6xl">{title}</h2>{copy && <p className={cn("mt-5 max-w-2xl leading-7 text-muted-foreground",align==="right"&&"md:ml-auto")}>{copy}</p>}</div></div>;
 }
 export function ArrowLink({to, children}:{to:"/about"|"/team"|"/events"|"/partners"|"/join"|"/contact"; children:ReactNode}) { return <Link to={to} className={detailLinkClass}>{children}<SketchArrow className="transition-transform group-hover:translate-x-1"/></Link> }
