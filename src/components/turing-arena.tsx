@@ -134,7 +134,7 @@ export function TuringArena() {
               {score}
               <span className="text-muted-foreground">/{ROUND_SIZE}</span>
             </p>
-            <h3 className="mt-6 font-display text-3xl leading-tight font-semibold">{badgeFor(score).title}</h3>
+            <h3 className="mt-6 font-sans text-3xl leading-tight font-semibold">{badgeFor(score).title}</h3>
             <p className="mt-3 max-w-md leading-7 text-muted-foreground">{badgeFor(score).note}</p>
             <div className="mt-8 flex flex-wrap items-center gap-3">
               {history.map((hit, position) => (

@@ -18,3 +18,4 @@
 - Hakkımızda timeline milestones live in `timeline_milestones`, read through `getSiteData` and logged by a database trigger; why: editors can reorder and maintain the public history without code changes.
 - Partners live in `partners` table via getSiteData, logged by DB trigger; why: editable from panel.
 - Team leadership groups by role in `toTeam`; why: deputies appear once, next to the president.
+- Use Newsreader only for hero, page, and major section headings; all cards and interface copy use Figtree, because the site should read like a restrained editorial publication rather than a template.

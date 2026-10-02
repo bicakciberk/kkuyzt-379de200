@@ -18,7 +18,7 @@ const typeClass = { Kurs: "bg-brand-dark text-background", Makale: "bg-brand-pal
 
 function Resources() {
   return <>
-    <PageIntro eyebrow="Kaynaklar · 01" title="Nereden başlasam?"><p>Topluluk olarak denediğimiz, sevdiğimiz ve arkadaşlarımıza önerdiğimiz kaynaklar. Seviyeni seç, sırayla ilerle.</p></PageIntro>
+    <PageIntro eyebrow="Kaynaklar" title="Nereden başlasam?"><p>Topluluk olarak denediğimiz, sevdiğimiz ve arkadaşlarımıza önerdiğimiz kaynaklar. Seviyeni seç, sırayla ilerle.</p></PageIntro>
     {resourceLevels.map((lvl, li) => <section key={lvl.level} className={li % 2 ? "bg-muted" : "bg-background"}>
       <div className="mx-auto max-w-7xl px-5 py-16 lg:px-8 lg:py-24">
         <div className={`flex flex-col gap-4 border-b-2 border-foreground pb-6 md:flex-row md:items-end md:justify-between ${li === 1 ? "md:flex-row-reverse md:text-right" : ""}`}>
@@ -28,7 +28,7 @@ function Resources() {
         <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {lvl.items.map((r, i) => <a key={r.title} href={r.url} target="_blank" rel="noreferrer" className={`resource-card group ${i % 3 === 1 ? "lg:translate-y-6" : ""}`}>
             <span className={`resource-type ${typeClass[r.type]} ${i % 2 ? "-rotate-2" : "rotate-2"}`}>{r.type}</span>
-            <h3 className="mt-8 font-display text-2xl leading-tight">{r.title}</h3>
+            <h3 className="mt-8 font-sans text-2xl leading-tight">{r.title}</h3>
             <p className="mt-3 text-sm leading-6 text-muted-foreground">{r.desc}</p>
             <span className="mt-6 inline-flex items-center gap-2 border-b border-brand-light pb-1 text-sm font-bold text-brand-dark group-hover:text-brand-light">Kaynağa git <ArrowUpRight className="size-4" /></span>
           </a>)}

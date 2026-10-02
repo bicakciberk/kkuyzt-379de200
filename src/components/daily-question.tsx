@@ -100,7 +100,7 @@ export function DailyQuestion() {
       <span className="daily-question-badge"><HelpCircle className="size-4" aria-hidden="true" /> Bugünün sorusu</span>
       <span className="daily-question-hint">Her gün yenilenir</span>
     </div>
-    <h3 className="daily-question-title font-display">{question.question}</h3>
+    <h3 className="daily-question-title font-sans ">{question.question}</h3>
     {answer
       ? <div className="daily-question-answer">
           <p className="daily-question-picked">Seçimin: <strong>{answer.label}</strong></p>

@@ -5,16 +5,17 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/
 import { Button } from "@/components/ui/button";
 import { faqs } from "@/lib/extra-content";
 import type { Database } from "@/integrations/supabase/types";
+import { useSiteText } from "@/lib/site-text";
 import { cn } from "@/lib/utils";
 
 export function FaqList({ limit }: { limit?: number }) {
   const list = limit ? faqs.slice(0, limit) : faqs;
-  return <Accordion type="single" collapsible className="faq-list border-t-2 border-foreground">
+  return <Accordion type="single" collapsible className="faq-list border-t border-foreground">
     {list.map(([q, a], i) => <AccordionItem key={q} value={`q${i}`} className="border-b border-foreground">
-      <AccordionTrigger className="gap-5 py-6 text-left font-display text-xl hover:no-underline md:text-2xl">
-        <span className="flex items-baseline gap-4"><span className={cn("faq-tag", `faq-tag-${i % 3}`)}>{String(i + 1).padStart(2, "0")}</span>{q}</span>
+      <AccordionTrigger className="gap-5 py-6 text-left text-base font-semibold hover:no-underline md:text-lg">
+        <span>{q}</span>
       </AccordionTrigger>
-      <AccordionContent className="max-w-3xl pb-6 pl-14 text-base leading-7 text-muted-foreground">{a}</AccordionContent>
+      <AccordionContent className="max-w-3xl pb-6 text-base leading-7 text-muted-foreground">{a}</AccordionContent>
     </AccordionItem>)}
   </Accordion>;
 }
@@ -34,7 +35,7 @@ export function Timeline({ milestones }: { milestones: Pick<Database["public"]["
       <span className={cn("timeline-marker", `timeline-marker-${i % 3}`)} aria-hidden="true">{String(i + 1).padStart(2, "0")}</span>
       <div className="timeline-card">
         <p className="text-xs font-bold uppercase tracking-wider text-brand-light">{m.period}</p>
-        <h3 className="mt-2 font-display text-3xl">{m.title}</h3>
+        <h3 className="mt-2 font-sans text-3xl">{m.title}</h3>
         <p className="mt-2 text-sm leading-6 text-muted-foreground">{m.description}</p>
       </div>
     </li>)}
@@ -42,9 +43,10 @@ export function Timeline({ milestones }: { milestones: Pick<Database["public"]["
 }
 
 export function SponsorCta() {
+  const t = useSiteText();
   return <section className="border-t border-border bg-brand-pale">
     <div className="mx-auto grid max-w-7xl gap-8 px-5 py-16 md:grid-cols-[1fr_auto] md:items-center lg:px-8">
-      <div><p className="eyebrow">Bize sponsor olun</p><h2 className="mt-4 max-w-3xl font-display text-4xl leading-tight md:text-5xl">Kampüsteki en meraklı ekiple aynı karede olun.</h2></div>
+      <div><p className="text-sm font-semibold text-brand-dark">Kurumsal iş birlikleri</p><h2 className="mt-3 max-w-4xl font-display text-4xl leading-tight md:text-5xl">{t.about_stat1_value} üyeye ulaşın; {t.about_stat2_value} etkinliğin atölye, konuşmacı ve üretim ortağı olun.</h2><p className="mt-4 max-w-3xl leading-7 text-muted-foreground">Markanızı kampüs buluşmalarında, etkinlik iletişiminde ve öğrenci projelerinde görünür kılan ölçülebilir destek paketleri hazırlıyoruz.</p></div>
       <div className="flex flex-wrap gap-3"><Button asChild><Link to="/sponsor">Destek ol <ArrowRight /></Link></Button></div>
     </div>
   </section>;

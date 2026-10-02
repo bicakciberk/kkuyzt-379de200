@@ -50,9 +50,9 @@ function Line({ item, index }: { item: (typeof LINES)[number]; index: number }) 
 
 function Manifesto() {
   return <>
-    <PageIntro eyebrow="Manifesto · 01" title="Beş cümlede biz."><p>Uzun tanıtım yazıları yerine kısa bir duruş. Aşağı kaydırdıkça cümleler teker teker açılıyor.</p></PageIntro>
+    <PageIntro eyebrow="Manifesto" title="Beş cümlede biz."><p>Uzun tanıtım yazıları yerine kısa bir duruş. Aşağı kaydırdıkça cümleler teker teker açılıyor.</p></PageIntro>
     <section className="mx-auto max-w-5xl px-5 py-16 lg:px-8 lg:py-24">
-      <div className="mb-10 flex justify-end"><span className="section-marker">02 / Beş cümle</span></div>
+      <div className="mb-10 flex justify-end"></div>
       {LINES.map((item, i) => <Line key={item.no} item={item} index={i} />)}
     </section>
     <section className="border-t border-border bg-muted py-20 lg:py-24">

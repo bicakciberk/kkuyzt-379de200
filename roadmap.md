@@ -48,6 +48,6 @@ tail -3 roadmap.md
 - [x] Bugünün Sorusu: ana sayfa Keşfet bölümünde, Istanbul gününe göre havuzdan dönen soru, 3 seçenek + kısa yanıt, localStorage (yzt-gunun-sorusu-v1)
 - [x] Etkileşimli Yol Haritaları + Araç Çantası sayfaları
 - [x] Hero daktilo: "Geleceği birlikte" üst satır, "şekillendirelim" alt satır
-- [ ] Ana sayfadaki numaralı bölüm kalıplarını ve eş kutu tekrarını kır; Günün Bilgisi, SSS, sponsor bandı ve footer'ı sadeleştir.
-- [ ] Site tipografisini Newsreader + Figtree (latin-ext) olarak güncelle; serif kullanımını ana başlıklarla sınırla, büyük harfli geniş aralıklı etiketleri azalt.
-- [ ] Sert offset gölgeleri site genelinde azalt ve yalnız ana afiş ile YZT Kart önizlemesinde koru.
+- [x] Ana sayfadaki numaralı bölüm kalıplarını ve eş kutu tekrarını kır; Günün Bilgisi, SSS, sponsor bandı ve footer'ı sadeleştir.
+- [x] Site tipografisini Newsreader + Figtree (latin-ext) olarak güncelle; serif kullanımını ana başlıklarla sınırla, büyük harfli geniş aralıklı etiketleri azalt.
+- [x] Sert offset gölgeleri site genelinde azalt ve yalnız ana afiş ile YZT Kart önizlemesinde koru.
