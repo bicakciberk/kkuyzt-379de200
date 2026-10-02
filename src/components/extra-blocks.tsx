@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { faqs } from "@/lib/extra-content";
 import type { Database } from "@/integrations/supabase/types";
 import { useSiteText } from "@/lib/site-text";
+import { cn } from "@/lib/utils";
 
 export function FaqList({ limit }: { limit?: number }) {
   const list = limit ? faqs.slice(0, limit) : faqs;
