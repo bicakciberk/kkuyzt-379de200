@@ -17,9 +17,8 @@ export const Route = createFileRoute("/faq")({
 
 function Faq() {
   return <>
-    <PageIntro eyebrow="SSS · 01" title="Aklındaki sorular."><p>Katılmadan önce en çok sorulanları bir araya getirdik. Cevabını bulamazsan bize yaz.</p></PageIntro>
+    <PageIntro eyebrow="Sık sorulan sorular" title="Aklındaki sorular."><p>Katılmadan önce en çok sorulanları bir araya getirdik. Cevabını bulamazsan bize yaz.</p></PageIntro>
     <section className="mx-auto max-w-5xl px-5 py-20 lg:px-8 lg:py-28">
-      <div className="mb-8 flex justify-end"><span className="section-marker">02 / Sekiz soru</span></div>
       <FaqList />
       <div className="mt-12 flex flex-wrap gap-3"><Button asChild><Link to="/join">Bize Katıl <ArrowRight /></Link></Button><Button asChild variant="outline"><Link to="/contact">Soru sor</Link></Button></div>
     </section>
