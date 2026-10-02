@@ -30,7 +30,7 @@ function NotFoundComponent() {
           <div className="mt-8"><Link to="/" className="inline-flex h-12 items-center bg-primary px-6 text-sm font-bold text-primary-foreground transition-colors hover:bg-primary-hover">Ana sayfaya dön</Link></div>
         </div>
         <div aria-hidden="true" className="relative mx-auto h-72 w-72">
-          <div className="absolute inset-0 rotate-3 border border-foreground bg-poster shadow-[10px_10px_0_var(--brand-light)]" />
+          <div className="absolute inset-0 rotate-3 border border-foreground bg-poster" />
           <span className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 font-display text-9xl text-primary-foreground">404</span>
           <span className="absolute -left-4 top-6 -rotate-6 bg-brand-pale px-3 py-1 text-xs font-bold uppercase text-accent-foreground">Rota yok</span>
           <span className="absolute -right-3 bottom-8 rotate-2 border border-foreground bg-background px-3 py-1 text-xs font-semibold text-foreground">Kayıp rota</span>

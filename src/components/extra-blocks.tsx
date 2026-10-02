@@ -34,7 +34,7 @@ export function Timeline({ milestones }: { milestones: Pick<Database["public"]["
       <span className={cn("timeline-marker", `timeline-marker-${i % 3}`)} aria-hidden="true">{String(i + 1).padStart(2, "0")}</span>
       <div className="timeline-card">
         <p className="text-xs font-bold uppercase tracking-wider text-brand-light">{m.period}</p>
-        <h3 className="mt-2 font-display text-3xl">{m.title}</h3>
+        <h3 className="mt-2 font-sans text-3xl">{m.title}</h3>
         <p className="mt-2 text-sm leading-6 text-muted-foreground">{m.description}</p>
       </div>
     </li>)}
