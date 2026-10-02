@@ -206,7 +206,7 @@ function Games(){
     <section className="motif-section border-b border-border bg-background pt-32 pb-10 md:pt-40 md:pb-14">
       <DecorativeMotif variant="arrow" position="left"/>
       <div className="motif-content mx-auto max-w-7xl px-5 lg:px-8">
-        <p className="eyebrow">Mini Oyunlar · 01</p>
+        <p className="section-kicker">Mini Oyunlar</p>
         <h1 className="mt-5 font-display text-5xl leading-none font-semibold sm:text-7xl">{game.title}</h1>
         <p className="mt-5 max-w-xl leading-7 text-muted-foreground">{game.intro}</p>
         <div className="mt-8 flex flex-wrap gap-3">
