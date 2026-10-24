@@ -135,6 +135,8 @@
 .ink-section .eyebrow{color:var(--color-poster-accent)}
 .ink-section .section-kicker{color:var(--color-poster-accent)}
 .ink-section .decorative-motif{color:var(--color-brand-light);opacity:.12}
+.ink-section .game-tab{border-color:var(--color-ink-border);background:transparent;color:var(--color-on-ink)}
+.ink-section .game-tab-active{background:var(--color-brand-mid);border-color:var(--color-brand-mid);color:var(--color-on-ink)}
 
 /* Rafine kartlar: yumuşak köşeler, ince kenarlıklar */
 .resource-card,.work-card,.timeline-card,.turing-choice,.editorial-placeholder,.game-stat,.evo-score,.yzt-card-preview,.daily-question{border-radius:var(--radius-lg)}
