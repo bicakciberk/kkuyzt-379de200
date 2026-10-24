@@ -117,6 +117,30 @@
 @media(prefers-reduced-motion:reduce){.premium-tilt{transform:none!important;will-change:auto}}
 
 
+/* Aşama 2 — koyu lacivert hero alanları + rafine kart sistemi */
+.ink-section{background:var(--color-brand-ink);color:var(--color-on-ink)}
+.ink-section .text-muted-foreground{color:var(--color-on-ink-muted)}
+.ink-section .hero-kicker{color:var(--color-poster-accent)}
+.ink-section .hero-kicker span{color:var(--color-brand-light)}
+.ink-section .hero-typing-caret{background:var(--color-poster-accent)}
+.ink-section .hero-ring path{stroke:var(--color-poster-accent)}
+.ink-section .border-border{border-color:var(--color-ink-border)}
+.ink-section .bg-border{background:var(--color-ink-border)}
+.ink-section .insta-pulse{border-top-color:var(--color-ink-border);border-bottom-color:var(--color-ink-border)}
+.ink-section .insta-pulse:hover{background:var(--color-brand-ink-raised)}
+.ink-section .insta-pulse-text{color:var(--color-on-ink)}
+.ink-section .insta-pulse-live,.ink-section .insta-pulse-cta{color:var(--color-poster-accent)}
+.ink-section .insta-pulse-when{color:var(--color-brand-light)}
+.ink-section .insta-pulse-thumb{border-color:var(--color-ink-border)}
+.ink-section .eyebrow{color:var(--color-poster-accent)}
+.ink-section .section-kicker{color:var(--color-poster-accent)}
+.ink-section .decorative-motif{color:var(--color-brand-light);opacity:.12}
+
+/* Rafine kartlar: yumuşak köşeler, ince kenarlıklar */
+.resource-card,.work-card,.timeline-card,.turing-choice,.editorial-placeholder,.game-stat,.evo-score,.yzt-card-preview,.daily-question{border-radius:var(--radius-lg)}
+.event-preview img{border-radius:var(--radius-lg);border-color:var(--color-border)!important}
+.instagram-card{border-radius:var(--radius-md)}
+
 /* Koyu tema */
 
 /* Yukarı çık */
