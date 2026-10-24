@@ -23,7 +23,7 @@ function MoreMenu({ pathname }: { pathname: string }) {
   useEffect(() => { if (!open) return; const close = (e: MouseEvent | KeyboardEvent) => { if (e instanceof KeyboardEvent ? e.key === "Escape" : !ref.current?.contains(e.target as Node)) setOpen(false) }; document.addEventListener("mousedown", close); document.addEventListener("keydown", close); return () => { document.removeEventListener("mousedown", close); document.removeEventListener("keydown", close) } }, [open]);
   const active = moreNav.some(([to]) => to === pathname);
   return <div ref={ref} className="relative"><button type="button" onClick={() => setOpen(!open)} aria-expanded={open} aria-haspopup="true" className={cn("flex items-center gap-1 text-sm font-medium transition-colors hover:text-primary", active ? "text-primary" : "text-foreground")}>Daha Fazla <ChevronDown className={cn("size-4 transition-transform", open && "rotate-180")}/></button>
-    {open && <div className="absolute right-0 top-full mt-4 w-52 border border-foreground bg-background py-2 shadow-[6px_6px_0_var(--color-brand-pale)]">{moreNav.map(([to,label],i) => <Link key={to} to={to} className={cn("flex items-center justify-between px-4 py-2.5 text-sm hover:bg-muted hover:text-primary", pathname===to && "text-primary")}>{label}<span className="text-[10px] font-bold text-brand-light">{String(i+1).padStart(2,"0")}</span></Link>)}</div>}
+    {open && <div className="absolute right-0 top-full mt-4 w-52 rounded-md border border-border bg-card py-2 shadow-raised">{moreNav.map(([to,label],i) => <Link key={to} to={to} className={cn("flex items-center justify-between px-4 py-2.5 text-sm hover:bg-muted hover:text-primary", pathname===to && "text-primary")}>{label}<span className="text-[10px] font-bold text-brand-light">{String(i+1).padStart(2,"0")}</span></Link>)}</div>}
   </div>;
 }
 
@@ -53,7 +53,7 @@ export function SiteHeader() {
   </header>;
 }
 
-export function SiteFooter() { const t=useSiteText(); return <footer className="bg-foreground text-background">
+export function SiteFooter() { const t=useSiteText(); return <footer className="bg-brand-ink text-on-ink">
   <div className="mx-auto grid max-w-7xl gap-12 px-5 py-14 md:grid-cols-[1.3fr_.7fr_.8fr] lg:px-8">
     <div><span className="inline-grid size-12 place-items-center bg-primary text-xl font-bold text-primary-foreground">YZT</span><p className="mt-5 max-w-xs text-sm leading-6 text-background/65">Kırıkkale Üniversitesi Yapay Zeka Topluluğu</p></div>
     <div><p className="text-xs font-bold uppercase text-primary">Hızlı bağlantılar</p><div className="mt-5 flex flex-col gap-3 text-sm">{nav.map(([to,label])=><Link key={to} to={to} className="hover:text-primary">{label}</Link>)}<Link to="/join" className="hover:text-primary">Üyelik</Link></div></div>
