@@ -203,7 +203,7 @@ function Games(){
   const game=GAMES.find((item)=>item.id===active) ?? GAMES[0];
 
   return <>
-    <section className="motif-section border-b border-border bg-background pt-32 pb-10 md:pt-40 md:pb-14">
+    <section className="ink-section motif-section border-b border-ink-border pt-32 pb-10 md:pt-40 md:pb-14">
       <DecorativeMotif variant="arrow" position="left"/>
       <div className="motif-content mx-auto max-w-7xl px-5 lg:px-8">
         <p className="section-kicker">Mini Oyunlar</p>
